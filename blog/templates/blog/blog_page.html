@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
+    <h1>{{ page.title }}</h1>
+    {% if page.title == 'Python' %}
+        <div style="float: bottom; margin: 10px">
+            <img src="{% static 'blog/img/python-logo.png' %}">
+        </div>
+    {% endif %}
+    <br>
+    <p class="meta">{{ page.date }}</p>
+    <p class="meta">Author: {{ page.author.profile }}</p>
+
+    {% with categories=page.categories.all %}
+        {% if categories %}
+            <h3>Categories</h3>
+            <ul>
+                {% for category in categories %}
+                    <li style="display: inline">
+                        {% image category.icon fill-32x32 style="vertical-align: middle" %}
+                        {{ category.name }}
+                    </li>
+                {% endfor %}
+                
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% if page.tags.all.count %}
+        <div class="tags">
+            <h3>Tags</h3>
+            {% for tag in page.tags.all %}
+                <a href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="intro"><h3>{{ page.intro|richtext }}</h3></div>
+
+    {% if page.title == 'Python' %}
+        <div style="float: bottom; margin: 10px">
+            <img src="{% static 'blog/img/djangoi.jpg' %}">
+        </div>
+    {% endif %}
+    {{ page.body|richtext }}
+    {% for item in page.gallery_images.all %}
+        <div style="float: left; margin: 10px">
+{#            {% image item.image fill-370x136 %}#}
+            {% image item.image fill-200x190 %}
+            <p>{{ item.caption }}</p>
+        </div>
+    {% endfor %}
+    <br>
+
+
+{% endblock %}

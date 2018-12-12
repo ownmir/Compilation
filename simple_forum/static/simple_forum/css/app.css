@@ -1,0 +1,25 @@
+.navbar-brand {
+  font-family: 'Comfortaa', cursive;
+}
+.bcol {border: 2px}
+.foreign1:hover ~ .native1 span { background: lightgreen;} /* for D2
+/*.foreign2:hover ~ .native2 span { background: lightgreen;}*/
+/*.foreign3:hover ~ .native3 span { background: lightgreen;}*/
+/*.foreign4:hover ~ .native4 span { background: lightgreen;}*/
+/*.foreign5:hover ~ .native5 span { background: lightgreen;}*/
+/*.foreign6:hover ~ .native6 span { background: lightgreen;}*/
+/*.foreign7:hover ~ .native7 span { background: lightgreen;}*/
+/*.foreign8:hover ~ .native8 span { background: lightgreen;}*/
+/*.foreign9:hover ~ .native9 span { background: lightgreen;}*/
+/*.foreign0:hover ~ .native0 span { background: lightgreen;}*/
+.word:lang ~ .trans span { background: lightgreen;}
+/*:lang(word) {text-shadow: -4px -3px 2px #999;}*/
+:lang(word) {background: lightblue}
+:lang(translate) {background: lightblue; border: gray 1px; !important;}
+h1{
+    text-shadow: -5px -4px 3px #999;
+}
+/*code {background: yellowgreen; text-justify: auto}*/
+code {font-size: 1.1rem !important;}
+.gray-border {background: lightgray}
+.mygray-bground {background: lightgray !important}

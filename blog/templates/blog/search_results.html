@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block title %}Search{% endblock %}
+{% block content %}
+    <form action="{% url 'search' %}" method="get">
+        <input type="text" name="query" value="{{ search_query }}">
+        <input type="submit" value="Search">
+    </form>
+    {% if search_result %}
+        <ul>
+            {% for result in search_result %}
+                <li>
+                    <h4><a href="{% pageurl result %}">{{ result }}</a> </h4>
+                    {% if result.search_description %}
+                        {{ result.search_description|safe }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif search_query %}
+        <h4>No results found</h4>
+    {% else %}
+        <h4>Please type something into the search box</h4>
+    {% endif %}
+    <b>{{ search_query }} - search_query</b><br>
+    <b>{{ search_result }} - search_result</b><br>
+{% endblock %}

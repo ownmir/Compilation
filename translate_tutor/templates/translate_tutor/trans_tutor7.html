@@ -1,0 +1,540 @@
+{% extends 'simple_forum/forum_base.html' %}
+{% load static %}
+{% block title %}Tutorial 7{% endblock %}
+{% block brand %}
+    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>
+    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>
+    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>
+{% endblock brand %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Django tutorial</li>
+{% endblock %}
+
+{% block content %}
+    <h1>A Complete Beginner's Guide to Django - Part 7</h1><br>
+    <h2 title="введення">Introduction - Вступ</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Welcome to the last part of our tutorial series!
+                    In this tutorial, we are going to deploy our Django application to a production server.</span>
+            </span>
+            <span class="col native1">
+                <span>Ласкаво просимо в останню частину нашої навчальної серії!
+                    У цьому уроці ми будемо розгортати наш додаток Django на бойовий сервер.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are also going to configure an Email service and HTTPS certificates for our servers.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також збираємось налаштувати сертифікати електронної пошти та HTTPS для наших серверів.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>At first, I thought about given an example using a Virtual Private Server (VPS),
+                    which is more generic and then using one Platform as a Service such as Heroku.</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку я думав про приклад, використовуючи Віртуальний приватний сервер (VPS),
+                    який є більш загальним, а потім використовує одну платформу як Сервіс, таку як Heroku.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But it was too much detail, so I ended up creating this tutorial focused on VPSs.</span>
+            </span>
+            <span class="col native1">
+                <span>Але це занадто детально, так що я закінчую створення цього підручника зосередженим на VPSs.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Our project is live! 
+                    If you want to check online before you go through the text, this is the application
+                    we are going to deploy: <a href="www.djangoboards.com">www.djangoboards.com</a>.</span>
+            </span>
+            <span class="col native1">
+                <span>Наш проект живий!
+                    Якщо ви хочете перевірити онлайн, перш ніж пройти текст, це програма,
+                    яку ми збираємося розгорнути: <a href="www.djangoboards.com">www.djangoboards.com</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Version Control - Контроль версій</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Version control is an extremely important topic in software development.</span>
+            </span>
+            <span class="col native1">
+                <span>Контроль версій є надзвичайно важливою темою розробки програмного забезпечення.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Especially when working with teams and maintaining production code at the same time,
+                    several features are being developed in parallel.</span>
+            </span>
+            <span class="col native1">
+                <span>Особливо під час роботи командами та підтримкою виробничого коду в той же час
+                    розробляються декілька функцій паралельно.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>No matter if it’s a one developer project or a multiple developers project,
+                    every project should use version control.</span>
+            </span>
+            <span class="col native1">
+                <span>Незалежно від того, чи це проект одного розробника або проект кількох розробників,
+                    кожен проект повинен використовувати керування версій.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There are several options of version control systems out there.</span>
+            </span>
+            <span class="col native1">
+                <span>Існує кілька варіантів систем керування версіями.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Perhaps because of the popularity of GitHub, Git become the de facto standard in version control.</span>
+            </span>
+            <span class="col native1">
+                <span>Можливо, через популярність GitHub, <strong>Git</strong> став стандартом <em>де-факто</em> в системі управління версіями.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So if you are not familiar version control, Git is a good place to start.
+                    There are many tutorials, courses, and resources in general so that it’s easy to find help.</span>
+            </span>
+            <span class="col native1">
+                <span>Отже, якщо ви не знайомі з контролем версій, Git - це гарне місце для початку.
+                    Є багато навчальних посібників, курсів та ресурсів взагалі, щоб легко знайти допомогу.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>GitHub and Code School have a great <a href="https://try.github.io/">interactive tutorial about Git</a>,
+                    which I used years ago when I started moving from SVN to Git.
+                    It’s a very good introduction.</span>
+            </span>
+            <span class="col native1">
+                <span>GitHub і Code School мають чудовий <a href="https://try.github.io/">інтерактивний підручник про Gіt</a>,
+                    який я використовував кілька років тому, коли я почав переходити від SVN до Git.
+                    Це дуже хороше введення.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This is such an important topic that I probably should have brought it up since the first tutorial.
+                    But the truth is I wanted the focus of this tutorial series to be on Django.</span>
+            </span>
+            <span class="col native1">
+                <span>Це така важлива тема, яку я, мабуть, мав би підняти з першого урока.
+                    Але правда в тому, що я хотів, щоб в центрі уваги даного навчального посібника був Django.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If all this is new for you, don’t worry. It’s important to take one step at a time. </span>
+            </span>
+            <span class="col native1">
+                <span>Якщо все це для вас нове, не хвилюйтеся. Важливо одночасно зробити один крок.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Your first project won’t be perfect.
+                    It’s important to keep learning and <em lang=translate>evolving</em> your skills slowly but with constancy.</span>
+            </span>
+            <span class="col native1">
+                <span>Ваш перший проект не буде досконалим.
+                    Важливо продовжувати навчатися і <em lang=translate>розвивати</em> свої навички повільно, але з постійністю.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>A very good thing about Git is that it’s much more than just a version control system.</span>
+            </span>
+            <span class="col native1">
+                <span>Git дуже добра річ тому, що це набагато більше, ніж просто система керування версіями.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There’s a rich ecosystem of tools and services built around it.
+                    Some good examples are continuous integration, deployment, code review, code quality, and
+                    project management.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут є багата екосистема інструментів та послуг.
+                    Деякими хорошими прикладами є безперервна інтеграція, розгортання, перевірка коду, якість коду та
+                    управління проектами.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Using Git to support the deployment process of Django projects works very well.
+                    It’s a convenient way to pull the latest version from the source code repository or
+                    to rollback to a specific version in case of a problem.</span>
+            </span>
+            <span class="col native1">
+                <span>Використання Git для підтримки процесу розгортання проектів Django працює дуже добре.
+                    Це зручний спосіб витягнути останню версію з сховища вихідного коду або
+                    відкатити до певної версії у разі виникнення проблеми.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There are many services that integrate with Git so to automate test execution and deployment for example.</span>
+            </span>
+            <span class="col native1">
+                <span>Є багато послуг, які інтегруються з Git, щоб, наприклад, автоматизувати тестування та розгортання.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If you don’t have Git installed on your local machine, grab the installed from https://git-scm.com/downloads.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо ви не встановили Git на локальному комп'ютері, скопіюйте встановлений з
+                    <a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <H3>Basic Setup</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First thing, set your identity:</span>
+            </span>
+            <span class="col native1">
+                <span>Перше, встановіть свою ідентичність:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            git config --global user.name "Vitor Freitas"
+            git config --global user.email vitor@simpleisbetterthancomplex.com
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the project root (the same directory as manage.py is), initialize a git repository:</span>
+            </span>
+            <span class="col native1">
+                <span>В корені проекту (той самий каталог, де є файл manage.py), ініціалізуйте сховище git:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>git init</code>
+    </pre>
+    <pre class="bg-light">
+        <code>Initialized empty Git repository in /Users/vitorfs/Development/myproject/.git/</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Check the status of the repository:</span>
+            </span>
+            <span class="col native1">
+                <span>Перевірте стан сховища:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>git status</code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            On branch master
+
+            Initial commit
+
+            Untracked files:
+              (use "git add <file>..." to include in what will be committed)
+
+              accounts/
+              boards/
+              manage.py
+              myproject/
+              requirements.txt
+              static/
+              templates/
+
+            nothing added to commit but untracked files present (use "git add" to track)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Before we proceed in adding the source files, create a new file named .gitignore in the project root. </span>
+            </span>
+            <span class="col native1">
+                <span>Перш ніж ми додамо вихідні файли, створіть новий файл з ім'ям <strong>.gitignore</strong> у корені проекту.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This special file will help us keep the repository clean, without unnecessary files like cache files or logs for example.</span>
+            </span>
+            <span class="col native1">
+                <span>Цей спеціальний файл допоможе нам зберегти сховище чистим, не використовуючи непотрібні файли, наприклад, кеш-файли або журнали.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You can grab a generic .gitignore file for Python projects from GitHub.</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете захопити загальний файл .gitignore для проектів Python від GitHub.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Make sure to rename it from Python.gitignore to just .gitignore (the dot is important!).</span>
+            </span>
+            <span class="col native1">
+                <span>Переконайтеся в тому, що перейменували його з <b>Python.gitignore</b> тільки в <b>.gitignore</b> (точка це важливо!).</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You can complement the .gitignore file telling it to ignore SQLite database files for example:</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете доповнити файл .gitignore кажучи йому ігнорувати файли бази даних SQLite, наприклад:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>.gitignore</b><br><br>
+    <pre class="bg-light">
+        <code>      __pycache__/
+            *.py[cod]
+            .env
+            venv/
+
+
+            # SQLite database files
+
+            *.sqlite3</code></pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now add the files to the repository:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер додайте файли до сховища:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>git add .</code></pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Notice the dot here. The command above is telling Git to add all untracked files
+                    within the current directory.</span>
+            </span>
+            <span class="col native1">
+                <span>Зверніть увагу на точку тут. Команда вище говорить Git, додати всі невідслідковувані файли
+                    в поточному каталозі.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Always write a comment telling what this commit is about, briefly describing what have you changed.</span>
+            </span>
+            <span class="col native1">
+                <span>Завжди пишіть коментар про що цей commit, коротко опишіть, що ви змінили.</span>
+            </span>
+        </div>
+    </div>
+    <br><br>
+    <H3>Remote Repository - Віддалений репозиторій</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s setup GitHub as a remote repository.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте налаштуємо <a href="https://github.com/">GitHub</a> як віддалене сховище.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, create a free account on GitHub, then confirm your email address.
+                    After that, you will be able to create public repositories.</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку створіть безкоштовний обліковий запис на GitHub, а потім підтвердьте свою адресу електронної пошти.
+                    Після цього ви зможете створювати загальнодоступні сховища.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For now, just pick a name for the repository, don’t initialize it with a README,
+                    or add a .gitignore or add a license so far. Make sure you start the repository empty:</span>
+            </span>
+            <span class="col native1">
+                <span>Наразі просто знайдіть ім'я для сховища, не ініціалізуйте його за допомогою README,
+                    або додайте .gitignore або додайте ліцензію. Переконайтеся, що ви запустили сховище порожнім:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/github1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>After you create the repository you should see something like this:</span>
+            </span>
+            <span class="col native1">
+                <span>Після створення сховища ви повинні побачити щось на зразок цього:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/github2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s configure it as our remote repository:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте налаштуємо це як наше віддалене сховище:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>git remote add origin git@github.com:sibtc/django-boards.git</code></pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now push the code to the remote server, that is, to the GitHub repository:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер відправте код на віддалений сервер, тобто до сховища GitHub:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            git push origin master
+
+            Counting objects: 84, done.
+            Delta compression using up to 4 threads.
+            Compressing objects: 100% (81/81), done.
+            Writing objects: 100% (84/84), 319.70 KiB | 0 bytes/s, done.
+            Total 84 (delta 10), reused 0 (delta 0)
+            remote: Resolving deltas: 100% (10/10), done.
+            To git@github.com:sibtc/django-boards.git
+             * [new branch]      master -> master
+        </code>
+    </pre>
+    <br>
+
+{% endblock %}

@@ -1,0 +1,3741 @@
+{% extends 'simple_forum/forum_base.html' %}
+{% load static %}
+{% block title %}Tutorial 6{% endblock %}
+{% block brand %}
+    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>
+    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>
+    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>
+{% endblock brand %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Django tutorial</li>
+{% endblock %}
+
+{% block content %}
+    <h1>A Complete Beginner's Guide to Django - Part 6</h1><br>
+    <h2 title="введення">Introduction - Вступ</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Welcome to the sixth part of the tutorial series! </span>
+            </span>
+            <span class="col native1">
+                <span>Ласкаво просимо до шостої частини серії!</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In this tutorial, we are going to explore in great detail <em lang=translate>the Class-Based Views</em>. </span>
+            </span>
+            <span class="col native1">
+                <span>У цьому підручнику ми детально вивчимо <em lang=translate>представлення, основані на класах</em>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are also going to refactor some of the existing views
+                    so to take advantage of the built-in Generic Class-Based Views.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також збираємось переробити деякі існуючі види,
+                    щоб скористатись загальними представленнями, основаними на класах.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There are many other topics that we are going <strong>to touch</strong> with this tutorial,</span>
+            </span>
+            <span class="col native1">
+                <span>Існує багато інших тем, до яких ми будемо <strong>торкатися</strong> цього підручника,</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>such as how to work <em lang=translate>with pagination</em>, how to work with Markdown</span>
+            </span>
+            <span class="col native1">
+                <span>наприклад, як працювати <em lang=translate>з нумеруванням сторінок</em>, як працювати з Markdown</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>and how to add a simple editor.</span>
+            </span>
+            <span class="col native1">
+                <span>і як додати простий редактор.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are also going to explore a built-in package called Humanize,
+                    which is used to give a “human touch” to the data.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також збираємося вивчити вбудований пакет Humanized,
+                    який використовується для надання "людського вигляду" даним.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Alright, folks! Let’s implement some code. We have <em lang=translate title="достатньо, безліч">plenty</em> of work to do today!</span>
+            </span>
+            <span class="col native1">
+                <span>Ладно, хлопці! Давайте реалізовувати деякий код. Ми сьогодні маємо <em lang=translate>багато</em> роботи!</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <h2>Views Strategies</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now, all Django views are functions.</span>
+            </span>
+            <span class="col native1">
+                <span>Зараз представлення Джанго - це функції.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Even class-based views (CBV). Behind the scenes, it does all the magic and ends up returning a view function.</span>
+            </span>
+            <span class="col native1">
+                <span>Навіть представлення, основаними на класах (CBV). За лаштунками, вони роблять все магічно і закінчують поверненням з функції виду.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Class-based views <em lang=translate>were introduced</em> to make it easier for developers to reuse and <span title="поглиблювати">extend</span> views. </span>
+            </span>
+            <span class="col native1">
+                <span>Class-based views (CBV) <em lang=translate>були введені</em>, щоб розробникам було простіше використати та розширити представлення.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There are many benefits of using them, such as the extendability, the ability to use <strong>O.O.</strong> techniques such as multiple inheritances, the handling of HTTP methods are done in separate methods, rather than using conditional branching, and there are also the Generic Class-Based Views (GCBV).</span>
+            </span>
+            <span class="col native1">
+                <span>Існує багато переваг використання їх, таких як розширюваність, можливість використання <strong>об'єктно орієнтованих</strong> технік, як багаторазове наслідування, обробка HTTP-методів виконується за допомогою окремих методів, а не за допомогою умовного розгалуження, а також є загальні Class-Based Views(GCBV).</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Before we move forward, let’s <em lang=translate title="робити прозорим, вносити ясність">clarify</em> what those three terms mean:</span>
+            </span>
+            <span class="col native1">
+                <span>Перш ніж перейти до мети, давайте <em lang=translate>подивимося</em>, що означають ці три терміни:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <ul>
+        <li>Function-Based Views (FBV)</li>
+        <li>Class-Based Views (CBV)</li>
+        <li>Generic Class-Based Views (GCBV)</li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>A FBV is the simplest representation of a Django view:
+                    it’s just a function that receives an HttpRequest object and returns an HttpResponse.</span>
+            </span>
+            <span class="col native1">
+                <span>FBV - це найпростіше представлення виду Django: це просто функція,
+                    яка одержує об'єкт HttpRequest і повертає HttpResponse.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>A CBV is every Django view defined as a Python class that extends the django.views.generic.View abstract class. </span>
+            </span>
+            <span class="col native1">
+                <span>CBV є кожен вид Django визначається як клас Python, який розширює абстрактний клас django.views.generic.View.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>A CBV essentially is a class that wraps a FBV. CBVs are great to extend and reuse code.</span>
+            </span>
+            <span class="col native1">
+                <span>CBV по суті є класом, який обгортає FBV. CBVs чудово розширюють та повторно використовують код.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>GCBVs are built-in CBVs that solve specific problems such as listing views, create, update, and delete views.</span>
+            </span>
+            <span class="col native1">
+                <span>GCBVs - це вбудовані CBVs, які вирішують певні проблеми, такі як перелік видів, створення, оновлення та видалення представлень даних.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Below we are going to explore some examples of the different implementation strategies.</span>
+            </span>
+            <span class="col native1">
+                <span>Нижче ми розглянемо деякі приклади різних стратегій впровадження.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h3>Function-Based View</h3>
+    <h4>views.py</h4>
+    <pre class="bg-light">
+        <code>
+            def new_post(request):
+            if request.method == 'POST':
+                form = PostForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    return redirect('post_list')
+            else:
+                form = PostForm()
+            return render(request, 'new_post.html', {'form': form})
+        </code>
+    </pre>
+    <h4>urls.py</h4>
+    <pre class="bg-light">
+        <code>
+            urlpatterns = [
+            url(r'^new_post/$', views.new_post, name='new_post'),
+            ]
+        </code>
+    </pre>
+    <br>
+    <h3>Class-Based View</h3>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>A CBV is a view that extends the View class. The main difference here is
+                    that the requests are handled inside class methods named after the HTTP methods,
+                    such as get, post, put, head, etc.</span>
+            </span>
+            <span class="col native1">
+                <span>CBV - це представлення, яке розширює клас View.Основна відмінність у цьому полягає в тому,
+                    що запити обробляються всередині методів класу, названих за методами HTTP,
+                    такими як get, post, put, head та ін.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So, here we don’t need to do a conditional to check if the request is a POST or if it’s a GET.
+                    The code goes <strong>straight</strong> to the right method. This logic is handled internally in the View class.</span>
+            </span>
+            <span class="col native1">
+                <span>Отже, тут нам не потрібно умовно перевіряти, чи є запит POST, або якщо це GET.
+                Код іде <strong>прямо</strong> до правильного методу.Ця логіка обробляється всередині класу View.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h4>views.py</h4>
+    <pre class="bg-light">
+        <code>
+            from django.views.generic import View
+
+            class NewPostView(View):
+                def post(self, request):
+                    form = PostForm(request.POST)
+                    if form.is_valid():
+                        form.save()
+                        return redirect('post_list')
+                    return render(request, 'new_post.html', {'form': form})
+
+                def get(self, request):
+                    form = PostForm()
+                    return render(request, 'new_post.html', {'form': form})
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The way we <em lang=translate title="звертатися">refer</em> to the CBVs in the urls.py module is a little bit different:</span>
+            </span>
+            <span class="col native1">
+                <span>Те, як  ми <em lang=translate>посилаємося</em> на CBVS в модулі urls.py трохи відрізняється:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h4>urls.py</h4>
+    <pre class="bg-light">
+        <code>
+            urlpatterns = [
+                url(r'^new_post/$', views.NewPostView.as_view(), name='new_post'),
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we need to use the as_view() class method, which returns a view function to the url patterns.
+                    In some cases, we can also feed the as_view() with some keyword arguments, so to customize the behavior of the CBV,
+                    just like we did with some of the authentication views to customize the templates.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми повинні використовувати метод class as_view (), який повертає функцію виду до шаблонів url.{# TODO #}
+                    У деяких випадках ми можемо також подати as_view () з деякими іменованими аргументами, щоб налаштувати поведінку CBV,
+                    так само, як ми зробили з деякими представленнями автентифікації для налаштування шаблонів.
+                </span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Anyway, the good thing about CBV is that we can add more methods, and <strong title="може бути,хіба">perhaps</strong> do something like this:</span>
+            </span>
+            <span class="col native1">
+                <span>У всякому разі, добре, що CBV - це те, що ми можемо додати більше методів, і, <strong title="може бути,хіба">можливо</strong>, зробити щось на зразок цього:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.views.generic import View
+
+            class NewPostView(View):
+                def render(self, request):
+                    return render(request, 'new_post.html', {'form': self.form})
+
+                def post(self, request):
+                    self.form = PostForm(request.POST)
+                    if self.form.is_valid():
+                        self.form.save()
+                        return redirect('post_list')
+                    return self.render(request)
+
+                def get(self, request):
+                    self.form = PostForm()
+                    return self.render(request)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s also possible to create some generic views that <em lang=translate title="завершувати">accomplish</em> some tasks
+                    so that we can reuse it <strong>across</strong> the project.</span>
+            </span>
+            <span class="col native1">
+                <span>Можна також створити деякі загальні види, які <em lang=translate>виконують</em> деякі завдання,
+                    щоб ми могли його повторно використати <strong>в рамках</strong> проекту.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But that’s <em lang=translate title="досить">pretty</em> much all you need to know about CBVs. Simple as that.</span>
+            </span>
+            <span class="col native1">
+                <span>Але це <em lang=translate>майже</em> все, що вам потрібно знати про CBVs. Просто як це.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h3>Generic Class-Based View</h3>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now about the GCBV.That’s a different story. As I mentioned earlier, those views are built-in CBVs for common use cases.
+                    Their implementation makes heavy usage of multiple inheritances (mixins) and other O.O. strategies.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер про GCBV.Це інша історія. Як я вже згадував раніше, ці views, вбудовані в CBVs для випадків загального користування.
+                    Їх реалізація ускладнює використання багаторазових наслідувань (mixins) та інших O.O. стратегій.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>They are very flexible and can save many hours of work. But in the beginning, it can be difficult to work with them.</span>
+            </span>
+            <span class="col native1">
+                <span>Вони дуже гнучкі і можуть заощадити багато годин роботи.Але на початку може бути важко працювати з ними.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>When I first started working with Django, I <strong title="засновувати,знайдений">found</strong> GCBV hard to work with.
+                    At first, it’s hard to tell what is going on, because the code <em lang=translate>flow</em> is not <strong>obvious</strong>,
+                    as there is good chunk of code hidden in the parent classes.</span>
+            </span>
+            <span class="col native1">
+                <span>Коли я вперше почав працювати з Django, я <strong>виявив</strong>, що з GCBV важко працювати.
+                    По-перше, важко сказати, що відбувається, оскільки кодований <em lang=translate>потік</em> не є <strong>очевидним</strong>,
+                    оскільки в батьківських класах є прихована частина коду.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The documentation is a little bit challenging to follow too,
+                    <em lang=translate title="здебільшого">mostly</em> because the attributes and methods are sometimes <strong title="настелати,розносити,поширюватися">spread</strong> across eight parent classes.</span>
+            </span>
+            <span class="col native1">
+                <span>Документація трохи складна для виконання,
+                    <em lang=translate>головним чином</em> тому, що атрибути та методи іноді <strong>розповсюджуються</strong> у восьми батьківських класах.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>When working with GCBV, it’s always <em lang=translate title="користь,добре">good</em> to have the ccbv.co.uk opened for quick reference.</span>
+            </span>
+            <span class="col native1">
+                <span>Під час роботи з GCBV завжди <em lang=translate>зручно</em> відкрити <a href="https://ccbv.co.uk/">ccbv.co.uk</a> для швидкої довідки.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>No worries, we are going to explore it together.</span>
+            </span>
+            <span class="col native1">
+                <span>Не хвилюйтеся, ми збираємося досліджувати це разом.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s see a GCBV example.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте розглянемо приклад GCBV.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h4>view.py</h4>
+    <pre class="bg-light">
+        <code>
+            from django.views.generic import CreateView
+
+            class NewPostView(CreateView):
+                model = Post
+                form_class = PostForm
+                success_url = reverse_lazy('post_list')
+                template_name = 'new_post.html'
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we are using a generic view used to create model objects.
+                    It does all the form processing and save the object if the form is valid.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми використовуємо загальний вид, який використовується для створення об'єктів моделі.
+                Він виконує всю обробку форми та зберігає об'єкт, якщо форма дійсна.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Since it’s a CBV, we refer to it in the urls.py the same way as any other CBV:</span>
+            </span>
+            <span class="col native1">
+                <span>Оскільки це CBV, ми посилаємося на ньго в urls.py так само, як і будь-яке інше CBV:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h4>urls.py</h4>
+    <pre class="bg-light">
+        <code>
+            urlpatterns = [
+                url(r'^new_post/$', views.NewPostView.as_view(), name='new_post'),
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Other examples of GCBVs are DetailView, DeleteView, FormView, UpdateView, ListView.</span>
+            </span>
+            <span class="col native1">
+                <span>Інші приклади GCBV - DetailView, DeleteView, FormView, UpdateView, ListView.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <h2>Update View</h2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s get back to the implementation of our project.
+                    This time we are going to use a GCBV to implement the edit post view:</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте повернемось до реалізації нашого проекту.
+                    Цього разу ми збираємося використовувати GCBV для реалізації представлення редагування повідомлення.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/edit.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/376657085570a3dedf7e5f6e6fffc5e3#file-views-py-L66">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.shortcuts import redirect
+            from django.views.generic import UpdateView
+            from django.utils import timezone
+
+            class PostUpdateView(UpdateView):
+                model = Post
+                fields = ('message', )
+                template_name = 'edit_post.html'
+                pk_url_kwarg = 'post_pk'
+                context_object_name = 'post'
+
+                def form_valid(self, form):
+                    post = form.save(commit=False)
+                    post.updated_by = self.request.user
+                    post.updated_at = timezone.now()
+                    post.save()
+                    return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>With the <b>UpdateView</b> and the <b>CreateView</b>, we have the option to either define <b>form_class</b> or the <b>fields</b> attribute.</span>
+            </span>
+            <span class="col native1">
+                <span>З <b>UpdateView</b> і <b>CreateView</b>, у нас є можливість або визначити <b>form_class</b> або атрибут <b>fields</b>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the example above we are using the fields attribute to create a model form on-the-fly.</span>
+            </span>
+            <span class="col native1">
+                <span>У наведеному вище прикладі ми використовуємо атрибут fields для створення форми моделі на льоту.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Internally, Django will use a model form factory <em lang=translate>to compose</em> a form of the Post model.
+                    Since it’s a very simple form with just the message field, we can <strong>afford</strong> to work like this.</span>
+            </span>
+            <span class="col native1">
+                <span>Внутрішньо, Django буде використовувати фабрику модельних форм для <em lang=translate>складання</em> форми моделі Post.
+                Оскільки це дуже проста форма з просто полем повідомлення, ми можемо <strong>дозволити собі</strong> працювати так.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But for complex form definitions, it’s better to define a model form externally and refer to it here.</span>
+            </span>
+            <span class="col native1">
+                <span>Але для визначення складних форм краще визначити модельну форму зовнішньо і навести її тут.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The <b>pk_url_kwarg</b> will be used to identify the name of the keyword argument used to retrieve the <b>Post</b> object.
+                    It’s the same as we define in the <b>urls.py</b>.</span>
+            </span>
+            <span class="col native1">
+                <span><b>Pk_url_kwarg</b> буде використовуватися для ідентифікації назви іменованого аргументу, використовуваного для отримання об'єкта <b>Post</b>.
+                Це те ж саме, що ми визначаємо в <b>urls.py</b>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If we don’t set the <b>context_object_name</b> attribute, the <b>Post</b> object will be available in the template as “object.” </span>
+            </span>
+            <span class="col native1">
+                <span>Якщо ми не встановлюємо атрибут <b>context_object_name</b>, об'єкт <b>Post</b> буде доступний у шаблоні як "object".</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So, here we are using the <b>context_object_name</b> to rename it to <b>post</b> instead.
+                    You will see how we are using it in the template below.
+                </span>
+            </span>
+            <span class="col native1">
+                <span>Отже, тут ми використовуємо <b>context_object_name</b>, щоб перейменувати його на <b>post</b>.
+                    Ви побачите, як ми використовуємо його в шаблоні нижче.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In this particular example, we had to override the <b>form_valid()</b> method so as to set some extra fields such as the <b>updated_by</b> and <b>updated_at</b>.
+                    You can see what the base <b>form_valid()</b> method looks like here: <a href="https://ccbv.co.uk/projects/Django/1.11/django.views.generic.edit/UpdateView/#form_valid">UpdateView#form_valid.</a></span>
+            </span>
+            <span class="col native1">
+                <span>У цьому конкретному прикладі нам довелося перевизначити метод <b>form_valid()</b>, щоб встановити деякі додаткові поля, такі як <b>update_by</b> та <b>updated_at</b>.
+                    Ви можете побачити, як виглядає метод <b>base_valid()</b> тут: <a href="https://ccbv.co.uk/projects/Django/1.11/django.views.generic.edit/UpdateView/#form_valid">UpdateView#form_valid.</a></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>myproject/urls.py</b>
+        <a href="https://gist.github.com/vitorfs/376657085570a3dedf7e5f6e6fffc5e3#file-urls-py-L40">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.conf.urls import url
+            from boards import views
+
+            urlpatterns = [
+                # ...
+                url(r'^boards/(?P&ltpk&gt\d+)/topics/(?P&lttopic_pk&gt\d+)/posts/(?P&ltpost_pk&gt\d+)/edit/$',
+                    views.PostUpdateView.as_view(), name='edit_post'),
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For Django 2 and more</span>
+            </span>
+            <span class="col native1">
+                <span>Для Django 2 та більше</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.urls import path
+
+            path('boards/&ltint:pk&gt/topics/&ltint:topic_pk&gt/posts/&ltint:post_pk&gt/edit/', views.reply_topic, name='reply_topic'),
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can add the link to the edit page:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо додати посилання на сторінку редагування:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topic_posts.html</b>
+        <a href="https://gist.github.com/vitorfs/589d31af9d06c5b21ec9b1623be0c357#file-topic_posts-html-L40">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} if post.created_by == user {% templatetag closeblock %}
+              &lt;div class="mt-3"&gt;
+                &lt;a href="{% templatetag openblock %} url 'edit_post' post.topic.board.pk post.topic.pk post.pk {% templatetag closeblock %}"
+                   class="btn btn-primary btn-sm"
+                   role="button"&gt;Edit&lt;/a&gt;
+              &lt;/div&gt;
+            {% templatetag openblock %} endif {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <p>
+        <b>templates/edit_post.html</b>
+        <a href="https://gist.github.com/vitorfs/376657085570a3dedf7e5f6e6fffc5e3#file-edit_post-html">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} block title {% templatetag closeblock %}Edit post{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block breadcrumb {% templatetag closeblock %}
+              &lt;li class="breadcrumb-item"&gt;&lt;a href="{% templatetag openblock %} url 'home' {% templatetag openblock %} templatetag closeblock %}"&gt;Boards&lt;/a&gt;&lt;/li&gt;
+              &lt;li class="breadcrumb-item"&gt;&lt;a href="{% templatetag openblock %} url 'board_topics' post.topic.board.pk {% templatetag closeblock %}"&gt;{% templatetag openvariable %} post.topic.board.name {% templatetag closevariable %}&lt;/a&gt;&lt;/li&gt;
+              &lt;li class="breadcrumb-item"&gt;&lt;a href="{% templatetag openblock %} url 'topic_posts' post.topic.board.pk post.topic.pk %}"&gt;{% templatetag openvariable %} post.topic.subject {% templatetag closevariable %}&lt;/a&gt;&lt;/li&gt;
+              &lt;li class="breadcrumb-item active"&gt;Edit post&lt;/li&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lt;form method="post" class="mb-4" novalidate&gt;
+                {% templatetag openblock %} csrf_token {% templatetag closeblock %}
+                {% templatetag openblock %} include 'includes/form.html' {% templatetag closeblock %}
+                &lt;button type="submit" class="btn btn-success"&gt;Save changes&lt;/button&gt;
+                &lt;a href="{% templatetag openblock %} url 'topic_posts' post.topic.board.pk post.topic.pk {% templatetag closeblock %}" class="btn btn-outline-secondary" role="button"&gt;Cancel&lt;/a&gt;
+              &lt;/form&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Observe now how we are navigating through the post object: post.topic.board.pk.
+                    If we didn’t set the context_object_name to post, it would be available as: object.topic.board.pk. Got it?</span>
+            </span>
+            <span class="col native1">
+                <span>Відзначимо зараз те, як ми переходимо до об'єкта post: <b>post.topic.board.pk</b>.
+                Якщо б ми не встановили <b>context_object_name</b> у <b>post</b>, він би був доступний як: <b>object.topic.board.pk</b>.
+                    Зрозуміло?</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/edit-1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <h3>Testing The Update View</h3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a new test file named test_view_edit_post.py inside the boards/tests folder.</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть новий тестовий файл із назвою <b>test_view_edit_post.py</b> всередині теки <b>boards/tests</b>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Clicking on the link below you will see many <em lang=translate>routine</em> tests, just like we have been doing in this tutorial.
+                So I will just highlight the new parts here:</span>
+            </span>
+            <span class="col native1">
+                <span>Натиснувши на посилання нижче, ви побачите багато <em lang=translate>звичайних</em> тестів, як ми робили в цьому посібнику.
+                Тому я просто виділю тут нові частини:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/tests/test_view_edit_post.py</b>
+        <a href="https://gist.github.com/vitorfs/286917ce31687732eba4e545fc3cbdea">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.models import User
+            from django.test import TestCase
+            from django.urls import reverse
+            from ..models import Board, Post, Topic
+            from ..views import PostUpdateView
+
+            class PostUpdateViewTestCase(TestCase):
+                '''
+                Base test case to be used in all `PostUpdateView` view tests
+                '''
+                def setUp(self):
+                    self.board = Board.objects.create(name='Django', description='Django board.')
+                    self.username = 'john'
+                    self.password = '123'
+                    user = User.objects.create_user(username=self.username, email='john@doe.com', password=self.password)
+                    self.topic = Topic.objects.create(subject='Hello, world', board=self.board, starter=user)
+                    self.post = Post.objects.create(message='Lorem ipsum dolor sit amet', topic=self.topic, created_by=user)
+                    self.url = reverse('edit_post', kwargs={
+                        'pk': self.board.pk,
+                        'topic_pk': self.topic.pk,
+                        'post_pk': self.post.pk
+                    })
+
+            class LoginRequiredPostUpdateViewTests(PostUpdateViewTestCase):
+                def test_redirection(self):
+                    '''
+                    Test if only logged in users can edit the posts
+                    '''
+                    login_url = reverse('login')
+                    response = self.client.get(self.url)
+                    self.assertRedirects(response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))
+
+            class UnauthorizedPostUpdateViewTests(PostUpdateViewTestCase):
+                def setUp(self):
+                    '''
+                    Create a new user different from the one who posted
+                    '''
+                    super().setUp()
+                    username = 'jane'
+                    password = '321'
+                    user = User.objects.create_user(username=username, email='jane@doe.com', password=password)
+                    self.client.login(username=username, password=password)
+                    self.response = self.client.get(self.url)
+
+                def test_status_code(self):
+                    '''
+                    A topic should be edited only by the owner.
+                    Unauthorized users should get a 404 response (Page Not Found)
+                    '''
+                    self.assertEquals(self.response.status_code, 404)
+
+
+            class PostUpdateViewTests(PostUpdateViewTestCase):
+                # ...
+
+            class SuccessfulPostUpdateViewTests(PostUpdateViewTestCase):
+                # ...
+
+            class InvalidPostUpdateViewTests(PostUpdateViewTestCase):
+                # ...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For now, the important parts are: PostUpdateViewTestCase is a class we defined to be reused across the other test cases.</span>
+            </span>
+            <span class="col native1">
+                <span>На даний момент важливими компонентами є: <b>PostUpdateViewTestCase</b> - це клас, який ми визначили для повторного використання в інших тестових кейсах.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s just the basic setup, creating users, topic, boards, and so on.</span>
+            </span>
+            <span class="col native1">
+                <span>Це просто основна настройка, яка створює користувачів, тему, дошки тощо.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The class LoginRequiredPostUpdateViewTests will test if the view is protected with the @login_required decorator.
+                    That is if only authenticated users can access the edit page.</span>
+            </span>
+            <span class="col native1">
+                <span>Клас LoginRequiredPostUpdateViewTests перевірятиме, чи захищений вид за допомогою декоратора <span class="gray-border">@login_required</span>.
+                Тобто, лише автентифіковані користувачі можуть отримати доступ до сторінки редагування.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The class UnauthorizedPostUpdateViewTests creates a new user, different from the one who posted and tries to access the edit page.
+                    The application should only authorize the owner of the post to edit it.</span>
+            </span>
+            <span class="col native1">
+                <span>Клас <b>UnauthorizedPostUpdateViewTests</b> створює нового користувача, відмінного від того, хто опублікував та намагається отримати доступ до сторінки редагування.
+                Програма повинна дозволяти її редагувати лише авторизованого власника публікації.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s run the tests:</span>
+            </span>
+            <span class="col native1">
+                <span>Запустімо тести:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py test boards.tests.test_view_edit_post
+        </code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            ..F.......F
+            ======================================================================
+            FAIL: test_redirection (boards.tests.test_view_edit_post.LoginRequiredPostUpdateViewTests)
+            ----------------------------------------------------------------------
+            ...
+            AssertionError: 200 != 302 : Response didn't redirect as expected: Response code was 200 (expected 302)
+
+            ======================================================================
+            FAIL: test_status_code (boards.tests.test_view_edit_post.UnauthorizedPostUpdateViewTests)
+            ----------------------------------------------------------------------
+            ...
+            AssertionError: 200 != 404
+
+            ----------------------------------------------------------------------
+            Ran 11 tests in 1.360s
+
+            FAILED (failures=2)
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, let’s fix the problem with the @login_required decorator.
+                    The way we use view decorators on class-based views is a little bit different. We need an extra import:</span>
+            </span>
+            <span class="col native1">
+                <span>По-перше, вирішимо проблему з декоратором <span class="gray-border">@login_required</span>.
+                    Те, як ми використовуємо декоратори виду на основі класів, виглядає дещо іншим. Нам потрібно додатковий імпорт:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/826a6d421ebbeb80a0aee8e1b9b70398#file-views-py-L67">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.decorators import login_required
+            from django.shortcuts import redirect
+            from django.views.generic import UpdateView
+            from django.utils import timezone
+            from django.utils.decorators import method_decorator
+            from .models import Post
+
+            @method_decorator(login_required, name='dispatch')
+            class PostUpdateView(UpdateView):
+                model = Post
+                fields = ('message', )
+                template_name = 'edit_post.html'
+                pk_url_kwarg = 'post_pk'
+                context_object_name = 'post'
+
+                def form_valid(self, form):
+                    post = form.save(commit=False)
+                    post.updated_by = self.request.user
+                    post.updated_at = timezone.now()
+                    post.save()
+                    return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can’t decorate the class directly with the @login_required decorator.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми не можемо декорувати клас безпосередньо за допомогою декоратора <span class="gray-border">@login_required</span>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We have to use the utility @method_decorator, and pass a decorator (or a list of decorators) and tell which method should be decorated.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми повинні використовувати утиліту @method_decorator і передати декоратор (або список декораторів) і визначити, який метод повинен бути оформлений.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In class-based views it’s common to decorate the dispatch method.
+                    It’s an internal method Django use (defined inside the View class).
+                    All requests pass through this method, so it’s safe to decorate it.</span>
+            </span>
+            <span class="col native1">
+                <span>У виду на основі класів звичайно декорують метод dispatch.
+                    Це внутрішній спосіб використання Django (визначено всередині класу View).
+                    Всі запити проходять через цей метод, тому його можна безпечно декорувати.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Run the tests:</span>
+            </span>
+            <span class="col native1">
+                <span>Запустіть тести:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py test boards.tests.test_view_edit_post
+        </code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            ..........F
+            ======================================================================
+            FAIL: test_status_code (boards.tests.test_view_edit_post.UnauthorizedPostUpdateViewTests)
+            ----------------------------------------------------------------------
+            ...
+            AssertionError: 200 != 404
+
+            ----------------------------------------------------------------------
+            Ran 11 tests in 1.353s
+
+            FAILED (failures=1)
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Okay! We fixed the @login_required problem.
+                    Now we have to deal with the other users editing any posts problem.</span>
+            </span>
+            <span class="col native1">
+                <span>Гаразд! Ми виправили помилку <span class="gray-border">@login_required</span>.
+                    Тепер нам доводиться мати справу з іншими користувачами, які редагують будь-які проблеми з публікаціями.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The easiest way to solve this problem is by overriding the <span class="gray-border">get_queryset</span> method of the <b>UpdateView</b>. </span>
+            </span>
+            <span class="col native1">
+                <span>Найпростішим способом вирішення цієї проблеми є перевизначення методу <span class="gray-border">get_queryset</span> в UpdateView.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You can see what the original method looks like here UpdateView#get_queryset.</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете побачити, як виглядає оригінальний метод тут
+                    <a href="https://ccbv.co.uk/projects/Django/1.11/django.views.generic.edit/UpdateView/#get_queryset">ViewView#get_queryset
+                    </a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/667d8439ecf05e58f14fcc74672e48da">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+
+    <pre class="bg-light">
+        <code>
+            @method_decorator(login_required, name='dispatch')
+            class PostUpdateView(UpdateView):
+                model = Post
+                fields = ('message', )
+                template_name = 'edit_post.html'
+                pk_url_kwarg = 'post_pk'
+                context_object_name = 'post'
+
+                def get_queryset(self):
+                    queryset = super().get_queryset()
+                    return queryset.filter(created_by=self.request.user)
+
+                def form_valid(self, form):
+                    post = form.save(commit=False)
+                    post.updated_by = self.request.user
+                    post.updated_at = timezone.now()
+                    post.save()
+                    return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>With the line queryset = super().get_queryset() we are reusing the get_queryset method from the parent class, that is, the UpateView class. </span>
+            </span>
+            <span class="col native1">
+                <span>За допомогою рядка <span class="gray-border">queryset = super().Get_queryset()</span>
+                    ми повторно використовуємо метод <span class="gray-border">get_queryset</span> з батьківського класу,
+                    тобто класу <b>UpateView</b>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then, we are adding an extra filter to the queryset, which is filtering the post using the logged in user, available inside the request object.</span>
+            </span>
+            <span class="col native1">
+                <span>Потім ми додаємо додатковий фільтр до queryset, який фільтрує публікацію за допомогою користувача, який зайшов, доступного всередині об'єкта <b>request</b></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Test it again:</span>
+            </span>
+            <span class="col native1">
+                <span>Перевірте це знову:</span>
+            </span>
+        </div>
+    </div>
+    <pre class="bg-light">
+        <code>
+            python manage.py test boards.tests.test_view_edit_post
+        </code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            ...........
+            ----------------------------------------------------------------------
+            Ran 11 tests in 1.321s
+
+            OK
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>All good!</span>
+            </span>
+            <span class="col native1">
+                <span>Все добре!</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <h2>List View</h2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We could refactor some of our existing views to take advantage of the CBV capabilities.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми могли б переробити деякі з наших існуючих видів, щоб скористатися перевагами можливостей CBV.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Take the home page for example.
+                    We are just grabbing all the boards from the database and listing it in the HTML:</span>
+            </span>
+            <span class="col native1">
+                <span>Візьміть, наприклад, домашню сторінку.
+                    Ми просто захоплюємо всі дошки з бази даних і перераховуємо їх у HTML:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/views.py</b>
+    <pre class="bg-light">
+        <code>
+            from django.shortcuts import render
+            from .models import Board
+
+            def home(request):
+                boards = Board.objects.all()
+                return render(request, 'home.html', {'boards': boards})
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here is how we could rewrite it using a GCBV for models listing:</span>
+            </span>
+            <span class="col native1">
+                <span>Ось як ми могли переписати його, використовуючи GCBV для моделей:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/5e248d9a4499e2a796c6ffee9cbb1125#file-views-py-L12">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            from django.views.generic import ListView
+            from .models import Board
+
+            class BoardListView(ListView):
+                model = Board
+                context_object_name = 'boards'
+                template_name = 'home.html'
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then we have to change the reference in the urls.py module:</span>
+            </span>
+            <span class="col native1">
+                <span>Потім ми повинні змінити посилання в модулі <b>urls.py</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>myproject/urls.py</b>
+        <a href="https://gist.github.com/vitorfs/a0a826233d95a4cc53a75afc441db1e9#file-urls-py-L10">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.conf.urls import url
+            from boards import views
+
+            urlpatterns = [
+                url(r'^$', views.BoardListView.as_view(), name='home'),
+                # ...
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For Django 2 and more</span>
+            </span>
+            <span class="col native1">
+                <span>Для Django 2 та більше</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.urls import path
+
+            path('', views.BoardListView.as_view(), name='home'),
+            # ...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If we check the homepage we will see that nothing really changed, everything is working as expected. </span>
+            </span>
+            <span class="col native1">
+                <span>Якщо ми перевіримо домашню сторінку, ми побачимо, що нічого не змінилося, все працює як очікується.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But we have to tweak our tests a little bit because now we are dealing with a class-based view:</span>
+            </span>
+            <span class="col native1">
+                <span>Але ми повинні трохи налаштувати наші тести, тому що тепер ми маємо справу з видами на основі класів:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/tests/test_view_home.py</b>
+        <a href="https://gist.github.com/vitorfs/e17216ce3d92110cf7e005ce3288c587">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.test import TestCase
+            from django.urls import resolve
+            from ..views import BoardListView
+
+            class HomeTests(TestCase):
+                # ...
+                def test_home_url_resolves_home_view(self):
+                    view = resolve('/')
+                    self.assertEquals(view.func.view_class, BoardListView)
+        </code>
+    </pre>
+    <br>
+    <H3>Pagination - Нумерування сторінок</H3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can very easily implement pagination with class-based views.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо дуже легко реалізувати нумерування сторінок за допомогою видів на основі класів.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But first I wanted to do a pagination by hand,
+                    so that we can explore better the mechanics behind it, so it doesn’t look like magic.</span>
+            </span>
+            <span class="col native1">
+                <span>Але спочатку я хотів зробити нумерування сторінок вручну, щоб ми могли краще дослідити механіку під капотом,
+                    щоб воно не виглядало як магія.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It wouldn’t really make sense to paginate the boards listing view
+                    because we do not expect to have many boards.</span>
+            </span>
+            <span class="col native1">
+                <span>Було б нерозумно розбивати на сторінки вид списку дощок, оскільки ми не очікуємо наявності багатьох дощок.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But definitely the topics listing and the posts listing need some pagination.</span>
+            </span>
+            <span class="col native1">
+                <span>Але, безумовно, список тем і список публікацій потребують кілька сторінок.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>From now on, we will be working on the <strong>board_topics</strong> view.</span>
+            </span>
+            <span class="col native1">
+                <span>Відтепер ми будемо працювати над переглядом "board_topics".</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, let’s add some volume of posts.
+                    We could just use the application’s user interface and add several posts, or open the Python shell
+                    and write a small script to do it for us:</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку давайте додамо певний обсяг публікацій.
+                Ми могли просто використовувати інтерфейс програми та додавати кілька повідомлень або відкрити оболонку
+                    Python і написати невеликий скрипт, що зробить це для нас:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py shell
+        </code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+
+            from django.contrib.auth.models import User
+            from boards.models import Board, Topic, Post
+
+            user = User.objects.first()
+
+            board = Board.objects.get(name='Django')
+
+            for i in range(100):
+                subject = 'Topic test #{}'.format(i)
+                topic = Topic.objects.create(subject=subject, board=board, starter=user)
+                Post.objects.create(message='Lorem ipsum...', topic=topic, created_by=user)
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/topics.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Good, now we have some data to play with.</span>
+            </span>
+            <span class="col native1">
+                <span>Добре, тепер ми маємо деякі дані, щоб грати.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Before we jump into the code, let’s experiment a little bit more with the Python shell:</span>
+            </span>
+            <span class="col native1">
+                <span>Перш ніж перейти до коду, давайте спробуємо трохи більше з оболонкою Python:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py shell
+        </code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            from boards.models import Topic
+
+            # All the topics in the app
+            Topic.objects.count()
+            107
+
+            # Just the topics in the Django board
+            Topic.objects.filter(board__name='Django').count()
+            104
+
+            # Let's save this queryset into a variable to paginate it
+            queryset = Topic.objects.filter(board__name='Django').order_by('-last_updated')
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s very important always define an ordering to a QuerySet you are going to paginate! </span>
+            </span>
+            <span class="col native1">
+                <span>Дуже важливо завжди визначати сортування <strong>QuerySet</strong>, який ви збираєтеся розбивати!</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Otherwise, it can give you <em lang=translate>inconsistent</em> results.</span>
+            </span>
+            <span class="col native1">
+                <span>В іншому випадку це може дати вам <em lang=translate>непослідовні</em> результати.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s import the Paginator utility:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер імпортуємо утиліту <strong>Paginator</strong>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.core.paginator import Paginator
+
+            paginator = Paginator(queryset, 20)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we are telling Django to paginate our QuerySet in pages of 20 each.
+                    Now let’s explore some of the paginator properties:</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми говоримо Джанго, розбити наш <b>QuerySet</b> на сторінки по 20 на кожній.
+                Тепер давайте розглянемо деякі властивості paginator:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            # count the number of elements in the paginator
+            paginator.count
+            104
+
+            # total number of pages
+            # 104 elements, paginating 20 per page gives you 6 pages
+            # where the last page will have only 4 elements
+            paginator.num_pages
+            6
+
+            # range of pages that can be used to iterate and create the
+            # links to the pages in the template
+            paginator.page_range
+            range(1, 7)
+
+            # returns a Page instance
+            paginator.page(2)
+            &lt;Page 2 of 6&gt;
+
+            page = paginator.page(2)
+
+            type(page)
+            django.core.paginator.Page
+
+            type(paginator)
+            django.core.paginator.Paginator
+        </code>
+    </pre>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we have to pay attention because if we try to get a page that doesn’t exist,
+                    the Paginator will throw an exception:</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми повинні звернути увагу, тому що якщо ми намагаємося отримати сторінку, яка не існує,
+                    то Paginator згенерує виняток:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            paginator.page(7)
+            EmptyPage: That page contains no results
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Or if we try to pass an arbitrary parameter, which is not a page number:</span>
+            </span>
+            <span class="col native1">
+                <span>Або якщо ми спробуємо передавати довільний параметр, який не є номером сторінки:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            paginator.page('abc')
+            PageNotAnInteger: That page number is not an integer
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We have to keep those details in mind when designing the user interface.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми повинні тримати ці деталі в голові при розробці користувальницького інтерфейсу.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s explore the attributes and methods offered by the Page class a little bit:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте трохи вивчимо атрибути та методи, запропоновані класом Page:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            page = paginator.page(1)
+
+            # Check if there is another page after this one
+            # Перевіряє, чи існує інша сторінка після цієї
+            page.has_next()
+            True
+
+            # If there is no previous page, that means this one is the first page
+            # Якщо попередня сторінка відсутня, це означає, що це перша сторінка
+            page.has_previous()
+            False
+
+            page.has_other_pages()
+            True
+
+            page.next_page_number()
+            2
+
+            # Take care here, since there is no previous page,
+            # Подивіться тут, оскільки попередня сторінка відсутня
+            # if we call the method `previous_page_number() we will get an exception:
+            # якщо ми називатимемо метод `previous_page_number (), ми отримаємо виключення:
+            page.previous_page_number()
+            EmptyPage: That page number is less than 1
+        </code>
+    </pre>
+    <br>
+    <H3>FBV Pagination</H3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here is how we do it using <em lang=translate title="регулярні,закономірні,чергові">regular</em> function-based views:</span>
+            </span>
+            <span class="col native1">
+                <span>Ось як ми це робимо, використовуючи <em lang=translate>звичні</em> види на основі функцій:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/16f0ac257439245fa6645af259d8846f#file-views-py-L19">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.db.models import Count
+            from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+            from django.shortcuts import get_object_or_404, render
+            from django.views.generic import ListView
+            from .models import Board
+
+            def board_topics(request, pk):
+                board = get_object_or_404(Board, pk=pk)
+                queryset = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+                page = request.GET.get('page', 1)
+
+                paginator = Paginator(queryset, 20)
+
+                try:
+                    topics = paginator.page(page)
+                except PageNotAnInteger:
+                    # fallback to the first page
+                    # перехід до першої сторінки
+                    topics = paginator.page(1)
+                except EmptyPage:
+                    # probably the user tried to add a page number
+                    # ймовірно, користувач намагався додати номер сторінки
+                    # in the url, so we fallback to the last page
+                    # в URL-адресу, тому ми переходимо на останню сторінку
+                    topics = paginator.page(paginator.num_pages)
+
+                return render(request, 'topics.html', {'board': board, 'topics': topics})
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now the trick part is to render the pages correctly using the Bootstrap 4 pagination component.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер трюк полягає в тому, щоб правильно відобразити сторінки, використовуючи компонент Pagіnation Bootstrap 4.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But take the time to read the code and see if it makes sense for you.</span>
+            </span>
+            <span class="col native1">
+                <span>Але не поспішайте, прочитайте код і подивиться, чи це має сенс для вас.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are using here all the methods we played with before.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми використовуємо тут всі методи, з якими ми грали раніше.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>And here in that context, topics is no longer a QuerySet but a paginator.Page instance.</span>
+            </span>
+            <span class="col native1">
+                <span>І тут, в цьому контексті, <span class="gray-border">topics</span> більше не QuerySet, а екземпляр
+                    сторінки <span class="gray-border">paginator.Page</span>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Right after the topics HTML table, we can render the pagination component:</span>
+            </span>
+            <span class="col native1">
+                <span>Одразу після таблиці HTML topics ми можемо перетворити компонент сторінки:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topics.html </b>
+        <a href="https://gist.github.com/vitorfs/3101a1bd72125aeb45829659a5532bc6">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} if topics.has_other_pages {% templatetag closeblock %}
+              &lt;nav aria-label="Topics pagination" class="mb-4"&gt;
+                &lt;ul class="pagination"&gt;
+                  {% templatetag openblock %} if topics.has_previous {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} topics.previous_page_number {% templatetag closevariable %}"&gt;Previous&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Previous&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+
+                  {% templatetag openblock %} for page_num in topics.paginator.page_range {% templatetag closeblock %}
+                    {% templatetag openblock %} if topics.number == page_num {% templatetag closeblock %}
+                      &lt;li class="page-item active"&gt;
+                        &lt;span class="page-link"&gt;
+                          {% templatetag openvariable %} page_num {% templatetag closevariable %}
+                          &lt;span class="sr-only"&gt;(current)&lt;/span&gt;
+                        &lt;/span&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} else {% templatetag closeblock %}
+                      &lt;li class="page-item"&gt;
+                        &lt;a class="page-link" href="?page={{ page_num {% templatetag closevariable %}"&gt;{{ page_num {% templatetag closevariable %}&lt;/a&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} endif {% templatetag closeblock %}
+                  {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+                  {% templatetag openblock %} if topics.has_next {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} topics.next_page_number {% templatetag closevariable %}"&gt;Next&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Next&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+                &lt;/ul&gt;
+              &lt;/nav&gt;
+            {% templatetag openblock %} endif {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/paginate.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <h3>GCBV Pagination</h3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Below, the same implementation but this time using the ListView.</span>
+            </span>
+            <span class="col native1">
+                <span>Нижче, та ж реалізація, але на цей раз, використовуючи <b>ListView</b>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/323173bc56dec48fd83caf983d459421#file-views-py-L19">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            class TopicListView(ListView):
+                model = Topic
+                context_object_name = 'topics'
+                template_name = 'topics.html'
+                paginate_by = 20
+
+                def get_context_data(self, **kwargs):
+                    kwargs['board'] = self.board
+                    return super().get_context_data(**kwargs)
+
+                def get_queryset(self):
+                    self.board = get_object_or_404(Board, pk=self.kwargs.get('pk'))
+                    queryset = self.board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+                    return queryset
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>While using pagination with class-based views,
+                    the way we interact with the paginator in the template is a little bit different.</span>
+            </span>
+            <span class="col native1">
+                <span>При використанні нумерування сторінок з видом на основі класу, те,
+                    як ми взаємодіємо з посторінковою навігацією в шаблоні трохи відрізняється.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It will make available the following variables in the template: paginator, page_obj, is_paginated, object_list,
+                    and also a variable with the name we defined in the context_object_name.</span>
+            </span>
+            <span class="col native1">
+                <span>У шаблоні будуть доступні наступні змінні: <b>paginator, page_obj, is_pagined, object_list</b>,
+                    а також змінна з ім'ям, яке ми визначили в <b>context_object_name</b>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In our case this extra variable will be named topics, and it will be equivalent to object_list.</span>
+            </span>
+            <span class="col native1">
+                <span>У нашому випадку ця додаткова змінна буде називатися <b>topics</b>, і вона буде еквівалентна <b>object_list</b>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now about the whole get_context_data thing, well, that’s how we add stuff to the request context when extending a GCBV.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер про загальне поняття <b>get_context_data</b>, ну, так, як ми додаємо речі до контексту запиту при розширенні GCBV.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But the main point here is the paginate_by attribute. In some cases, just by adding it will be enough.</span>
+            </span>
+            <span class="col native1">
+                <span>Але головне тут атрибут <b>paginate_by</b>. У деяких випадках просто додаванням цього буде достатньо.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Remember to update the urls.py:</span>
+            </span>
+            <span class="col native1">
+                <span>Не забудьте оновити urls.py:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>myproject/urls.py</b>
+        <a href="https://gist.github.com/vitorfs/61f5345b7cf8b006b2901a61b8f8e348#file-urls-py-L37">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.conf.urls import url
+            from boards import views
+
+            urlpatterns = [
+                # ...
+                url(r'^boards/(?P&lt;pk&gt;\d+)/$', views.TopicListView.as_view(), name='board_topics'),
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s fix the template:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте виправимо шаблон:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topics.html</b>
+        <a href="https://gist.github.com/vitorfs/65095aa3eda78bafd22d5e2f94086d40#file-topics-html-L40">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lt;div class="mb-4"&gt;
+                &lt;a href="{% templatetag openblock %} url 'new_topic' board.pk {% templatetag closeblock %}" class="btn btn-primary"&gt;New topic&lt;/a&gt;
+              &lt;/div&gt;
+
+              &lt;table class="table mb-4"&gt;
+                &lt;!-- table content suppressed --&gt;
+              &lt;/table&gt;
+
+              {% templatetag openblock %} if is_paginated {% templatetag closeblock %}
+                &lt;nav aria-label="Topics pagination" class="mb-4"&gt;
+                  &lt;ul class="pagination"&gt;
+                    {% templatetag openblock %} if page_obj.has_previous {% templatetag closeblock %}
+                      &lt;li class="page-item"&gt;
+                        &lt;a class="page-link" href="?page={% templatetag openvariable %} page_obj.previous_page_number {% templatetag closevariable %}"&gt;Previous&lt;/a&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} else {% templatetag closeblock %}
+                      &lt;li class="page-item disabled"&gt;
+                        &lt;span class="page-link"&gt;Previous&lt;/span&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} endif {% templatetag closeblock %}
+
+                    {% templatetag openblock %} for page_num in paginator.page_range {% templatetag closeblock %}
+                      {% templatetag openblock %} if page_obj.number == page_num {% templatetag closeblock %}
+                        &lt;li class="page-item active"&gt;
+                          &lt;span class="page-link"&gt;
+                            {% templatetag openvariable %} page_num {% templatetag closevariable %}
+                            &lt;span class="sr-only"&gt;(current)&lt;/span&gt;
+                          &lt;/span&gt;
+                        &lt;/li&gt;
+                      {% templatetag openblock %} else {% templatetag closeblock %}
+                        &lt;li class="page-item"&gt;
+                          &lt;a class="page-link" href="?page={% templatetag openvariable %} page_num {% templatetag closevariable %}"&gt;{% templatetag openvariable %} page_num {% templatetag closevariable %}&lt;/a&gt;
+                        &lt;/li&gt;
+                      {% templatetag openblock %} endif {% templatetag closeblock %}
+                    {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+                    {% templatetag openblock %} if page_obj.has_next {% templatetag closeblock %}
+                      &lt;li class="page-item"&gt;
+                        &lt;a class="page-link" href="?page={% templatetag openvariable %} page_obj.next_page_number {% templatetag closevariable %}"&gt;Next&lt;/a&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} else {% templatetag closeblock %}
+                      &lt;li class="page-item disabled"&gt;
+                        &lt;span class="page-link"&gt;Next&lt;/span&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} endif {% templatetag closeblock %}
+                  &lt;/ul&gt;
+                &lt;/nav&gt;
+              {% templatetag openblock %} endif {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now take the time to run the tests and fix if needed.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер займіть час, щоб запустити тести та виправити, якщо необхідно.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.test import TestCase
+            from django.urls import resolve
+            from ..views import TopicListView
+
+            class BoardTopicsTests(TestCase):
+                # ...
+                def test_board_topics_url_resolves_board_topics_view(self):
+                    view = resolve('/boards/1/')
+                    self.assertEquals(view.func.view_class, TopicListView)
+        </code>
+    </pre>
+    <br>
+    <h3>Reusable Pagination Template - Багаторазовий Шаблон Pagination</h3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Just like we did with the form.html partial template, we can also create something similar for the pagination HTML snippet.</span>
+            </span>
+            <span class="col native1">
+                <span>Точно так само, як і в шаблоні form.html, ми також можемо створити щось подібне для фрагмента HTML pagination.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s paginate the topic posts page, and then find a way to reuse the pagination component.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте розібьємо сторінку з повідомленнями теми, а потім знайдемо спосіб повторного використання компонента pagination.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/53139ca0fd7c01b8459c2ff62828f963">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            class PostListView(ListView):
+                model = Post
+                context_object_name = 'posts'
+                template_name = 'topic_posts.html'
+                paginate_by = 2
+
+                def get_context_data(self, **kwargs):
+                    self.topic.views += 1
+                    self.topic.save()
+                    kwargs['topic'] = self.topic
+                    return super().get_context_data(**kwargs)
+
+                def get_queryset(self):
+                    self.topic = get_object_or_404(Topic, board__pk=self.kwargs.get('pk'), pk=self.kwargs.get('topic_pk'))
+                    queryset = self.topic.posts.order_by('created_at')
+                    return queryset
+        </code>
+    </pre>
+    <br>
+    <p>
+        <b>Now update the urls.py</b>
+        <a href="https://gist.github.com/vitorfs/428d58dbb61f9c2601bb7434150ea37f">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.conf.urls import url
+            from boards import views
+
+            urlpatterns = [
+                # ...
+                url(r'^boards/(?P&lt;pk&gt;\d+)/topics/(?P&lt;topic_pk&gt;\d+)/$', views.PostListView.as_view(), name='topic_posts'),
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For Django 2 and more</span>
+            </span>
+            <span class="col native1">
+                <span>Для Django 2 та більше</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.urls import path
+
+            path('boards/&lt;int:pk&gt;/topics/&lt;int:topic_pk&gt;/', views.PostListView.as_view(), name='topic_posts'),
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we grab that pagination HTML snippet from the <b>topics.html</b> template,
+                    and create a new file named <b>pagination.html</b> inside the <b>templates/includes</b> folder,
+                    alongside with the <b>forms.html</b> file:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми захоплюємо фрагмент HTML-коду сторінки з шаблону <b>topics.html</b>
+                    і створюємо новий файл з назвою <b>pagination.html</b> всередині теки <b>templates/includes</b>
+                    поруч з файлом <b>forms.html</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            myproject/
+             |-- myproject/
+             |    |-- accounts/
+             |    |-- boards/
+             |    |-- myproject/
+             |    |-- static/
+             |    |-- templates/
+             |    |    |-- includes/
+             |    |    |    |-- form.html
+             |    |    |    +-- pagination.html  <-- here!
+             |    |    +-- ...
+             |    |-- db.sqlite3
+             |    +-- manage.py
+             +-- venv/
+        </code>
+    </pre>
+    <br>
+    <b>templates/includes/pagination.html</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} templatetag openblock %} if is_paginated {% templatetag closeblock %}
+              &lt;nav aria-label="Topics pagination" class="mb-4"&gt;
+                &lt;ul class="pagination"&gt;
+                  {% templatetag openblock %} if page_obj.has_previous {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} page_obj.previous_page_number {% templatetag closevariable %}"&gt;Previous&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Previous&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+
+                  {% templatetag openblock %} for page_num in paginator.page_range {% templatetag closeblock %}
+                    {% templatetag openblock %} if page_obj.number == page_num {% templatetag closeblock %}
+                      &lt;li class="page-item active"&gt;
+                        &lt;span class="page-link"&gt;
+                          {% templatetag openvariable %} page_num {% templatetag closevariable %}
+                          &lt;span class="sr-only"&gt;(current)&lt;/span&gt;
+                        &lt;/span&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} else {% templatetag closeblock %}
+                      &lt;li class="page-item"&gt;
+                        &lt;a class="page-link" href="?page={% templatetag openvariable %} page_num {% templatetag closevariable %}"&gt;{% templatetag openvariable %} page_num {% templatetag closevariable %}&lt;/a&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} endif {% templatetag closeblock %}
+                  {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+                  {% templatetag openblock %} if page_obj.has_next {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} page_obj.next_page_number {% templatetag closevariable %}"&gt;Next&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Next&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+                &lt;/ul&gt;
+              &lt;/nav&gt;
+            {% templatetag openblock %} endif {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now in the topic_posts.html template we use it:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер у шаблоні topic_posts.html ми використовуємо це:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topic_posts.html</b>
+        <a href="https://gist.github.com/vitorfs/df5b16bb16c1134ba4e03218dce250d7">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+
+              &lt;div class="mb-4"&gt;
+                &lt;a href="{% templatetag openblock %} url 'reply_topic' topic.board.pk topic.pk {% templatetag closeblock %}" class="btn btn-primary" role="button"&gt;Reply&lt;/a&gt;
+              &lt;/div&gt;
+
+              {% templatetag openblock %} for post in posts {% templatetag closeblock %}
+                &lt;div class="card {% templatetag openblock %} if forloop.last {% templatetag closeblock %}mb-4{% templatetag openblock %} else {% templatetag closeblock %}mb-2{% templatetag openblock %} endif {% templatetag closeblock %} {% templatetag openblock %} if forloop.first {% templatetag closeblock %}border-dark{% templatetag openblock %} endif {% templatetag closeblock %}"&gt;
+                  {% templatetag openblock %} if forloop.first {% templatetag closeblock %}
+                    &lt;div class="card-header text-white bg-dark py-2 px-3"&gt;{% templatetag openvariable %} topic.subject {% templatetag closevariable %}&lt;/div&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+                  &lt;div class="card-body p-3"&gt;
+                    &lt;div class="row"&gt;
+                      &lt;div class="col-2"&gt;
+                        &lt;img src="{% templatetag openblock %} static 'img/avatar.svg' {% templatetag closeblock %}" alt="{% templatetag openvariable %} post.created_by.username {% templatetag closevariable %}" class="w-100"&gt;
+                        &lt;small&gt;Posts: {% templatetag openvariable %} post.created_by.posts.count {% templatetag closevariable %}&lt;/small&gt;
+                      &lt;/div&gt;
+                      &lt;div class="col-10"&gt;
+                        &lt;div class="row mb-3"&gt;
+                          &lt;div class="col-6"&gt;
+                            &lt;strong class="text-muted"&gt;{% templatetag openvariable %} post.created_by.username {% templatetag closevariable %}&lt;/strong&gt;
+                          &lt;/div&gt;
+                          &lt;div class="col-6 text-right"&gt;
+                            &lt;small class="text-muted"&gt;{% templatetag openvariable %} post.created_at {% templatetag closevariable %}&lt;/small&gt;
+                          &lt;/div&gt;
+                        &lt;/div&gt;
+                        {% templatetag openvariable %} post.message {% templatetag closevariable %}
+                        {% templatetag openblock %} if post.created_by == user {% templatetag closeblock %}
+                          &lt;div class="mt-3"&gt;
+                            &lt;a href="{% templatetag openblock %} url 'edit_post' post.topic.board.pk post.topic.pk post.pk {% templatetag closeblock %}"
+                               class="btn btn-primary btn-sm"
+                               role="button"&gt;Edit&lt;/a&gt;
+                          &lt;/div&gt;
+                        {% templatetag openblock %} endif {% templatetag closeblock %}
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+              {% templatetag openblock %} include 'includes/pagination.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Don’t forget to change the main forloop
+                    to <span class="gray-border">{% templatetag openblock %} for post in posts {% templatetag closeblock %}</span>.</span>
+            </span>
+            <span class="col native1">
+                <span>Не забудьте змінити основний цикл
+                    на <span class="gray-border">{% templatetag openblock %} for post in posts {% templatetag closeblock %}.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can also update the previous template, the topics.html template to use the pagination partial template too:</span>
+            </span>
+            <span class="col native1">
+                <span>Також ми можемо оновити попередній шаблон <b>topics.html</b>, щоб використовувати також частковий шаблон для пагінації.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topics.html</b>
+        <a href="https://gist.github.com/vitorfs/9198ad8f91cd889f315ade7e4eb62710#file-topics-html-L40">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lt;div class="mb-4"&gt;
+                &lt;a href="{% templatetag openblock %} url 'new_topic' board.pk {% templatetag closeblock %}" class="btn btn-primary"&gt;New topic&lt;/a&gt;
+              &lt;/div&gt;
+
+              &lt;table class="table mb-4"&gt;
+                &lt;!-- table code suppressed --&gt;
+              &lt;/table&gt;
+
+              {% templatetag openblock %} include 'includes/pagination.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Just for testing purpose, you could just add a few posts (or create some using the Python Shell)
+                    and change the paginate_by to a low number, say 2, and see how it’s looking like:</span>
+            </span>
+            <span class="col native1">
+                <span>Для цілей тестування можна просто додати кілька публікацій
+                    (або створити деякі з них за допомогою Python Shell) і змінити <strong>paginate_by</strong> на низький номер,
+                    скажімо 2, і подивитися, як це виглядає:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/topics-6.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Update the test cases:</span>
+            </span>
+            <span class="col native1">
+                <span>Оновлення тестових кейсів:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/tests/test_view_topic_posts.py</b>
+        <a href="https://gist.github.com/vitorfs/6b3cd0769f805ab38626f5bd97b4e5e3">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.test import TestCase
+            from django.urls import resolve
+            from ..views import PostListView
+
+            class TopicPostsTests(TestCase):
+                # ...
+                def test_view_function(self):
+                    view = resolve('/boards/1/topics/1/')
+                    self.assertEquals(view.func.view_class, PostListView)
+        </code>
+    </pre>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <H2>My Account View</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Okay, so, this is going to be our last view.
+                    After that, we will be working on improving the existing features.</span>
+            </span>
+            <span class="col native1">
+                <span>Гаразд так, це буде нашим останнім видом.
+                    Після цього ми будемо працювати над вдосконаленням існуючих можливостей.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>accounts/views.py</b>
+        <a href="https://gist.github.com/vitorfs/ea62417b7a450050f2feeeb69b775996">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.decorators import login_required
+            from django.contrib.auth.models import User
+            from django.urls import reverse_lazy
+            from django.utils.decorators import method_decorator
+            from django.views.generic import UpdateView
+
+            @method_decorator(login_required, name='dispatch')
+            class UserUpdateView(UpdateView):
+                model = User
+                fields = ('first_name', 'last_name', 'email', )
+                template_name = 'my_account.html'
+                success_url = reverse_lazy('my_account')
+
+                def get_object(self):
+                    return self.request.user
+        </code>
+    </pre>
+    <br>
+    <p>
+        <b>myproject/urls.py</b>
+        <a href="https://gist.github.com/vitorfs/27d87452e7584cb8c489625f507ed7aa#file-urls-py-L32">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.conf.urls import url
+            from accounts import views as accounts_views
+
+            urlpatterns = [
+                # ...
+                url(r'^settings/account/$', accounts_views.UserUpdateView.as_view(), name='my_account'),
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For Django 2 and more</span>
+            </span>
+            <span class="col native1">
+                <span>Для Django 2 та більше</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.urls import path
+
+            path('settings/account/', accounts_views.UserUpdateView.as_view(), name='my_account'),
+        </code>
+    </pre>
+    <br>
+    <b>templates/my_account.html</b>
+    <br>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} extends 'base.html'
+            {% templatetag closeblock %}
+
+            {% templatetag openblock %} block title {% templatetag closeblock %}My account{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block breadcrumb {% templatetag closeblock %}
+              &lt;li class="breadcrumb-item active"&gt;My account&lt;/li&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lt;div class="row"&gt;
+                &lt;div class="col-lg-6 col-md-8 col-sm-10"&gt;
+                  &lt;form method="post" novalidate&gt;
+                    {% templatetag openblock %} csrf_token {% templatetag closeblock %}
+                    {% templatetag openblock %} include 'includes/form.html' {% templatetag closeblock %}
+                    &lt;button type="submit" class="btn btn-success"&gt;Save changes&lt;/button&gt;
+                  &lt;/form&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/account.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br><br>    <hr>    <br>
+    <H2>Adding Markdown - Додавання Markdown</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s improve the user experience by adding Markdown to our text areas.
+                    You will see it’s very easy and simple.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте покращимо взаємодію з користувачем, додаючи Markdown до наших текстових областей.
+                Ви побачите це дуже зручно і просто.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, let’s install a library called Python-Markdown:</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку, давайте встановимо бібліотеку під назвою <strong>Python-Markdown</strong>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            pip install markdown
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can add a new method to the Post model:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо додати новий метод до моделі <strong>Post</strong>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/models.py</b>
+        <a href="https://gist.github.com/vitorfs/caa24fcf2b66903617ebbb41337d3d3d#file-models-py-L46">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.db import models
+            from django.utils.html import mark_safe
+            from markdown import markdown
+
+            class Post(models.Model):
+                # ...
+
+                def get_message_as_markdown(self):
+                    return mark_safe(markdown(self.message, safe_mode='escape'))
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we are dealing with user input, so we must take care.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми маємо справу з вводом користувача, тому ми повинні подбати про це.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>When using the markdown function, we are instructing it to escape the special characters first
+                    and then parse the markdown tags.</span>
+            </span>
+            <span class="col native1">
+                <span>Використовуючи функцію markdown, ми вказуємо, що спочатку потрібно уникнути спеціальних символів,
+                    а потім проаналізувати теги markdown.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span> After that, we mark the output string as safe to be used in the template.</span>
+            </span>
+            <span class="col native1">
+                <span>Після цього вивод позначається як безпечний для використання в шаблоні.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now in the templates topic_posts.html and reply_topic.html just change from:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер у шаблонах <b>topic_posts.html</b> та <b>reply_topic.html</b> просто змініть з:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openvariable %} post.message {% templatetag closevariable %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>To:</span>
+            </span>
+            <span class="col native1">
+                <span>На:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openvariable %} post.get_message_as_markdown {% templatetag closevariable %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>From now on the users can already use markdown in the posts:</span>
+            </span>
+            <span class="col native1">
+                <span>Відтепер користувачі можуть використовувати markdown в повідомленнях:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/markdown-1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br><br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/markdown-2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br><br>
+    <H3>Markdown Editor - Редактор Markdown</H3>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can also add a very cool Markdown editor called SimpleMD.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також можемо додати дуже крутого редактора Markdown під назвою <a href="https://simplemde.com/">SimpleMD</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Either download the JavaScript library or use their CDN:</span>
+            </span>
+            <span class="col native1">
+                <span>Завантажте бібліотеку JavaScript або використовуйте їх CDN:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"&gt;
+            &lt;script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"&gt;&lt;/script&gt;
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now edit the base.html to make space for extra JavaScripts:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер відредагуйте <b>base.html</b>, щоб залишити місце для додаткових JavaScripts:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/base.html</b>
+        <a href="https://gist.github.com/vitorfs/5a7ad8e7eae88d64f62fec82d037b168#file-base-html-L57">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            &lt;script src="{% static 'js/jquery-3.2.1.min.js' %}"&gt;&lt;/script&gt;
+            &lt;script src="{% static 'js/popper.min.js' %}"&gt;&lt;/script&gt;
+            &lt;script src="{% static 'js/bootstrap.min.js' %}"&gt;&lt;/script&gt;
+            {% templatetag openblock %} block javascript {% templatetag closeblock %}
+            {% templatetag openblock %} endblock {% templatetag closeblock %}  &lt;!-- Add this empty block here! --&gt;
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First edit the reply_topic.html template:</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку змініть шаблон <b>reply_topic.html</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/reply_topic.html</b>
+        <a href="https://gist.github.com/vitorfs/fb63bb7530690d62787c3ed8b7e15241">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} load static {% templatetag closeblock %}
+
+            {% templatetag openblock %} block title {% templatetag closeblock %}Post a reply{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block stylesheet {% templatetag closeblock %}
+              &lt;link rel="stylesheet" href="{% templatetag openblock %} static 'css/simplemde.min.css' {% templatetag closeblock %}"&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block javascript {% templatetag closeblock %}
+              &lt;script src="{% templatetag openblock %} static 'js/simplemde.min.js' {% templatetag closeblock %}"&gt;&lt;/script&gt;
+              &lt;script&gt;
+                var simplemde = new SimpleMDE();
+              &lt;/script&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>By default, this plugin will transform the first text area it finds into a markdown editor.
+                    So just that code should be enough:</span>
+            </span>
+            <span class="col native1">
+                <span>За замовчуванням цей плагін перетворить першу текстову область, яку він знаходить, у редактор розмітки.
+                Тож саме цього коду має бути достатньо:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/edit-1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now do the same thing with the edit_post.html template:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер виконайте те ж саме з шаблоном <b>edit_post.html</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/edit_post.html</b>
+        <a href="https://gist.github.com/vitorfs/ee9d8c91888b0bc60013b8f037bae7bb">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} load static {% templatetag closeblock %}
+
+            {% templatetag openblock %} block title {% templatetag closeblock %}Edit post{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block stylesheet {% templatetag closeblock %}
+              &lt;link rel="stylesheet" href="{% static 'css/simplemde.min.css' {% templatetag closeblock %}"&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block javascript {% templatetag closeblock %}
+              &lt;script src="{% static 'js/simplemde.min.js' %}"&gt;&lt;/script&gt;
+              &lt;script&gt;
+                var simplemde = new SimpleMDE();
+              &lt;/script&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/editor-2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Humanize</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I just thought it would be a nice touch to add the built-in humanize package.
+                    It’s a set of utility functions to add a “human touch” to data.</span>
+            </span>
+            <span class="col native1">
+                <span>Я подумав, що це буде непогано, додати вбудований пакет humanize.
+                Це набір корисних функцій для додавання "людського вигляду" до даних.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For example, we can use it to display date and time fields more naturally.
+                    Instead of showing the whole date, we can simply show: “2 minutes ago”.</span>
+            </span>
+            <span class="col native1">
+                <span>Наприклад, ми можемо використовувати це для відображення дат і часових полів більш природно.
+                Замість того, щоб показати всю дату, ми можемо просто показати: "2 хвилини тому".</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s do it. First, add the django.contrib.humanize to the INSTALLED_APPS.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте зробимо це. Спочатку додамо <span class="gray-border">django.contrib.humanise</span> до <span class="gray-border">INSTALLED_APPS</span>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>myproject/settings.py</b><br><br>
+    <pre class="bg-light">
+        <code>
+            INSTALLED_APPS = [
+                'django.contrib.admin',
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.sessions',
+                'django.contrib.messages',
+                'django.contrib.staticfiles',
+                'django.contrib.humanize',  # <- here
+
+                'widget_tweaks',
+
+                'accounts',
+                'boards',
+            ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can use it in the templates.
+                    First, let’s edit the topics.html template:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо використовувати його в шаблонах.
+                Спочатку давайте відредагуємо шаблон <b>topics.html</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topics.html</b>
+        <a href="https://gist.github.com/vitorfs/45521a289677a1a406b4fb743e8141ee">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} load humanize {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lt;!-- code suppressed --&gt;
+
+              &lt;td&gt; {% templatetag openvariable %} topic.last_updated|naturaltime {% templatetag closevariable %}&lt;/td&gt;
+
+              &lt;!-- code suppressed --&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>All we have to do is to load the template tags using <span class="gray-border">{% templatetag openblock %} load humanize {% templatetag closeblock %}</span>
+                    and then apply the template filter: <span class="gray-border">{% templatetag openvariable %} topic.last_updated|naturaltime {% templatetag closevariable %}</span></span>
+            </span>
+            <span class="col native1">
+                <span>Все, що нам потрібно зробити, це завантажити теги шаблонів за допомогою <span class="gray-border">{% templatetag openblock %} load humanize {% templatetag closeblock %}</span>,
+                    а потім застосувати фільтр шаблонів: <span class="gray-border">{% templatetag openvariable %} topic.last_updated | naturaltime {% templatetag closevariable %}</span> </span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/humanize.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You may add it to other places you like.</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете додати це до інших місць, які вам подобаються.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr> <br>
+    <H2>Gravatar</H2> <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>A very easy way to add user profile pictures is by using Gravatar.</span>
+            </span>
+            <span class="col native1">
+                <span>Дуже простий спосіб додати зображення профілю користувача - це використання <a href="https://gravatar.com/">Gravatar</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Inside the boards/templatetags folder, create a new file named gravatar.py:</span>
+            </span>
+            <span class="col native1">
+                <span>В папці <b>boards/templatetags</b> створіть новий файл з назвою <b>gravatar.py</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/templatetags/gravatar.py</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+
+            import hashlib
+            from urllib.parse import urlencode
+
+            from django import template
+            from django.conf import settings
+
+            register = template.Library()
+
+
+            @register.filter
+            def gravatar(user):
+                email = user.email.lower().encode('utf-8')
+                default = 'mm'
+                size = 256
+                url = 'https://www.gravatar.com/avatar/{md5}?{params}'.format(
+                    md5=hashlib.md5(email).hexdigest(),
+                    params=urlencode({'d': default, 's': str(size)})
+                )
+                return url
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Basically I’m using the code snippet they provide. I just adapted it to work with Python 3.</span>
+            </span>
+            <span class="col native1">
+                <span>В основному я використовую <a href="https://fi.gravatar.com/site/implement/images/python/">фрагмент коду, який вони надали</a>.
+                    Я просто адаптував це для роботи з Python 3.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Great, now we can load it in our template, just like we did with the Humanize template filter:</span>
+            </span>
+            <span class="col native1">
+                <span>Чудово, тепер ми можемо завантажити його в нашому шаблоні, так само, як ми це робили з шаблоном фільтра Humanize:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topic_posts.html</b>
+        <a href="https://gist.github.com/vitorfs/23d5c5bc9e6c7ac94506a2660a61012c">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} load gravatar {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lt;!-- code suppressed --&gt;
+
+              &lt;img src="{% templatetag openvariable %} post.created_by|gravatar {% templatetag closevariable %}" alt="{% templatetag openvariable %} post.created_by.username {% templatetag closevariable %}" class="w-100 rounded"&gt;
+
+              &lt;!-- code suppressed --&gt;
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/gravatar.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Final Adjustments - Остаточні коригування</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Maybe you have already noticed, but there’s a small issue when someone replies to a post.</span>
+            </span>
+            <span class="col native1">
+                <span>Возможно, вы уже заметили, но есть небольшая проблема, когда кто-то отвечает на сообщение.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s not updating the last_update field, so the ordering of the topics is broken right now.</span>
+            </span>
+            <span class="col native1">
+                <span>Не оновлюється поле last_update, тому упорядковування тем зараз буде порушено.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let's fix it:</span>
+            </span>
+            <span class="col native1">
+                <span>Поправимо це:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/views.py</b>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            @login_required
+            def reply_topic(request, pk, topic_pk):
+                topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+                if request.method == 'POST':
+                    form = PostForm(request.POST)
+                    if form.is_valid():
+                        post = form.save(commit=False)
+                        post.topic = topic
+                        post.created_by = request.user
+                        post.save()
+
+                        topic.last_updated = timezone.now()  # <- here
+                        topic.save()                         # <- and here
+
+                        return redirect('topic_posts', pk=pk, topic_pk=topic_pk)
+                else:
+                    form = PostForm()
+                return render(request, 'reply_topic.html', {'topic': topic, 'form': form})
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Next thing we want to do is try to control the view counting system a little bit more.</span>
+            </span>
+            <span class="col native1">
+                <span>Наступна річ, яку ми хочемо зробити - спробувати трохи більше контролювати систему підрахунку перегляду.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We don’t want to the same user refreshing the page counting as multiple views.
+                    For this we can use sessions:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми не хочемо, щоб один і той же користувач оновлював сторінку, де підраховується кількість переглядів.
+                    Для цього ми можемо використовувати сесії:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/views.py</b>
+    <br>
+    <pre class="bg-light">
+        <code>
+            class PostListView(ListView):
+            model = Post
+            context_object_name = 'posts'
+            template_name = 'topic_posts.html'
+            paginate_by = 20
+
+            def get_context_data(self, **kwargs):
+
+                session_key = 'viewed_topic_{}'.format(self.topic.pk)  # <-- here
+                if not self.request.session.get(session_key, False):
+                    self.topic.views += 1
+                    self.topic.save()
+                    self.request.session[session_key] = True           # <-- until here
+
+                kwargs['topic'] = self.topic
+                return super().get_context_data(**kwargs)
+
+            def get_queryset(self):
+                self.topic = get_object_or_404(Topic, board__pk=self.kwargs.get('pk'), pk=self.kwargs.get('topic_pk'))
+                queryset = self.topic.posts.order_by('created_at')
+                return queryset
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we could provide a better navigation in the topics listing.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо забезпечити кращу навігацію у списку тем.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Currently the only option is for the user to click in the topic title and go to the first page.
+                    We could workout something like this:</span>
+            </span>
+            <span class="col native1">
+                <span>На даний момент єдиним варіантом є можливість користувача клацнути заголовок теми та перейти на першу сторінку.
+                    Ми могли б робити приблизно так:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/models.py</b><br>
+    <pre class="bg-light">
+        <code>
+            import math
+            from django.db import models
+
+            class Topic(models.Model):
+                # ...
+
+                def __str__(self):
+                    return self.subject
+
+                def get_page_count(self):
+                    count = self.posts.count()
+                    pages = count / 20
+                    return math.ceil(pages)
+
+                def has_many_pages(self, count=None):
+                    if count is None:
+                        count = self.get_page_count()
+                    return count > 6
+
+                def get_page_range(self):
+                    count = self.get_page_count()
+                    if self.has_many_pages(count):
+                        return range(1, 5)
+                    return range(1, count + 1)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then in the topics.html template we could implement something like this:</span>
+            </span>
+            <span class="col native1">
+                <span>Тоді у шаблоні <b>topics.html</b> ми могли б реалізувати щось на зразок цього:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+          &lt;table class="table table-striped mb-4"&gt;
+            &lt;thead class="thead-inverse"&gt;
+              &lt;tr&gt;
+                &lt;th&gt;Topic&lt;/th&gt;
+                &lt;th&gt;Starter&lt;/th&gt;
+                &lt;th&gt;Replies&lt;/th&gt;
+                &lt;th&gt;Views&lt;/th&gt;
+                &lt;th&gt;Last Update&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+              {% templatetag openblock %} for topic in topics {% templatetag closeblock %}
+                {% templatetag openblock %} url 'topic_posts' board.pk topic.pk as topic_url {% templatetag closeblock %}
+                &lt;tr&gt;
+                  &lt;td&gt;
+                    &lt;p class="mb-0"&gt;
+                      &lt;a href="{% templatetag openvariable %} topic_url {% templatetag closevariable %}"&gt;{% templatetag openvariable %} topic.subject {% templatetag closevariable %}&lt;/a&gt;
+                    &lt;/p&gt;
+                    &lt;small class="text-muted"&gt;
+                      Pages:
+                      {% templatetag openblock %} for i in topic.get_page_range {% templatetag closeblock %}
+                        &lt;a href="{% templatetag openvariable %} topic_url {% templatetag closevariable %}?page={% templatetag openvariable %} i {% templatetag closevariable %}"&gt;{% templatetag openvariable %} i {% templatetag closevariable %}&lt;/a&gt;
+                      {% templatetag openblock %} endfor {% templatetag closeblock %}
+                      {% templatetag openblock %} if topic.has_many_pages {% templatetag closeblock %}
+                      ... &lt;a href="{% templatetag openvariable %} topic_url {% templatetag closevariable %}?page={% templatetag openvariable %} topic.get_page_count {% templatetag closevariable %}"&gt;Last Page&lt;/a&gt;
+                      {% templatetag openblock %} endif {% templatetag closeblock %}
+                    &lt;/small&gt;
+                  &lt;/td&gt;
+                  &lt;td class="align-middle"&gt;{% templatetag openvariable %} topic.starter.username {% templatetag closevariable %}&lt;/td&gt;
+                  &lt;td class="align-middle"&gt;{% templatetag openvariable %} topic.replies {% templatetag closevariable %}&lt;/td&gt;
+                  &lt;td class="align-middle"&gt;{% templatetag openvariable %} topic.views {% templatetag closevariable %}&lt;/td&gt;
+                  &lt;td class="align-middle"&gt;{% templatetag openvariable %} topic.last_updated|naturaltime {% templatetag closevariable %}&lt;/td&gt;
+                &lt;/tr&gt;
+              {% templatetag openblock %} endfor {% templatetag closeblock %}
+            &lt;/tbody&gt;
+          &lt;/table&gt;
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Like a tiny pagination for each topic. Note that I also took the time to add the table-striped class for a better styling of the table.</span>
+            </span>
+            <span class="col native1">
+                <span>Як крихітна пагінація для кожної теми. Зверніть увагу, я також знайшов час, щоб додати клас <b>table-striped</b> для кращого стилю таблиці.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/pages.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the reply page, we are currently listing all topic replies.
+                    We could limit it to just the last ten posts.</span>
+            </span>
+            <span class="col native1">
+                <span>На сторінці відповіді ми зараз перераховуємо всі тематичні відповіді.
+                    Ми могли обмежити це лише останніми десятьма постами.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/models.py</b><br><br>
+    <pre class="bg-light">
+        <code>
+            class Topic(models.Model):
+            # ...
+
+            def get_last_ten_posts(self):
+                return self.posts.order_by('-created_at')[:10]
+        </code>
+    </pre>
+    <br>
+    <b>templates/reply_topic.html</b><br><br>
+    <pre class="bg-light">
+        <code>
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+
+              &lt;form method="post" class="mb-4" novalidate&gt;
+                {% templatetag openblock %} csrf_token {% templatetag closeblock %}
+                {% templatetag openblock %} include 'includes/form.html' {% templatetag closeblock %}
+                &lt;button type="submit" class="btn btn-success"&gt;Post a reply&lt;/button&gt;
+              &lt;/form&gt;
+
+              {% templatetag openblock %} for post in topic.get_last_ten_posts {% templatetag closeblock %}  &lt;!-- here! --&gt;
+                &lt;div class="card mb-2"&gt;
+                  &lt;!-- code suppressed --&gt;
+                &lt;/div&gt;
+              {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/replies.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Another thing is that when the user replies to a post, we are redirecting the user to the first page again.
+                    We could improve it by sending the user to the last page.</span>
+            </span>
+            <span class="col native1">
+                <span>Інша справа, що коли користувач відповідає на повідомлення, ми перенаправляємо користувача на першу сторінку знову.
+                    Ми могли б покращити це, відправивши користувача на останню сторінку.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can add an id to the post card:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо додати ідентифікатор до картки посту:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>templates/topic_posts.html</b><br><br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+
+              &lt;div class="mb-4"&gt;
+                &lt;a href="{% templatetag openblock %} url 'reply_topic' topic.board.pk topic.pk {% templatetag closeblock %}" class="btn btn-primary" role="button"&gt;Reply&lt;/a&gt;
+              &lt;/div&gt;
+
+              {% templatetag openblock %} for post in posts %}
+                &lt;div id="{% templatetag openvariable %} post.pk {% templatetag closevariable %}" class="card {% templatetag openblock %} if forloop.last {% templatetag closeblock %}mb-4{% templatetag openblock %} else {% templatetag closeblock %}mb-2{% templatetag openblock %} endif {% templatetag closeblock %} {% templatetag openblock %} if forloop.first {% templatetag closeblock %}border-dark{% templatetag openblock %} endif {% templatetag closeblock %}"&gt;
+                  &lt;!-- code suppressed --&gt;
+                &lt;/div&gt;
+              {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+              {% templatetag openblock %} include 'includes/pagination.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The important bit here is the &lt;div id="{% templatetag openvariable %} post.pk {% templatetag closevariable %}" ...&gt;.</span>
+            </span>
+            <span class="col native1">
+                <span>Важливим тут є <span class="gray-border">&lt;div id = "{% templatetag openvariable %}post.pk{% templatetag closevariable %}" ...&gt;</span>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then we can play with it like this in the views:</span>
+            </span>
+            <span class="col native1">
+                <span>Тоді ми можемо грати з ним так у views:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/views.py</b><br><br>
+    <pre class="bg-light">
+        <code>
+            @login_required
+            def reply_topic(request, pk, topic_pk):
+                topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+                if request.method == 'POST':
+                    form = PostForm(request.POST)
+                    if form.is_valid():
+                        post = form.save(commit=False)
+                        post.topic = topic
+                        post.created_by = request.user
+                        post.save()
+
+                        topic.last_updated = timezone.now()
+                        topic.save()
+
+                        topic_url = reverse('topic_posts', kwargs={'pk': pk, 'topic_pk': topic_pk})
+                        topic_post_url = '{url}?page={page}#{id}'.format(
+                            url=topic_url,
+                            id=post.pk,
+                            page=topic.get_page_count()
+                        )
+
+                        return redirect(topic_post_url)
+                else:
+                    form = PostForm()
+                return render(request, 'reply_topic.html', {'topic': topic, 'form': form})
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the topic_post_url we are building a URL with the last page and adding an anchor to the element with id equals to the post ID.</span>
+            </span>
+            <span class="col native1">
+                <span>У <b>topic_post_url</b> ми будуємо URL-адресу з останньою сторінкою та додаємо прив'язку до елемента з ідентифікатором, рівним ідентифікатору посту.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>With this, it will required us to update the following test case:</span>
+            </span>
+            <span class="col native1">
+                <span>При цьому, нам буде потрібно оновити наступний тест:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>boards/tests/test_view_reply_topic.py</b><br><br>
+    <pre class="bg-light">
+        <code>
+            class SuccessfulReplyTopicTests(ReplyTopicTestCase):
+                # ...
+
+                def test_redirection(self):
+                    '''
+                    A valid form submission should redirect the user
+                    '''
+                    url = reverse('topic_posts', kwargs={'pk': self.board.pk, 'topic_pk': self.topic.pk})
+                    topic_posts_url = '{url}?page=1#2'.format(url=url)
+                    self.assertRedirects(self.response, topic_posts_url)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/reply-last-page.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Next issue, as you can see in the previous screenshot, is to solve the problem with the pagination when the number of pages is too high.</span>
+            </span>
+            <span class="col native1">
+                <span>Наступне питання, яке ви можете бачити на попередньому скріншоті, полягає у вирішенні проблеми з нумерацією сторінок, коли кількість сторінок занадто висока.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The easiest way is to tweak the pagination.html template:</span>
+            </span>
+            <span class="col native1">
+                <span>Найпростіший спосіб налаштувати шаблон pagination.html:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>templates/includes/pagination.html</b><br><br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} if is_paginated {% templatetag closeblock %}
+              &lt;nav aria-label="Topics pagination" class="mb-4"&gt;
+                &lt;ul class="pagination"&gt;
+                  {% templatetag openblock %} if page_obj.number &gt; 1 {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page=1"&gt;First&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;First&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+
+                  {% templatetag openblock %} if page_obj.has_previous {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} page_obj.previous_page_number {% templatetag closevariable %}"&gt;Previous&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Previous&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+
+                  {% templatetag openblock %} for page_num in paginator.page_range {% templatetag closeblock %}
+                    {% templatetag openblock %} if page_obj.number == page_num {% templatetag closeblock %}
+                      &lt;li class="page-item active"&gt;
+                        &lt;span class="page-link"&gt;
+                          {% templatetag openvariable %} page_num {% templatetag closevariable %}
+                          &lt;span class="sr-only"&gt;(current)&lt;/span&gt;
+                        &lt;/span&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} elif page_num &gt; page_obj.number|add:'-3' and page_num &lt; page_obj.number|add:'3' {% templatetag closeblock %}
+                      &lt;li class="page-item"&gt;
+                        &lt;a class="page-link" href="?page={% templatetag openvariable %} page_num {% templatetag closevariable %}"&gt;{% templatetag openvariable %} page_num {% templatetag closevariable %}&lt;/a&gt;
+                      &lt;/li&gt;
+                    {% templatetag openblock %} endif {% templatetag closeblock %}
+                  {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+                  {% templatetag openblock %} if page_obj.has_next {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} page_obj.next_page_number {% templatetag closevariable %}"&gt;Next&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Next&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+
+                  {% templatetag openblock %} if page_obj.number != paginator.num_pages {% templatetag closeblock %}
+                    &lt;li class="page-item"&gt;
+                      &lt;a class="page-link" href="?page={% templatetag openvariable %} paginator.num_pages }}"&gt;Last&lt;/a&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} else {% templatetag closeblock %}
+                    &lt;li class="page-item disabled"&gt;
+                      &lt;span class="page-link"&gt;Last&lt;/span&gt;
+                    &lt;/li&gt;
+                  {% templatetag openblock %} endif {% templatetag closeblock %}
+                &lt;/ul&gt;
+              &lt;/nav&gt;
+            {% templatetag openblock %} endif {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/long-pages.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Conclusions - Висновки</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>With this tutorial, we finalized the implementation of our Django board application.</span>
+            </span>
+            <span class="col native1">
+                <span>За допомогою цього підручника ми завершили реалізацію нашої програми форума Django.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I will probably release a follow-up implementation tutorial to improve the code. </span>
+            </span>
+            <span class="col native1">
+                <span>Я, ймовірно, випущу наступний підручник реалізації для поліпшення коду.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There are many things we can explore together. For example, database optimizations,
+                    improve the user interface, play with file uploads, create a moderation system, and so on.</span>
+            </span>
+            <span class="col native1">
+                <span>Є багато речей, які ми можемо досліджувати разом. Наприклад, оптимізація баз даних,
+                    вдосконалення інтерфейсу користувача, гра з завантаженням файлів, створення системи модерації та інше.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The next tutorial will be focused on deployment. It’s going to be a complete guide on
+                    how to put your code in production taking care of all the important details.</span>
+            </span>
+            <span class="col native1">
+                <span>Наступний навчальний посібник буде орієнтований на розгортання. Це буде повне керівництво про те,
+                    як поставити свій код у виробництво, піклуючись про всі важливі деталі.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I hope you enjoyed the sixth part of this tutorial series!</span>
+            </span>
+            <span class="col native1">
+                <span>Я сподіваюся, вам сподобалась шоста частина цієї навчальної серії!</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The source code of the project is available on GitHub. The current state of the project
+                    can be found under the release tag v0.6-lw. The link below will take you to the right place:</span>
+            </span>
+            <span class="col native1">
+                <span>Вихідний код проекту доступний на GitHub. Поточний стан проекту
+                    можна знайти за тегом випуску v0.6-lw. Наведене нижче посилання приведе вас до потрібного місця:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <a href="https://github.com/sibtc/django-beginners-guide/tree/v0.6-lw">https://github.com/sibtc/django-beginners-guide/tree/v0.6-lw</a>
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span><h5><a href="https://simpleisbetterthancomplex.com/series/2017/10/02/a-complete-beginners-guide-to-django-part-5.html">Original Part 5</a></h5><h5><a href="http://127.0.0.1:8000/translate/">Переклад Частина 5</a></h5></span>
+            </span>
+            <span class="col native1">
+                <span><h5><a href="https://simpleisbetterthancomplex.com/series/2017/10/16/a-complete-beginners-guide-to-django-part-7.html">Original Part 7</a></h5><h5><a href="http://127.0.0.1:8000/translate/7/">Переклад Частина 7</a></h5></span>
+            </span>
+        </div>
+    </div>
+    <br>
+{% endblock %}

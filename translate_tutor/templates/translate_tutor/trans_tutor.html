@@ -1,0 +1,2563 @@
+{% extends 'simple_forum/forum_base.html' %}
+{% load static %}
+{% block title %}Tutorial 5{% endblock %}
+{% block brand %}
+    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>
+    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>
+    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>
+{% endblock brand %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Django tutorial</li>
+{% endblock %}
+
+{% block content %}
+    <h1>A Complete Beginner's Guide to Django - Part 5</h1>
+    <h2>Introduction</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In this tutorial, we are going to learn more about protecting views <strong>against</strong> unauthorized users and
+                    how to access the authenticated user in the views and forms.</span></span>
+            <span class="col native1"><span>В этом уроке мы узнаем больше о защите представлений <strong>от</strong> неавторизованных
+                пользователей и о том, как получить доступ аутентифицированному пользователю к представлениям и формам.
+            </span></span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are <em lang="word"> also</em> going to implement the topic posts listing view and the reply view.</span>
+            </span>
+            <span class="col native1">
+                <span>Мы <em lang="translate">также</em> собираемся внедрить представление списка сообщений по темам и представление ответа.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Finally, we are going to explore some features of Django ORM and have a <strong>brief</strong> introduction to migrations.</span>
+            </span>
+            <span class="col native1">
+                <span>Наконец, мы рассмотрим некоторые особенности Django ORM и <strong>кратко</strong> расскажем о миграциях.</span>
+            </span>
+        </div>
+    </div>
+    <hr>
+    <h2>Protecting Views</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We have to start protecting our views against non-authorized users.
+                    <em lang="translate">So far</em> we have the following view to start new posts:</span>
+            </span>
+            <span class="col native1">
+                <span>Мы должны начать защищать наши представления от неавторизированных пользователей.
+                    <em lang="translate">До сих пор</em> у нас есть следующее представление, для создания нового сообщения:</span>
+            </span>
+        </div>
+        <div class="row">
+            <img src="{% static 'translate_tutor/img/topics-1.png' %}">
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the picture above the user is not logged in, and even though they can see the page and the form.
+                    Django has a built-in view decorator <strong>to avoid</strong> that issue:</span>
+            </span>
+            <span class="col native1">
+                <span>На картинке выше пользователь не вошел в систему и даже может видеть страницу и форму.
+                    Чтобы <strong>избежать</strong> этой проблемы, в Django есть встроенный декоратор:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/4d3334a0daa9e7a872653a22ff39320a#file-models-py-L19">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    {#    <div class="row">#}
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.decorators import login_required
+            @login_required
+            def new_topic(request, pk):
+                # ...
+        </code>
+    </pre>
+    {#    </div>#}
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>From now on, if the user is not authenticated they will be redirected to the login page:</span>
+            </span>
+            <span class="col native1">
+                <span>С этого момента, если пользователь не аутентифицирован, он будет перенаправлен на страницу входа:
+                </span>
+            </span>
+        </div>
+        <div class="row">
+            <img src="{% static 'translate_tutor/img/login-required.png' %}">
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Notice the query string <strong>?next=/boards/1/new/</strong>. We can <em lang="translate">
+                                                                                            improve</em> the log
+                    in template to make use of the <strong>next</strong> variable and improve the user experience.  </span>
+            </span>
+            <span class="col native1">
+                <span>Обратите внимание на строку запроса: <strong>next = / boards / 1 / new /</strong>.
+                    Мы можем <em lang="translate">улучшить</em> лог в шаблоне, чтобы использовать следующую переменную
+                    <strong>next</strong> и улучшить работу пользователя.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h2>Configuring Login Next Redirect</h2>
+    <p>
+        <b>templates/login.html</b>
+        <a href="https://gist.github.com/vitorfs/1ab597fe18e2dc56028f7aa8c3b588b3#file-login-html-L13">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            {{ trunk_open_form_post }}
+            {{ trunk_csrf_token }}
+            {{ trunk_input }}
+            {{ trunk_include }}
+            {{ trunk_button }}
+            {{ trunk_close_form }}
+        </code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then if we try to log in now, the application will direct us back to where we were.
+                So the <i>next</i> parameter is part of a built-in functionality.
+                    </span>
+            </span>
+            <span class="col native1">
+                <span>Затем, если мы попытаемся войти в систему, приложение вернет нас туда, где мы были.
+                Таким образом, параметр next является частью встроенной функциональности.</span>
+            </span>
+        </div>
+    </div><br>
+    <h2>Login Required Tests</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s now add a test case to make sure this view is protected by the <i>@login_required</i> decorator.
+                    </span>
+            </span>
+            <span class="col native1">
+                <span>Теперь добавим тестовый пример, чтобы убедиться, что это представление защищено декоратором
+                    <i>@login_required.</i></span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But first, let’s do some refactoring in the boards/tests/test_views.py file.</span>
+            </span>
+            <span class="col native1">
+                <span>Но сначала давайте сделаем некоторые рефакторинг в файле boards / tests / test_views.py.</span>
+            </span>
+        </div>
+    </div>
+    <p>
+        <b>test_view_home.py will include the HomeTests class</b>
+        <a href="https://gist.github.com/vitorfs/6ac3aad244c856d418f18890efcb4a7e#file-test_view_home-py">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <p>
+        <b>test_view_board_topics.py will include the BoardTopicsTests class</b>
+        <a href="https://gist.github.com/vitorfs/6ac3aad244c856d418f18890efcb4a7e#file-test_view_board_topics-py">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <p>
+        <b>test_view_new_topic.py will include the NewTopicTests class</b>
+        <a href="https://gist.github.com/vitorfs/6ac3aad244c856d418f18890efcb4a7e#file-test_view_new_topic-py">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            myproject/
+             |-- myproject/
+             |    |-- accounts/
+             |    |-- boards/
+             |    |    |-- migrations/
+             |    |    |-- templatetags/
+             |    |    |-- tests/
+             |    |    |    |-- __init__.py
+             |    |    |    |-- test_templatetags.py
+             |    |    |    |-- test_view_home.py          <-- here
+             |    |    |    |-- test_view_board_topics.py  <-- here
+             |    |    |    +-- test_view_new_topic.py     <-- and here
+             |    |    |-- __init__.py
+             |    |    |-- admin.py
+             |    |    |-- apps.py
+             |    |    |-- models.py
+             |    |    +-- views.py
+             |    |-- myproject/
+             |    |-- static/
+             |    |-- templates/
+             |    |-- db.sqlite3
+             |    +-- manage.py
+             +-- venv/
+        </code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Run the tests to make sure everything is working.</span>
+            </span>
+            <span class="col native1">
+                <span>Запустите тесты, чтобы убедиться, что все работает.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s add a new test case in the test_view_new_topic.py to check if the view is decorated with
+                    <i>@login_required:</i></span>
+            </span>
+            <span class="col native1">
+                <span>Давайте добавим новый тестовый пример в test_view_new_topic.py, чтобы проверить, декорировано ли
+                    представление с помощью @login_required:</span>
+            </span>
+        </div>
+    </div>
+    <p>
+        <b>boards/tests/test_view_new_topic.py</b>
+        <a href="https://gist.github.com/vitorfs/13e75451396d76354b476edaefadbdab#file-test_view_new_topic-py-L84">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            from django.test import TestCase
+            from django.urls import reverse
+            from ..models import Board
+
+            class LoginRequiredNewTopicTests(TestCase):
+                def setUp(self):
+                    Board.objects.create(name='Django', description='Django board.')
+                    self.url = reverse('new_topic', kwargs={'pk': 1})
+                    self.response = self.client.get(self.url)
+
+                def test_redirection(self):
+                    login_url = reverse('login')
+                    self.assertRedirects(self.response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))
+        </code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the test case above we are trying to make a request to the <b>new topic</b> view
+                    without being authenticated.
+                </span>
+            </span>
+            <span class="col native1">
+                <span>
+                    В тестовом примере выше мы пытаемся сделать запрос к <b>new topic</b> без проверки подлинности.
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The expected result is for the request be redirected to the login view.</span>
+            </span>
+            <span class="col native1">
+                <span>Ожидаемый результат - перенаправление запроса на представление входа в систему.</span>
+            </span>
+        </div>
+    </div>
+    <hr>
+    <h2>Accessing the Authenticated User</h2>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can improve the <b>new_topic</b> view and this time set the <em lang="translate">proper</em> user,
+                    instead of just querying the database and <strong>picking</strong> the first user. </span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо покращити представлення <b>new_topic</b>, і на цей раз встановити
+                    <em lang=translate>правильний</em> користувач, а не просто робить запит до бази даних
+                    і <strong>вибирати</strong> першого користувача.</span>
+            </span>
+        </div>
+    </div>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/483936caca4618dc275545ad2dfbef24#file-views-py-L19">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.decorators import login_required
+            from django.shortcuts import get_object_or_404, redirect, render
+
+            from .forms import NewTopicForm
+            from .models import Board, Post
+
+            @login_required
+            def new_topic(request, pk):
+                board = get_object_or_404(Board, pk=pk)
+                if request.method == 'POST':
+                    form = NewTopicForm(request.POST)
+                    if form.is_valid():
+                        topic = form.save(commit=False)
+                        topic.board = board
+                        topic.starter = request.user  # <- here
+                        topic.save()
+                        Post.objects.create(
+                            message=form.cleaned_data.get('message'),
+                            topic=topic,
+                            created_by=request.user  # <- and here
+                        )
+                        return redirect('board_topics', pk=board.pk)  # TODO: redirect to the created topic page
+                else:
+                    form = NewTopicForm()
+                return render(request, 'new_topic.html', {'board': board, 'form': form})
+        </code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can do a quick test here by adding a new topic:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо зробити швидкий тест тут, додавши нову тему:</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/topics-2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <hr>
+    <h2>Topic Posts View</h2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s take the time now to implement the posts listing page, accordingly to the wireframe below:
+                </span>
+            </span>
+            <span class="col native1">
+                <span>Давайте займемо час, щоб впровадити сторінку зі списком повідомлень, відповідно до каркасу нижче:
+                </span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/wireframe-posts.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, we need a route:</span>
+            </span>
+            <span class="col native1">
+                <span>По-перше, нам потрібен маршрут:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>myproject/urls.py</b>
+        <a href="https://gist.github.com/vitorfs/aede6d3b7dc3494cf0df48f796075403#file-urls-py-L38">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            url(r'^boards/(?P&ltpk&gt\d+)/topics/(?P&lttopic_pk&gt\d+)/$', views.topic_posts, name='topic_posts'),
+        </code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span><em lang=translate>Observe</em> that now we are dealing with two keyword arguments:
+                    <em class="bg-light">pk</em> which is used to identify the Board, and now we have the
+                    <em class="bg-light">topic_pk</em> which is used to identify which topic to retrieve from the database.
+                </span>
+            </span>
+            <span class="col native1">
+                <span><em lang=translate>Відзначимо</em>, що зараз ми маємо справу з двома іменованими аргументами:
+                    <em class="bg-light">pk</em>, який використовується для ідентифікації категорії, і
+                    тепер у нас є <em class="bg-light">topic_pk</em>, який використовується для визначення тієї теми,
+                    яку потрібно витягнути з бази даних</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The matching view would be like this:</span>
+            </span>
+            <span class="col native1">
+                <span>Відповідне представлення буде таким:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/3d73ef25a01eceea07ef3ad8538437cf#file-views-py-L39">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            django.shortcuts import get_object_or_404, render
+            from .models import Topic
+
+            def topic_posts(request, pk, topic_pk):
+                topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+                return render(request, 'topic_posts.html', {'topic': topic})
+        </code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Note that we are <strong>indirectly</strong> retrieving the current board.</span>
+            </span>
+            <span class="col native1">
+                <span>Зауважте, що ми <strong>опосередковано</strong> витягуємо поточну дошку.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Remember that the topic model is related to the board model, so we can access the current board.
+                    You will see in the next snippet:</span>
+            </span>
+            <span class="col native1">
+                <span>Пам'ятайте, що модель теми пов'язана з моделлю дошки, тому ми можемо отримати доступ до поточної
+                    дошки. Ви побачите в наступному фрагменті:</span>
+            </span>
+        </div>
+    </div>
+    <p>
+        <b>templates/topic_posts.html</b>
+        <a href="https://gist.github.com/vitorfs/17e583f4f0068850c5929bd307dd436a">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Observe that now instead of using board.name in the template, we are navigating through the topic
+                    properties, using topic.board.name.</span>
+            </span>
+            <span class="col native1">
+                <span>Відзначимо, що тепер, замість використання назви board.name у шаблоні, ми переходимо на властивості
+                    теми за допомогою topic.board.name.</span>
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <img src="{% static 'translate_tutor/img/posts-1.png' %}">
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s create a new test file for the <b>topic_posts</b> view:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер створіть новий тестовий файл для виду <b>topic_posts</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h5>boards/tests/test_view_topic_posts.py</h5>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.models import User
+            from django.test import TestCase
+            from django.urls import resolve, reverse
+
+            from ..models import Board, Post, Topic
+            from ..views import topic_posts
+
+
+            class TopicPostsTests(TestCase):
+                def setUp(self):
+                    board = Board.objects.create(name='Django', description='Django board.')
+                    user = User.objects.create_user(username='john', email='john@doe.com', password='123')
+                    topic = Topic.objects.create(subject='Hello, world', board=board, starter=user)
+                    Post.objects.create(message='Lorem ipsum dolor sit amet', topic=topic, created_by=user)
+                    url = reverse('topic_posts', kwargs={'pk': board.pk, 'topic_pk': topic.pk})
+                    self.response = self.client.get(url)
+
+                def test_status_code(self):
+                    self.assertEquals(self.response.status_code, 200)
+
+                def test_view_function(self):
+                    view = resolve('/boards/1/topics/1/')
+                    self.assertEquals(view.func, topic_posts)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Note that the test setup is starting to get more complex.</span>
+            </span>
+            <span class="col native1">
+                <span>Зауважте, що тестова установка починає ускладнюватися.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can create mixins or an abstract class to reuse the code as needed.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо створити mixins або абстрактний клас для повторного використання коду в міру необхідності.
+                </span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can also use a third party library to setup some test data, to reduce the boilerplate code.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також можемо використовувати сторонні бібліотеки для налаштування деяких даних тесту, щоб зменшити
+                    шаблонний код.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Also, by now we already have a <em lang=translate>significant</em> amount of tests,
+                    and it’s <strong>gradually</strong> starting to run slower. </span>
+            </span>
+            <span class="col native1">
+                <span>Крім того, зараз ми вже маємо <em lang=translate>значну(істотну)</em> кількість тестів,
+                    і вони <strong>поступово</strong> починають працювати повільніше.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can <em lang=translate>instruct</em> the test suite just to run tests from a given app:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо <em lang=translate>доручити</em> тестовому пакету просто виконати тести з даного додатка:
+                </span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>python manage.py test boards</code>
+    </pre>
+    <br>
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            .......................
+            ----------------------------------------------------------------------
+            Ran 23 tests in 1.246s
+
+            OK
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We could also run only a specific test file:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також можемо запустити лише певний тестовий файл:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py test boards.tests.test_view_topic_posts
+        </code>
+    </pre>
+    <br>
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            ..
+            ----------------------------------------------------------------------
+            Ran 2 tests in 0.129s
+
+            OK
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Or just a specific test case:</span>
+            </span>
+            <span class="col native1">
+                <span>Або просто конкретний тестовий випадок:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py test boards.tests.test_view_topic_posts.TopicPostsTests.test_status_code
+        </code>
+    </pre>
+    <br>
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            .
+            ----------------------------------------------------------------------
+            Ran 1 test in 0.100s
+
+            OK
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Cool, right?</span>
+            </span>
+            <span class="col native1">
+                <span>Круто, чи не так?</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s keep moving forward.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте продовжувати рухатися вперед.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Inside the <b>topic_posts.html</b>, we can create a for loop iterating over the topic posts:</span>
+            </span>
+            <span class="col native1">
+                <span>Усередині <b>topic_posts.html</b>, ми можемо створити for цикл по темі повідомлень:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <h5>templates/topic_posts.html</h5>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} load static {% templatetag closeblock %}
+
+            {% templatetag openblock %} block title {% templatetag closeblock %}{% templatetag openvariable %} topic.subject {% templatetag closevariable %}{% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block breadcrumb {% templatetag closeblock %}
+            {% autoescape off %}
+                  &ltli class="breadcrumb-item"&gt&lta href="{% templatetag openblock %} url 'home' {% templatetag closeblock %}"&gtBoards&lt/a&gt&lt/li&gt
+                  &ltli class="breadcrumb-item"&gt&lta href="{% templatetag openblock %} url 'board_topics' topic.board.pk {% templatetag closeblock %}"&gt{% templatetag openvariable %} topic.board.name {% templatetag closevariable %}&lt/a&gt&lt/li&gt
+                  &ltli class="breadcrumb-item active"&gt{% templatetag openvariable %} topic.subject {% templatetag closevariable %}&lt/li&gt
+            {% endautoescape %}
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+
+              &ltdiv class="mb-4"&gt
+                &lta href="#" class="btn btn-primary" role="button"&gtReply&lt/a&gt
+              &lt/div&gt
+
+              {% templatetag openblock %} for post in topic.posts.all {% templatetag closeblock %}
+                &ltdiv class="card mb-2"&gt
+                  &ltdiv class="card-body p-3"&gt
+                    &ltdiv class="row"&gt
+                      &ltdiv class="col-2"&gt
+                        &ltimg src="{% templatetag openblock %} static 'img/avatar.svg' {% templatetag closeblock %}" alt="{% templatetag openvariable %} post.created_by.username {% templatetag closevariable %}" class="w-100"&gt
+                        &ltsmall&gtPosts: {% templatetag openvariable %} post.created_by.posts.count {% templatetag closevariable %}&lt/small&gt
+                      &lt/div&gt
+                      &ltdiv class="col-10"&gt
+                        &ltdiv class="row mb-3"&gt
+                          &ltdiv class="col-6"&gt
+                            &ltstrong class="text-muted"&gt{% templatetag openvariable %} post.created_by.username {% templatetag closevariable %}&lt/strong&gt
+                          &lt/div&gt
+                          &ltdiv class="col-6 text-right"&gt
+                            &ltsmall class="text-muted"&gt{% templatetag openvariable %} post.created_at {% templatetag closevariable %}&lt/small&gt
+                          &lt/div&gt
+                        &lt/div&gt
+                        {% templatetag openvariable %} post.message {% templatetag closevariable %}
+                        {% templatetag openblock %} if post.created_by == user {% templatetag closeblock %}
+                          &ltdiv class="mt-3"&gt
+                            &lta href="#" class="btn btn-primary btn-sm" role="button"&gtEdit&lt/a&gt
+                          &lt/div&gt
+                        {% templatetag openblock %} endif {% templatetag closeblock %}
+                      &lt/div&gt
+                    &lt/div&gt
+                  &lt/div&gt
+                &lt/div&gt
+              {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/posts-2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Since right now <em lang=translate>we don’t have a way</em> to upload a user picture,
+                    let’s just have an empty image.</span>
+            </span>
+            <span class="col native1">
+                <span>Оскільки зараз <em lang=translate>ми не маємо способу</em> завантажити зображення користувача,
+                    давайте мати лише порожнє зображення.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>
+                    I downloaded a free image from <a href="https://www.iconfinder.com/search/?q=user&license=2&price=free">
+                    IconFinder</a> and saved in the <strong>static/img</strong> folder of the project.
+                </span>
+            </span>
+            <span class="col native1">
+                <span>Я завантажив вільне зображення з IconFinder і зберіг в папці <strong>static/img</strong> проекту.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We still haven’t really explored Django’s ORM, but the code
+                    <span class="gray-border">
+                        {% templatetag openvariable %} post.created_by.posts.count {% templatetag closevariable %}</span>
+                    is executing a <span class="gray-border">select count</span> in the database.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми поки що не вивчили ORM у Django, але код
+                    <span class="gray-border">
+                        {% templatetag openvariable %} post.created_by.posts.count {% templatetag closevariable %}</span>
+                    виконує <span class="gray-border">select count</span> у базі даних.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Even though the result is correct, it is a bad approach.</span>
+            </span>
+            <span class="col native1">
+                <span>Хоча результат правильний, це поганий підхід.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Right now it’s causing several unnecessary queries in the database.</span>
+            </span>
+            <span class="col native1">
+                <span>Зараз це викликає декілька непотрібних запитів у базі даних.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But hey, don’t worry about that right now.</span>
+            </span>
+            <span class="col native1">
+                <span>Але агов, не хвилюйтеся про те прямо зараз.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s focus on how we <em lang=translate>interact</em> with the application.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте зосередимося на тому, як ми <em lang=translate>взаємодіємо</em> з додатком.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Later on, we are going to improve this code, and how to diagnose heavy queries.</span>
+            </span>
+            <span class="col native1">
+                <span>Пізніше ми будемо вдосконалювати цей код і як діагностувати важкі запити.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Another interesting <strong>point</strong> here is that we are testing if the current post belongs to the authenticated user:
+                    <span class="gray-border">
+                        {% templatetag openblock %} if post.created_by == user {% templatetag closeblock %}</span>.
+                </span>
+
+            </span>
+            <span class="col native1">
+                <span>Інший цікавий <strong>момент</strong> полягає в тому, що ми перевіряємо,
+                    чи поточний запис належить автентифікованому користувачеві:
+                    {% templatetag openblock %} if post.created_by == user {% templatetag closeblock %}.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>And we are only showing the edit button for the owner of the post.</span>
+            </span>
+            <span class="col native1">
+                <span>І ми показуємо лише кнопку редагування для власника публікації.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Since we now have the URL route to the topic posts listing, update the <b></b> template
+                    with the link:</span>
+            </span>
+            <span class="col native1">
+                <span>Оскільки тепер ми маємо URL-маршрут до списку тем повідомлень, оновіть <b>topics.html</b>
+                    з посиланням:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topics.html</b>
+        <a href="https://gist.github.com/vitorfs/cb4b7c9ff382ddeafb4114d0c84b3869">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} for topic in board.topics.all {% templatetag closeblock %}
+              &lttr&gt
+                &lttd&gt&lta href="{% templatetag openblock %} url 'topic_posts' board.pk topic.pk{% templatetag openvariable %} topic.subject {% templatetag closevariable %}&lt/a&gt&lt/td&gt
+                &lttd&gt{{ topic.starter.username }}&lt/td&gt
+                &lttd&gt0&lt/td&gt
+                &lttd&gt0&lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.last_updated {% templatetag closevariable %}&lt/td&gt
+              &lt/tr&gt
+            {% templatetag openblock %} endfor {% templatetag closeblock %}
+        </code>
+    </pre>
+    <hr>
+    <h2>Reply Post View</h2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s implement now the reply post view so that we can add more data
+                    and progress with the implementation and tests.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте тепер впроваджуватимемо вид сповіщень у відповідь, щоб ми могли додавати більше даних
+                    та досягти прогресу у реалізації та тестуванні.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/wireframe-reply.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>New URL route:</span>
+            </span>
+            <span class="col native1">
+                <span>Новий URL-маршрут:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>myproject/urls.py</b>
+        <a href="https://gist.github.com/vitorfs/71a5f9f39202edfbab9bacf11844548b#file-urls-py-L39">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            url(r'^boards/(?P&ltpk&gt\d+)/topics/(?P&lttopic_pk&gt\d+)/reply/$', views.reply_topic, name='reply_topic'),
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For Django 2 and more</span>
+            </span>
+            <span class="col native1">
+                <span>Для Django 2 та більше</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.urls import path
+
+            path('boards/&ltint:pk&gt/topics/&ltint:topic_pk&gt/reply/', views.reply_topic, name='reply_topic'),
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a new form for the post reply:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть нову форму для відповіді на повідомлення:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/forms.py</b>
+        <a href="https://gist.github.com/vitorfs/3dd5ed2b3e27b4c12886e9426acf8fda#file-forms-py-L20">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            from django import forms
+            from .models import Post
+
+            class PostForm(forms.ModelForm):
+                class Meta:
+                    model = Post
+                    fields = ['message', ]
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+            <span>A new view protected by <span class="gray-border">@login_required</span> and with a simple form
+            </span>
+                    processing logic:</span>
+            <span class="col native1">
+                <span>Новий вид, захищений <span class="gray-border">@login_required</span> і за допомогою простої логіки
+                    обробки форм:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.decorators import login_required
+            from django.shortcuts import get_object_or_404, redirect, render
+            from .forms import PostForm
+            from .models import Topic
+
+            @login_required
+            def reply_topic(request, pk, topic_pk):
+                topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+                if request.method == 'POST':
+                    form = PostForm(request.POST)
+                    if form.is_valid():
+                        post = form.save(commit=False)
+                        post.topic = topic
+                        post.created_by = request.user
+                        post.save()
+                        return redirect('topic_posts', pk=pk, topic_pk=topic_pk)
+                else:
+                    form = PostForm()
+                return render(request, 'reply_topic.html', {'topic': topic, 'form': form})
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Also take the time to update the return redirect of the new_topic view function
+                    (marked with the comment <b># TODO</b>).</span>
+            </span>
+            <span class="col native1">
+                <span>Також час для оновлення повернення переадресації функції <b>new_topic</b> view
+                    (позначено коментарем <b># TODO</b>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            @login_required
+            def new_topic(request, pk):
+                board = get_object_or_404(Board, pk=pk)
+                if request.method == 'POST':
+                    form = NewTopicForm(request.POST)
+                    if form.is_valid():
+                        topic = form.save(commit=False)
+                        # code suppressed ...
+                        return redirect('topic_posts', pk=pk, topic_pk=topic.pk)  # <- here
+                # code suppressed ...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Very important: in the view <b>reply_topic</b> we are using <span class="gray-border">topic_pk</span>
+                    because we are referring to the keyword argument of the function,</span>
+            </span>
+            <span class="col native1">
+                <span>Дуже важливо: в представленні <b>reply_topic</b> ми використовуємо <span class="gray-border">topic_pk</span>,
+                    оскільки ми маємо на увазі іменовані аргументи функції,</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>in the view <b>new_topic</b> we are using <span class="gray-border border-dark">topic.pk</span>
+                    because a topic is an object (Topic model instance) and <span class="gray-border border-dark">.pk</span>
+                    we are accessing the <em>pk</em> property of the Topic model instance.</span>
+            </span>
+            <span class="col native1">
+                <span>в представленні <b>new_topic</b> ми використовуємо <span class="gray-border border-dark">topic.pk</span>,
+                    оскільки тема є об'єктом (екземпляр моделі Topic) і <span class="gray-border border-dark">.pk</span>, ми звертаємось
+                    до властивості <em>pk</em> екземпляра моделі Topic.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Small detail, big difference.</span>
+            </span>
+            <span class="col native1">
+                <span>Маленька деталь, велика різниця.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The first version of our template:</span>
+            </span>
+            <span class="col native1">
+                <span>Перша версія нашого шаблону:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>templates/reply_topic.html</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+
+            {% templatetag openblock %} load static {% templatetag closeblock %}
+
+            {% templatetag openblock %} block title {% templatetag closeblock %} Post a reply {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block breadcrumb {% templatetag closeblock %}
+              &ltli class="breadcrumb-item"&gt&lta href="{% templatetag openblock %}url 'home' {% templatetag closeblock %}"&gtBoards&lt/a&gt&lt/li&gt
+              &ltli class="breadcrumb-item"&gt&lta href="{% templatetag openblock %} url 'board_topics' topic.board.pk {% templatetag closeblock %}"&gt{% templatetag openvariable %} topic.board.name {% templatetag closevariable %} &lt/a&gt&lt/li&gt
+              &ltli class="breadcrumb-item"&gt&lta href="{% templatetag openblock %} url 'topic_posts' topic.board.pk topic.pk {% templatetag closeblock %}"&gt {% templatetag openvariable %} topic.subject {% templatetag closevariable %} &lt/a&gt&lt/li&gt
+              &ltli class="breadcrumb-item active"&gtPost a reply&lt/li&gt
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+
+              &ltform method="post" class="mb-4"&gt
+                {% templatetag openblock %} csrf_token {% templatetag closeblock %}
+                {% templatetag openblock %} include 'includes/form.html' {% templatetag closeblock %}
+                &ltbutton type="submit" class="btn btn-success"&gtPost a reply&lt/button&gt
+              &lt/form&gt
+
+              {% templatetag openblock %} for post in topic.posts.all {% templatetag closeblock %}
+                &ltdiv class="card mb-2"&gt
+                  &ltdiv class="card-body p-3"&gt
+                    &ltdiv class="row mb-3"&gt
+                      &ltdiv class="col-6"&gt
+                        &ltstrong class="text-muted"&gt {% templatetag openvariable %} post.created_by.username {% templatetag closevariable %} &lt/strong&gt
+                      &lt/div&gt
+                      &ltdiv class="col-6 text-right"&gt
+                        &ltsmall class="text-muted"&gt {% templatetag openvariable %} post.created_at {% templatetag closevariable %} &lt/small&gt
+                      &lt/div&gt
+                    &lt/div&gt
+                    {% templatetag openvariable %} post.message {% templatetag closevariable %}
+                  &lt/div&gt
+                &lt/div&gt
+              {% templatetag openblock %} endfor {% templatetag closeblock %}
+
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/reply.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then after posting a reply, the user is redirected back to the topic posts:</span>
+            </span>
+            <span class="col native1">
+                <span>Потім після надсилання відповіді користувач перенаправляється назад до повідомлень теми:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/posts-3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We could now change the starter post, so to give it more <em lang=translate>emphasis</em>
+                    in the page:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо змінити стартовий пост, щоб надати йому більше <em lang=translate>уваги</em>
+                    на сторінці:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>templates/topic_posts.html</b>
+        <a href="">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} for post in topic.posts.all {% templatetag closeblock %}
+                &lt;div class="card mb-2 {% templatetag openblock %} if forloop.first %}border-dark{% templatetag openblock %} endif {% templatetag closeblock %}"&gt;
+                    {% templatetag openblock %} if forloop.first {% templatetag closeblock %}
+                      &lt;div class="card-header text-white bg-dark py-2 px-3">{% templatetag openvariable %} topic.subject {% templatetag closevariable %}&lt;/div&gt;
+                    {% templatetag openblock %} endif {% templatetag closeblock %}
+                    &lt;div class="card-body p-3"&gt;
+                      <!-- code suppressed -->
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            {% templatetag openblock %} endfor {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/posts-4.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now for the tests, pretty standard, just like we have been doing so far.</span>
+            </span>
+            <span class="col native1">
+                <span>Зараз до тестів, досить стандартних, які ми робили досі.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a new file <b>test_view_reply_topic.py</b>
+                    inside the <b>boards/tests</b> folder:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть новий файл <b>test_view_reply_topic.py</b> всередині теки
+                    <b>boards/tests</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/tests/test_view_reply_topic.py</b>
+        <a href="https://gist.github.com/vitorfs/7148fcb95075fb6641e638214b751cf1">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.contrib.auth.models import User
+            from django.test import TestCase
+            from django.urls import reverse
+            from ..models import Board, Post, Topic
+            from ..views import reply_topic
+
+            class ReplyTopicTestCase(TestCase):
+                '''
+                Base test case to be used in all `reply_topic` view tests
+                '''
+                def setUp(self):
+                    self.board = Board.objects.create(name='Django', description='Django board.')
+                    self.username = 'john'
+                    self.password = '123'
+                    user = User.objects.create_user(username=self.username, email='john@doe.com', password=self.password)
+                    self.topic = Topic.objects.create(subject='Hello, world', board=self.board, starter=user)
+                    Post.objects.create(message='Lorem ipsum dolor sit amet', topic=self.topic, created_by=user)
+                    self.url = reverse('reply_topic', kwargs={'pk': self.board.pk, 'topic_pk': self.topic.pk})
+
+            class LoginRequiredReplyTopicTests(ReplyTopicTestCase):
+                # ...
+
+            class ReplyTopicTests(ReplyTopicTestCase):
+                # ...
+
+            class SuccessfulReplyTopicTests(ReplyTopicTestCase):
+                # ...
+
+            class InvalidReplyTopicTests(ReplyTopicTestCase):
+                # ...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The essence here is the custom test case class ReplyTopicTestCase.</span>
+            </span>
+            <span class="col native1">
+                <span>Суть тут полягає в користувацькому тестовому кейсі класі ReplyTopicTestCase.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then all the four classes will extend this test case.</span>
+            </span>
+            <span class="col native1">
+                <span>Потім всі чотири класи продовжать цей тестовий кейс.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, we test if the view is protected with the @login_required decorator,</span>
+            </span>
+            <span class="col native1">
+                <span>По-перше, ми перевіряємо, чи захищений вид за допомогою декоратора @login_required,</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>then check the HTML inputs, status code.</span>
+            </span>
+            <span class="col native1">
+                <span>потім перевіряємо HTML inputs, код статусу.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Finally, we test a valid and an invalid form submission.</span>
+            </span>
+            <span class="col native1">
+                <span>Нарешті, ми перевіряємо дійсну та недійсну форму подання.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <H2>QuerySets</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s take the time now to explore some of the models’ API functionalities a little bit.</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте розглянемо деякі функціональні можливості API моделей.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, let’s improve the home view:</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку давайте покращимо домашній вид:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/boards-1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We have three tasks here:</span>
+            </span>
+            <span class="col native1">
+                <span>У нас є три завдання:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <ul>
+        <li>Display the posts count of the board - Відображати кількість повідомлень для дошки;</li>
+        <li>Display the topics count of the board - Відображати кількість тем для дошки;</li>
+        <li>Display the last user who posted something and the date and time - Відображати останнього користувача,
+            який опублікував щось, а також дату та час.</li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s play with the Python terminal first, before we jump into the implementation.</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку граємо з терміналом Python, перш ніж ми перейдемо до реалізації.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Since we are going to try things out in the Python terminal, it’s a good idea to define
+                    a <span class="gray-border">__str__</span> method for all our models.</span>
+            </span>
+            <span class="col native1">
+                <span>Оскільки ми збираємось спробувати речі на терміналі Python, непогано було б визначити
+                    метод <span class="gray-border">__str__</span> для всіх наших моделей.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/models.py</b>
+        <a href="">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.db import models
+            from django.utils.text import Truncator
+
+            class Board(models.Model):
+                # ...
+                def __str__(self):
+                    return self.name
+
+            class Topic(models.Model):
+                # ...
+                def __str__(self):
+                    return self.subject
+
+            class Post(models.Model):
+                # ...
+                def __str__(self):
+                    truncated_message = Truncator(self.message)
+                    return truncated_message.chars(30)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In the Post model we are using the Truncator utility class.</span>
+            </span>
+            <span class="col native1">
+                <span>У моделі Post ми використовуємо клас утиліт Truncator.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s a convenient way to truncate long strings into an arbitrary string size (here we are using 30).</span>
+            </span>
+            <span class="col native1">
+                <span>Це зручний спосіб скорочення довгих рядків у довільний розмір рядка (тут ми використовуємо 30).</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s open the Python shell terminal:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте відкриємо термінал Python:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py shell
+
+            # First get a board instance from the database
+            board = Board.objects.get(name='Django')
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The easiest of the three tasks is to get the current topics count,
+                    because the Topic and Board are directly related:</span>
+            </span>
+            <span class="col native1">
+                <span>Найпростішим із трьох завдань є отримання підрахунку поточних тем,
+                    оскільки Topic та Board безпосередньо пов'язані:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            board.topics.all()
+            &ltQuerySet [&ltTopic: Hello everyone!&gt, &ltTopic: Test&gt, &ltTopic: Testing a new post&gt, &ltTopic: Hi&gt]&gt
+
+            board.topics.count()
+            4
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>That’s about it.</span>
+            </span>
+            <span class="col native1">
+                <span>Ось про це.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now the number of posts within a board is a little bit trickier because Post is not directly related to Board.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер підрахунк posts у board трохи складніше, оскільки Post не пов'язана безпосередньо з Board.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from boards.models import Post
+
+            Post.objects.all()
+            &ltQuerySet [&ltPost: This is my first topic.. :-)&gt, &ltPost: test.&gt, &ltPost: Hi everyone!&gt,
+              &ltPost: New test here!&gt, &ltPost: Testing the new reply feature!&gt, &ltPost: Lorem ipsum dolor sit amet,...&gt,
+              &ltPost: hi there&gt, &ltPost: test&gt, &ltPost: Testing..&gt, &ltPost: some reply&gt, &ltPost: Random random.&gt
+            ]&gt
+
+            Post.objects.count()
+            11
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we have 11 posts. But not all of them belongs to the “Django” board.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми маємо 11 повідомлень. Але не всі вони належать до дошки "Джанго".</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here is how we can filter it:</span>
+            </span>
+            <span class="col native1">
+                <span>Ось як ми можемо Їх фільтрувати:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from boards.models import Board, Post
+
+            board = Board.objects.get(name='Django')
+
+            Post.objects.filter(topic__board=board)
+            &ltQuerySet [&ltPost: This is my first topic.. :-)&gt, &ltPost: test.&gt, &ltPost: hi there&gt,
+              &ltPost: Hi everyone!&gt, &ltPost: Lorem ipsum dolor sit amet,...&gt, &ltPost: New test here!&gt,
+              &ltPost: Testing the new reply feature!&gt
+            ]&gt
+
+            Post.objects.filter(topic__board=board).count()
+            7
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The double underscores topic__board is used to navigate through the models’ relationships.</span>
+            </span>
+            <span class="col native1">
+                <span>Подвійне підкреслення topic__board використовується для навігації по відношенню моделей.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span><em lang="translate">Under the hoods</em>, Django builds the bridge between the Board - Topic - Post,</span>
+            </span>
+            <span class="col native1">
+                <span><em lang="translate">Під капотом</em>, Django будує міст між Board - Topic - Post,</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>and build a SQL query to retrieve just the posts that belong to a specific board.</span>
+            </span>
+            <span class="col native1">
+                <span>і створює SQL-запит для отримання лише повідомлень, що належать до певної board.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now our last mission is to identify the last post.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер наша остання місія полягає у визначенні останнього повідомлення.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            Post.objects.filter(topic__board=board).order_by('-created_at')
+            &ltQuerySet [&ltPost: testing&gt, &ltPost: new post&gt, &ltPost: hi there&gt, &ltPost: Lorem ipsum dolor sit amet,...&gt,
+              &ltPost: Testing the new reply feature!&gt, &ltPost: New test here!&gt, &ltPost: Hi everyone!&gt,
+              &ltPost: test.&gt, &ltPost: This is my first topic.. :-)&gt
+            ]&gt
+
+            # we can use the `first()` method to just grab the result that interest us
+            Post.objects.filter(topic__board=board).order_by('-created_at').first()
+            &ltPost: testing&gt
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Sweet. Now we can implement it.</span>
+            </span>
+            <span class="col native1">
+                <span>Класс. Тепер ми можемо його реалізувати.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/models.py</b>
+        <a href="https://gist.github.com/vitorfs/74077336decd75292082752eb8405ad3">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.db import models
+
+            class Board(models.Model):
+                name = models.CharField(max_length=30, unique=True)
+                description = models.CharField(max_length=100)
+
+                def __str__(self):
+                    return self.name
+
+                def get_posts_count(self):
+                    return Post.objects.filter(topic__board=self).count()
+
+                def get_last_post(self):
+                    return Post.objects.filter(topic__board=self).order_by('-created_at').first()
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Observe that we are using <span class="gray-border">self</span>,
+                    because this method will be used by a Board instance.</span>
+            </span>
+            <span class="col native1">
+                <span>Зауважимо, що ми використовуємо <span class="gray-border">self</span>,
+                    тому що цей метод буде використовуватися екземпляром Board.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So that means we are using this instance to filter the QuerySet.</span>
+            </span>
+            <span class="col native1">
+                <span>Отже, це означає, що ми використовуємо цей екземпляр для фільтрування QuerySet.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can improve the home HTML template to display this brand new information:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо вдосконалити шаблон домашнього HTML, щоб відобразити цю нову інформацію:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>templates/home.html</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} extends 'base.html' {% templatetag closeblock %}
+            {% templatetag openblock %} block breadcrumb {% templatetag closeblock %}
+              &ltli class="breadcrumb-item active"&gtBoards&lt/li&gt
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+            {% templatetag openblock %} block content {% templatetag closeblock %}
+              &lttable class="table"&gt
+                &ltthead class="thead-inverse"&gt
+                  &lttr&gt
+                    &ltth&gtBoard&lt/th&gt
+                    &ltth&gtPosts&lt/th&gt
+                    &ltth&gtTopics&lt/th&gt
+                    &ltth&gtLast Post&lt/th&gt
+                  &lt/tr&gt
+                &lt/thead&gt
+                &lttbody&gt
+                  {% templatetag openblock %} for board in boards {% templatetag closeblock %}
+                    &lttr&gt
+                      &lttd&gt
+                        &lta href="{% templatetag openblock %} url 'board_topics' board.pk {% templatetag openvariable %} board.name {% templatetag closevariable %}
+                        &lt/a&gt
+                        &ltsmall class="text-muted d-block"&gt{% templatetag openvariable %} board.description {% templatetag closevariable %}&lt/small&gt
+                      &lt/td&gt
+                      &lttd class="align-middle"&gt
+                        {% templatetag openvariable %} board.get_posts_count {% templatetag closevariable %}
+                      &lt/td&gt
+                      &lttd class="align-middle"&gt
+                        {% templatetag openvariable %} board.topics.count {% templatetag closevariable %}
+                      &lt/td&gt
+                      &lttd class="align-middle"&gt
+                        {% templatetag openblock %} with post=board.get_last_post {% templatetag closeblock %}
+                          &ltsmall&gt
+                            &lta href="{% templatetag openblock %} url 'topic_posts' board.pk post.topic.pk {% templatetag closeblock %}"&gt
+                              By {% templatetag openvariable %} post.created_by.username {% templatetag closevariable %} at {% templatetag openvariable %} post.created_at {% templatetag closevariable %}
+                            &lt/a&gt
+                          &lt/small&gt
+                        {% templatetag openblock %} endwith {% templatetag closeblock %}
+                      &lt/td&gt
+                    &lt/tr&gt
+                  {% templatetag openblock %} endfor {% templatetag closeblock %}
+                &lt/tbody&gt
+              &lt/table&gt
+            {% templatetag openblock %} endblock {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>And that’s the result for now:</span>
+            </span>
+            <span class="col native1">
+                <span>І ось результат на даний момент:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/boards-2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Run the tests:</span>
+            </span>
+            <span class="col native1">
+                <span>Запустіть тести:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py test
+        </code>
+    </pre>
+
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            .......................................................EEE......................
+            ======================================================================
+            ERROR: test_home_url_resolves_home_view (boards.tests.test_view_home.HomeTests)
+            ----------------------------------------------------------------------
+            django.urls.exceptions.NoReverseMatch: Reverse for 'topic_posts' with arguments '(1, '')' not found. 1 pattern(s) tried: ['boards/(?P&ltpk&gt\\d+)/topics/(?P&lttopic_pk&gt\\d+)/$']
+
+            ======================================================================
+            ERROR: test_home_view_contains_link_to_topics_page (boards.tests.test_view_home.HomeTests)
+            ----------------------------------------------------------------------
+            django.urls.exceptions.NoReverseMatch: Reverse for 'topic_posts' with arguments '(1, '')' not found. 1 pattern(s) tried: ['boards/(?P&ltpk&gt\\d+)/topics/(?P&lttopic_pk&gt\\d+)/$']
+
+            ======================================================================
+            ERROR: test_home_view_status_code (boards.tests.test_view_home.HomeTests)
+            ----------------------------------------------------------------------
+            django.urls.exceptions.NoReverseMatch: Reverse for 'topic_posts' with arguments '(1, '')' not found. 1 pattern(s) tried: ['boards/(?P&ltpk&gt\\d+)/topics/(?P&lttopic_pk&gt\\d+)/$']
+
+            ----------------------------------------------------------------------
+            Ran 80 tests in 5.663s
+
+            FAILED (errors=3)
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It seems like we have a problem with our implementation here.</span>
+            </span>
+            <span class="col native1">
+                <span>Схоже, у нас тут є проблеми з нашою реалізацією.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The application is crashing if there are no posts.</span>
+            </span>
+            <span class="col native1">
+                <span>Програма зазнає аварії, якщо немає повідомлень.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>templates/home.html</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} with post=board.get_last_post {% templatetag closeblock %}
+              {% templatetag openblock %} if post {% templatetag closeblock %}
+                &ltsmall&gt
+                  &lta href="{% templatetag openblock %} url 'topic_posts' board.pk post.topic.pk {% templatetag closeblock %}"&gt
+                    By {% templatetag openvariable %} post.created_by.username {% templatetag closevariable %} at {% templatetag openvariable %} post.created_at {% templatetag closevariable %}
+                  &lt/a&gt
+                &lt/small&gt
+              {% templatetag openblock %} else {% templatetag closeblock %}
+                &ltsmall class="text-muted"&gt
+                  &ltem&gtNo posts yet.&lt/em&gt
+                &lt/small&gt
+              {% templatetag openblock %} endif {% templatetag closeblock %}
+            {% templatetag openblock %} endwith {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Run the tests again:</span>
+            </span>
+            <span class="col native1">
+                <span>Виконайте тести знову:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py test
+        </code>
+    </pre>
+
+    <pre class="bg-light">
+        <code>
+            Creating test database for alias 'default'...
+            System check identified no issues (0 silenced).
+            ................................................................................
+            ----------------------------------------------------------------------
+            Ran 80 tests in 5.630s
+
+            OK
+            Destroying test database for alias 'default'...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I added a new board with no messages just to check the “empty message”:</span>
+            </span>
+            <span class="col native1">
+                <span>Я додав нову дошку без повідомлень, щоб тільки перевірити "порожнє повідомлення":</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/boards-3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now it’s time to improve the topics listing view.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер пора поліпшити вид списку тем.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/topics-3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I will show you another way to include the count, this time to the number of replies,
+                    in a more effective way.</span>
+            </span>
+            <span class="col native1">
+                <span>Я покажу вам ще один спосіб зробити підрахунок, на цей раз кількості відповідей,
+                    більш ефективний спосіб.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>As usual, let’s try first with the Python shell:</span>
+            </span>
+            <span class="col native1">
+                <span>Як завжди, спробуємо спочатку за допомогою оболонки Python:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py shell
+        </code>
+    </pre>
+
+    <pre class="bg-light">
+        <code>
+            from django.db.models import Count
+            from boards.models import Board
+
+            board = Board.objects.get(name='Django')
+
+            topics = board.topics.order_by('-last_updated').annotate(replies=Count('posts'))
+
+            for topic in topics:
+                print(topic.replies)
+
+            2
+            4
+            2
+            1
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we are using the annotate QuerySet method to generate a new “column” on the fly.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми використовуємо метод QuerySet annotate для створення нового "стовпця" на льоту.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This new column, which will be translated into a property, accessible <em lang=translate>via</em>
+                    topic.replies contain the count of posts a given topic has.</span>
+            </span>
+            <span class="col native1">
+                <span>Цей новий стовпець, який буде переведений у властивість, доступний <em lang=translate>через</em>
+                    topic.replies, містить кількість повідомлень, які має певна тема.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can do just a minor fix because the replies should not consider
+                    the starter topic (which is also a Post instance).</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо зробити лише незначні виправлення, тому що відповіді не повинні
+                    враховувати стартову тему (яка також є екземпляром Post).</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So here is how we do it:</span>
+            </span>
+            <span class="col native1">
+                <span>Так ось як ми це робимо:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            topics = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+
+            for topic in topics:
+                print(topic.replies)
+
+            1
+            3
+            1
+            0
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Cool, right?</span>
+            </span>
+            <span class="col native1">
+                <span>) ?</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/f22b493b3e076aba9351c9d98f547f5e#file-views-py-L14">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.db.models import Count
+            from django.shortcuts import get_object_or_404, render
+            from .models import Board
+
+            def board_topics(request, pk):
+                board = get_object_or_404(Board, pk=pk)
+                topics = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+                return render(request, 'topics.html', {'board': board, 'topics': topics})
+        </code>
+    </pre>
+    <br>
+    <p>
+        <b>templates/topics.html</b>
+        <a href="https://gist.github.com/vitorfs/1a2235f05f436c92025dc86028c22fc4#file-topics-html-L28">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} for topic in topics {% templatetag closeblock %}
+              &lttr&gt
+                &lttd&gt&lta href="{% templatetag openblock %} url 'topic_posts' board.pk topic.pk {% templatetag openvariable %} topic.subject {% templatetag closevariable %} &lt/a&gt&lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.starter.username {% templatetag closevariable %}&lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.replies {% templatetag closevariable %}
+                &lt/td&gt
+                &lttd&gt0&lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.last_updated {% templatetag closevariable %}
+                &lt/td&gt
+              &lt/tr&gt
+            {% templatetag openblock %} endfor {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/topics-4.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Next step now is to fix the views count. </span>
+            </span>
+            <span class="col native1">
+                <span>Наступний крок зараз полягає у виправленні кількості переглядів.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But for that, we will need to create a new field.</span>
+            </span>
+            <span class="col native1">
+                <span>Але для цього нам потрібно буде створити нове поле.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <H2>Migrations</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Migration is a fundamental part of Web development with Django.</span>
+            </span>
+            <span class="col native1">
+                <span>Міграція - фундаментальна частина розробки веб-сторінок з Django.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s how we <em lang=translate>evolve</em> our application’s models keeping the models’ files
+                    synchronized with the database.</span>
+            </span>
+            <span class="col native1">
+                <span>Це, як ми <em lang=translate>розвиваємо</em> моделі нашої програми, зберігаючи файли моделей,
+                        синхронізовані з базою даних.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>When we first run the command python <span class="gray-border">manage.py migrate</span>
+                    Django grab all migration files and generate the database schema.</span>
+            </span>
+            <span class="col native1">
+                <span>Коли ми вперше запускаємо команду <span class="gray-border">python manage.py migrate</span>
+                    Django захоплює всі файли міграції та створює схему бази даних.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>When Django applies a migration, it has a special table called <strong>django_migrations</strong>.</span>
+            </span>
+            <span class="col native1">
+                <span>Коли Джанго застосовує міграцію, він має спеціальну таблицю, що називається <strong>django_migrations</strong>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In this table, Django registers all the applied migrations.</span>
+            </span>
+            <span class="col native1">
+                <span>У цій таблиці Django реєструє всі застосовані міграції.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So if we try to run the command again:</span>
+            </span>
+            <span class="col native1">
+                <span>Отже, якщо ми спробуємо знову запустити команду:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py migrate
+        </code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            Operations to perform:
+              Apply all migrations: admin, auth, boards, contenttypes, sessions
+            Running migrations:
+              No migrations to apply.
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Django will know there’s nothing to do.</span>
+            </span>
+            <span class="col native1">
+                <span>Джанго буде знати, що нічого робити не потрібно.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s create a migration by adding a new field to the Topic model:</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте створимо міграцію, додавши нове поле до моделі Topic:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/models.py</b>
+        <a href="https://gist.github.com/vitorfs/816f47aa4df8e7b157df75e0ff209aac#file-models-py-L25">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            class Topic(models.Model):
+            subject = models.CharField(max_length=255)
+            last_updated = models.DateTimeField(auto_now_add=True)
+            board = models.ForeignKey(Board, related_name='topics')
+            starter = models.ForeignKey(User, related_name='topics')
+            views = models.PositiveIntegerField(default=0)  # <- here
+
+            def __str__(self):
+                return self.subject
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here we added a <span class="gray-border">PositiveIntegerField</span>.</span>
+            </span>
+            <span class="col native1">
+                <span>Тут ми додали <span class="gray-border">PositiveIntegerField</span>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Since this field is going to store the number of page views,
+                    a negative page view wouldn’t make sense</span>
+            </span>
+            <span class="col native1">
+                <span>Оскільки в цьому полі збираємося зберігати кількість переглядів сторінок, негативна кількість
+                    переглядів сторінки не має сенсу</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Before we can use our new field, we have to update the database schema.</span>
+            </span>
+            <span class="col native1">
+                <span>Перш ніж ми зможемо використовувати наше нове поле, ми повинні оновити схему бази даних.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Execute the makemigrations command:</span>
+            </span>
+            <span class="col native1">
+                <span>Виконайте команду <span class="gray-border">makemigrations</span>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py makemigrations
+
+            Migrations for 'boards':
+              boards/migrations/0003_topic_views.py
+                - Add field views to topic
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The <span class="gray-border">makemigrations</span> command automatically generated
+                    the <b>0003_topic_views.py</b> file, which will be used to modify the database,
+                    adding the <strong>views</strong> field.</span>
+            </span>
+            <span class="col native1">
+                <span>Команда <span class="gray-border">makemigrations</span> автоматично генерує файл
+                    <b>0003_topic_views.py</b>, який буде використовуватися для зміни бази даних,
+                    додаючи поле <strong>views</strong>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now apply the migration by running the command migrate:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер застосуйте міграцію за допомогою команди <span class="gray-border">migrate</span>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py migrate
+
+            Operations to perform:
+              Apply all migrations: admin, auth, boards, contenttypes, sessions
+            Running migrations:
+              Applying boards.0003_topic_views... OK
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can use it to keep track of the number of views a given topic is receiving:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо використовувати це для відстеження кількості переглядів, які отримує дана тема:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <p>
+        <b>boards/views.py</b>
+        <a href="https://gist.github.com/vitorfs/c0c97c1e050204d9152c59b4da2f9305#file-views-py-L41">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            from django.shortcuts import get_object_or_404, render
+            from .models import Topic
+
+            def topic_posts(request, pk, topic_pk):
+                topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+                topic.views += 1
+                topic.save()
+                return render(request, 'topic_posts.html', {'topic': topic})
+        </code>
+    </pre>
+    <br>
+    <p>
+        <b>templates/topics.html</b>
+        <a href="https://gist.github.com/vitorfs/70ebb1a06e1044387943ee83bafcd526">
+            (view complete file contents - дивись повний зміст файлу)
+        </a>
+    </p>
+    <br>
+    <pre class="bg-light">
+        <code>
+            {% templatetag openblock %} for topic in topics {% templatetag closeblock %}
+              &lttr&gt
+                &lttd&gt&lta href="{% templatetag openblock %} url 'topic_posts' board.pk topic.pk {% templatetag openvariable %} topic.subject {% templatetag closevariable %} &lt/a&gt&lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.starter.username {% templatetag closevariable %}&lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.replies {% templatetag closevariable %}
+                &lt/td&gt
+                &lttd&gt{% templatetag openvariable %} topic.views {% templatetag closevariable %}&lt/td&gt  &lt!-- here --&gt
+                &lttd&gt{% templatetag openvariable %} topic.last_updated {% templatetag closevariable %}
+                &lt/td&gt
+              &lt/tr&gt
+            {% templatetag openblock %} endfor {% templatetag closeblock %}
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now open a topic and refresh the page a few times, and see if it’s counting the page views:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер відкрийте тему та оновіть сторінку кілька разів, і подивіться, чи підраховує перегляди сторінок:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/posts-5.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <h2>Conclusions - Висновки</h2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>In this tutorial, we made some progress in the development of the Web boards functionalities.</span>
+            </span>
+            <span class="col native1">
+                <span>У цьому підручнику ми зробили певний прогрес у розробці функціональності веб-форумів.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>There are a few things left to implement: the edit post view, the “my account” view for the user
+                    to update their names, etc.</span>
+            </span>
+            <span class="col native1">
+                <span>Для реалізації залишається кілька речей: режим перегляду повідомлень, вид "Мій обліковий запис",
+                    щоб користувач оновив свої імена тощо.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>After those two views, we are going to enable markdown in the posts and implement pagination in both topic listing and topic replies listing.</span>
+            </span>
+            <span class="col native1">
+                <span>Після цих двох видів ми будемо дозволяти "відмітку TODO ?" в повідомленнях і впроваджувати пагіннацію в обох списках: тем та відповідей.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The next tutorial will be focused on using class-based views to solve those problems.</span>
+            </span>
+            <span class="col native1">
+                <span>Наступна частина підручника буде орієнтована на використання видів, заснованих на класах, для вирішення цих проблем.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>And after that, we are going to learn how to deploy our application to a Web server.</span>
+            </span>
+            <span class="col native1">
+                <span>І після цього ми навчимося розгортати нашу програму на веб-сервері.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I hope you enjoyed the fifth part of this tutorial series!</span>
+            </span>
+            <span class="col native1">
+                <span>Я сподіваюся, вам сподобалася п'ята частина цієї навчальної серії!</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If you would like to get notified when the fifth part is out, you can subscribe to our mailing list.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо ви хочете отримувати повідомлення, коли п'ята частина вийде, ви можете <a href="https://colossus.simpleisbetterthancomplex.com/subscribe/d2320a41-0378-4aa8-8f4e-5bb1ffcd521d/"> підписатися на наш список розсилки.</a></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The source code of the project is available on GitHub.</span>
+            </span>
+            <span class="col native1">
+                <span>Вихідний код проекту доступний на GitHub.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The current state of the project can be found under the release tag v0.5-lw.</span>
+            </span>
+            <span class="col native1">
+                <span>Поточний стан проекту можна знайти за тегом випуску v0.5-lw.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The link below will take you to the right place:</span>
+            </span>
+            <span class="col native1">
+                <span>Наведене нижче посилання приведе вас до потрібного місця:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <h5><a href="https://github.com/sibtc/django-beginners-guide/tree/v0.5-lw">https://github.com/sibtc/django-beginners-guide/tree/v0.5-lw</a></h5>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span><h5><a href="https://simpleisbetterthancomplex.com/series/2017/09/25/a-complete-beginners-guide-to-django-part-4.html">Original Part 4</a></h5><h5><a href="https://codeguida.com/post/1089">Переклад Частина 4</a></h5></span>
+            </span>
+            <span class="col native1">
+                <span><h5><a href="https://simpleisbetterthancomplex.com/series/2017/10/09/a-complete-beginners-guide-to-django-part-6.html">Original Part 6</a></h5><h5><a href="http://127.0.0.1:8000/translate/6/">Переклад Частина 6</a></h5></span>
+            </span>
+        </div>
+    </div>
+    <br>
+{% endblock %}

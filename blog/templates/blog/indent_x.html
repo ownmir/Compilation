@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+{% block extra_css %}
+    {# Override in indent_x to add extra stylesheets #}
+    <style>
+        H1 {margin-left: 0%}
+        H2,H3,H4,a,p {margin-left: 0%}
+        code {margin-left: 2px; background-color: yellowgreen}
+        HR {color: darkgreen}
+
+        div:nth-child(even) {margin-left: {{ ieven }}%}
+        div:nth-child(odd) {margin-left: {{ iodd }}%}
+    </style>
+{% endblock %}
+{% block body_class %}template-indentx{% endblock %}
+
+{% block content %}
+    <p>You can access the admin interface <a href="{% url 'wagtailadmin_home' %}">here</a> </p>
+    <p><a href="/index/">To index</a> </p>
+<h1>{{ page.title }}</h1>
+
+    <form action="/index/indent/" method="get">
+        <span>Even: </span>
+        <input type="text" name="indentEven" value="{{ ieven }}">
+        <span>Odd: </span>
+        <input type="text" name="indentOdd" value="{{ iodd }}">
+        <input type="submit" value="Restyle">
+    </form>
+    <p class="topic">Is there life on Mars?</p>
+        <div>First comment</div>
+        <div>Second comment</div>
+        <div>Third comment</div>
+        <div>Forth comment</div>
+    </p>
+    <h2>Создание собственного шаблонного фильтра</h2>
+    <p>{# {{ var|filter_function:"argument" }} #}
+        Например, при {{ trunk_code|safe }} функция фильтра <em>filter_function</em> будет выполнена
+        со значением переменной <em>var</em> и аргументом <em>"argument"</em>.<br>
+        Функция <em><span style="color: forestgreen">filter_function</span></em> будет находиться в папке
+        <em><span style="color: forestgreen">templatetags</span></em>  в модуле, например,
+        <em><span style="color: forestgreen">app_filters</span></em>, рядом с <i>__init__.py</i><br>
+        В начале вашего модуля укажите следующие строки:
+    <hr>
+        <code>
+            <b>from</b> django <b>import</b> template<span style="background-color: yellowgreen"> <br><br></span>
+            register = template.Library()<br>
+        </code>
+    <hr>
+    </p>
+
+
+
+{% endblock %}
