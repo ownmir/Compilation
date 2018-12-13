@@ -536,5 +536,113 @@
         </code>
     </pre>
     <br>
-
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/github3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I create this repository just to demonstrate the process to create a remote repository with an existing code base. </span>
+            </span>
+            <span class="col native1">
+                <span>Я створюю цей репозиторій, щоб продемонструвати процес створення віддаленого сховища з існуючою базою коду.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The source code of the project is officially hosted in this repository:</span>
+            </span>
+            <span class="col native1">
+                <span>Вихідний код проекту офіційно розміщений у цьому сховищі:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <a href="https://github.com/sibtc/django-beginners-guide">https://github.com/sibtc/django-beginners-guide</a>
+    <br>
+    <hr><br>
+    <H2>Project Settings - Параметри проекту</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>No matter if the code is stored in a public or private remote repository,
+                    sensitive information should never be committed and pushed to the remote repository.</span>
+            </span>
+            <span class="col native1">
+                <span>Незалежно від того, чи зберігається код у відкритому або приватному віддаленому сховищі,
+                    конфіденційна інформація ніколи не повинна бути закомічена та віддана до віддаленого сховища.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>That includes secret keys, passwords, API keys, etc.</span>
+            </span>
+            <span class="col native1">
+                <span>Це включає в себе секретні ключі, паролі, ключі API тощо.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>At this point, we have to deal with two specific types of configuration in our settings.py module:</span>
+            </span>
+            <span class="col native1">
+                <span>На цьому етапі ми повинні мати справу з двома конкретними типами конфігурації в нашому модулі settings.py:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <ul>
+        <li>
+            <div class="container">
+                <div class="row">
+                    <span class="col foreign1">
+                        <span>Sensitive information such as keys and passwords;</span>
+                    </span>
+                    <span class="col native1">
+                        <span>Конфіденційна інформація, така як ключі та паролі;</span>
+                    </span>
+                </div>
+            </div>
+            <br>
+        </li>
+        <li>
+            <div class="container">
+                <div class="row">
+                    <span class="col foreign1">
+                        <span>Configurations that are specific to a given environment.</span>
+                    </span>
+                    <span class="col native1">
+                        <span>Конфігурації, специфічні для даного середовища.</span>
+                    </span>
+                </div>
+            </div>
+            <br>
+        </li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Passwords and keys can be stored in environment variables or using local files
+                    (not committed to the remote repository):</span>
+            </span>
+            <span class="col native1">
+                <span>Паролі та ключі можуть зберігатися в змінних середовища або за допомогою локальних файлів
+                    (не переданих у віддалене сховище):</span>
+            </span>
+        </div>
+    </div>
+    <br>
 {% endblock %}
