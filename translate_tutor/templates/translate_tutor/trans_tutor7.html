@@ -645,4 +645,155 @@
         </div>
     </div>
     <br>
+    <pre class="bg-light">
+        <code>
+            # environment variables
+            import os
+            SECRET_KEY = os.environ['SECRET_KEY']
+
+            # or local files
+            with open('/etc/secret_key.txt') as f:
+                SECRET_KEY = f.read().strip()
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For that, there’s a great utility library called Python Decouple
+                    that I use in every single Django project I develop.</span>
+            </span>
+            <span class="col native1">
+                <span>Для цього існує велика бібліотека корисних бібліотек під назвою
+                    <a href="https://simpleisbetterthancomplex.com/2015/11/26/package-of-the-week-python-decouple.html">
+                        Python Decouple</a>,
+                    яку я використовую у кожному окремому проекті Django, який я розробляю.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It will search for a local file named .env to set the configuration variables and will fall back to the environment variables. </span>
+            </span>
+            <span class="col native1">
+                <span>Він буде шукати локальний файл з ім'ям <b>.env</b>, встановить змінні конфігурації, і повернеться назад до змінних середовища.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It also provides an interface to define default values, transform the data
+                    into int, bool, and list when <em lang=translate>applicable</em>.</span>
+            </span>
+            <span class="col native1">
+                <span>Він також забезпечує інтерфейс для визначення значень за замовчуванням, перетворення даних
+                    у <b>int</b>, <b>bool</b> та <b>list</b>, коли це <em lang=translate>застосовується</em>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s not mandatory, but I really find it a very useful tool.
+                    And it works like a charm with services like Heroku.</span>
+            </span>
+            <span class="col native1">
+                <span>Це не обов'язково, але я дійсно вважаю це дуже корисним інструментом.
+                    І це чарівно працює з такими сервісами, як Хероку.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, let’s install it:</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку давайте встановимо це:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>pip install python-decouple</code>    </pre>
+    <br>
+    <b>myproject/settings.py</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+            from decouple import config
+
+            SECRET_KEY = config('SECRET_KEY')
+        </code>    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can place the sensitive information in a special file named .env (notice the dot in front)
+                    in the same directory where the manage.py file is:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо розмістити конфіденційну інформацію в спеціальному файлі з ім'ям <b>.env</b>
+                    (!точка попереду) у тій самій директорії, де є файл <strong>manage.py</strong>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            myproject/
+             |-- myproject/
+             |    |-- accounts/
+             |    |-- boards/
+             |    |-- myproject/
+             |    |-- static/
+             |    |-- templates/
+             |    |-- .env        <-- here!
+             |    |-- .gitignore
+             |    |-- db.sqlite3
+             |    +-- manage.py
+             +-- venv/
+        </code>
+    </pre>
+    <b>.env</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>            SECRET_KEY=rqr_cjv4igscyu8&&(0ce(=sy=f2)p=f_wn&@0xsp7m$@!kp=d        </code>    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The .env file is ignored in the .gitignore file, so every time we are going to deploy
+                    the application or run in a different machine, we will have to create a .env file
+                    and add the necessary configuration.</span>
+            </span>
+            <span class="col native1">
+                <span>Файл .env ігнорується в файлі <b>.gitignore</b>, тому кожен раз, коли ми збираємось розгорнути
+                    додаток або запустити на іншому комп'ютері, нам доведеться створити файл <b>.env</b>
+                    та додати необхідну конфігурацію.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s install another library to help us write the database connection in a single line.
+                    This way it’s easier to write different database connection strings in different environments:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте встановимо ще одну бібліотеку, яка допоможе нам написати з'єднання з базою даних у одному рядку.
+                    Таким чином простіше писати різні рядки з'єднання бази даних в різних середовищах:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>pip install dj-database-url</code></pre>
+    <br>
+
 {% endblock %}
