@@ -64,12 +64,12 @@
             <span class="col foreign1">
                 <span>Our project is live! 
                     If you want to check online before you go through the text, this is the application
-                    we are going to deploy: <a href="www.djangoboards.com">www.djangoboards.com</a>.</span>
+                    we are going to deploy: <a href="https://www.djangoboards.com">www.djangoboards.com</a>.</span>
             </span>
             <span class="col native1">
                 <span>Наш проект живий!
                     Якщо ви хочете перевірити онлайн, перш ніж пройти текст, це програма,
-                    яку ми збираємося розгорнути: <a href="www.djangoboards.com">www.djangoboards.com</a>.</span>
+                    яку ми збираємося розгорнути: <a href="https://www.djangoboards.com">www.djangoboards.com</a>.</span>
             </span>
         </div>
     </div>
@@ -314,7 +314,7 @@
             Initial commit
 
             Untracked files:
-              (use "git add <file>..." to include in what will be committed)
+              (use "git add &lt;file&gt;..." to include in what will be committed)
 
               accounts/
               boards/
@@ -795,5 +795,66 @@
     <pre class="bg-light">
         <code>pip install dj-database-url</code></pre>
     <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>For now, all the configurations we will need to decouple:</span>
+            </span>
+            <span class="col native1">
+                <span>Наразі всі конфігурації, які нам доведеться відокремити:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>myproject/settings.py</b>
+    <br><br>
+    <pre class="bg-light">
+        <code>
+            from decouple import config, Csv
+            import dj_database_url
 
+            SECRET_KEY = config('SECRET_KEY')
+            DEBUG = config('DEBUG', default=False, cast=bool)
+            ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+            DATABASES = {
+                'default': dj_database_url.config(
+                    default=config('DATABASE_URL')
+                )
+            }
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Example of a .env file for our local machine:</span>
+            </span>
+            <span class="col native1">
+                <span>Приклад файлу .env для нашого локального комп'ютера:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            SECRET_KEY=rqr_cjv4igscyu8&&(0ce(=sy=f2)p=f_wn&@0xsp7m$@!kp=d
+            DEBUG=True
+            ALLOWED_HOSTS=.localhost,127.0.0.1
+            DATABASE_URL=sqlite:///db.sqlite3
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Notice that in the DEBUG configuration we have a default, so in production we can ignore
+                    this configuration because it will be set to False automatically, as it is supposed to be.</span>
+            </span>
+            <span class="col native1">
+                <span>Зверніть увагу, що в конфігурації DEBUG ми маємо за замовчуванням, тому у виробництві ми можемо
+                    ігнорувати цю конфігурацію, оскільки вона буде автоматично встановлена на False, як і передбачається.</span>
+            </span>
+        </div>
+    </div>
+    <br>
 {% endblock %}
