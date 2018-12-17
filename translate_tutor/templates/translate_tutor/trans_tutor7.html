@@ -847,14 +847,1136 @@
     <div class="container">
         <div class="row">
             <span class="col foreign1">
-                <span>Notice that in the DEBUG configuration we have a default, so in production we can ignore
-                    this configuration because it will be set to False automatically, as it is supposed to be.</span>
+                <span>Notice that in the DEBUG configuration we have a default,
+                    so in production we can ignore this configuration because it will be set to False automatically,
+                    <em lang=translate>as it is supposed to be</em>.</span>
             </span>
             <span class="col native1">
-                <span>Зверніть увагу, що в конфігурації DEBUG ми маємо за замовчуванням, тому у виробництві ми можемо
-                    ігнорувати цю конфігурацію, оскільки вона буде автоматично встановлена на False, як і передбачається.</span>
+                <span>Зверніть увагу, що в конфігурації <span class="gray-border">DEBUG</span> ми маємо за замовчуванням,
+                    тому у виробництві ми можемо ігнорувати цю конфігурацію, оскільки вона буде автоматично встановлена у
+                    <span class="gray-border">False</span>, <em lang=translate>як і передбачається</em>.</span>
+            </span>
+        </div>
+    </div>
+    <br><div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now the ALLOWED_HOSTS will be transformed into a list like ['.localhost', '127.0.0.1'. ].</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер <span class="gray-border">ALLOWED_HOSTS</span> перетворено у список виду
+                    <span class="gray-border">['.localhost', '127.0.0.1'.]</span></span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now, this is on our local machine, for production we will set it to something like
+                    ['.djangoboards.com', ] or whatever domain you have.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер це на нашому локальному комп'ютері, для виробництва ми встановимо його на список виду
+                    ['.djangoboards.com'] або іншого домену, який ви маєте.</span>
             </span>
         </div>
     </div>
     <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This particular configuration makes sure your application is only served to this domain.</span>
+            </span>
+            <span class="col native1">
+                <span>Ця конкретна конфігурація гарантує, що ваша програма обслуговується лише в цьому домені.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Tracking Requirements - Відстеження вимог</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can check the currently installed Python libraries by running the command:</span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо перевірити поточно встановлені бібліотеки Python, запустивши команду:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            pip freeze
+
+            dj-database-url==0.4.2
+            Django==1.11.6
+            django-widget-tweaks==1.4.1
+            Markdown==2.6.9
+            python-decouple==3.1
+            pytz==2017.2
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a file named requirements.txt in the project root, and add the dependencies there:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть файл з назвою <b>requirements.txt</b> у кореневому проекті та додайте там залежності:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>requirements.txt</b><br><br>
+    <pre class="bg-light">
+        <code>
+            dj-database-url==0.4.2
+            Django==1.11.6
+            django-widget-tweaks==1.4.1
+            Markdown==2.6.9
+            python-decouple==3.1
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>I kept the pytz==2017.2 out, because it is automatically installed by Django.</span>
+            </span>
+            <span class="col native1">
+                <span>Я зберіг <b>Pytz == 2017.2</b>, тому що він встановлюється автоматично Django.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You can update your source code repository:</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете оновити сховище вихідного коду:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            git add .
+            git commit -m "Add requirements.txt file"
+            git push origin master
+        </code>
+    </pre>
+    <br>
+    <hr><br>
+    <H2>Domain Name</H2>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If we are going to deploy a Django application properly, we will need a domain name.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо ми будемо правильно розгортати додаток Django, нам знадобиться ім'я домену.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>It’s important to have a domain name to serve the application, configure an email service
+                    and configure an https certificate.</span>
+            </span>
+            <span class="col native1">
+                <span>Важливо мати ім'я домену для подання заявки, налаштування служби електронної пошти
+                    та налаштування сертифіката https.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Lately, I’ve been using <a href="https://namecheap.pxf.io/c/477033/386170/5618">Namecheap</a> a lot.
+                    You can get a .com domain for $8.88/year, or
+                    if you are just trying things out, you could register a .xyz domain for $0.99/year.</span>
+            </span>
+            <span class="col native1">
+                <span>Останнім часом я часто використовував Namecheap. Ви можете отримати .com домену за $ 8,88 / рік,
+                    або якщо ви просто пробуєте, ви можете зареєструвати домен .xyz за $ 0,99 / рік.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Anyway, you are free to use any registrar. To demonstrate the deployment process,
+                    I registered the www.DjangoBoards.com domain.</span>
+            </span>
+            <span class="col native1">
+                <span>У будь-якому випадку ви можете використовувати будь-який реєстратор. Щоб продемонструвати процес розгортання,
+                    я зареєстрував домен <a href="https://www.DjangoBoards.com">www.DjangoBoards.com</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Deployment Strategy - Стратегія розгортання</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here is an overview of the deployment strategy we are going to use in this tutorial:</span>
+            </span>
+            <span class="col native1">
+                <span>Ось загальний огляд стратегії розгортання, яку ми збираємося використовувати в цьому навчальному посібнику:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/deployment.jpg' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The cloud is our Virtual Private Server provided by <a href="https://m.do.co/c/074832454ff1">Digital Ocean</a>. </span>
+            </span>
+            <span class="col native1">
+                <span>Хмара - це наш Віртуальний приватний сервер, наданий компанією Digital Ocean.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You can sign up to Digital Ocean using my affiliate link to get a free $10 credit
+                    (only valid for new accounts).</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете зареєструватися в Digital Ocean за допомогою мого партнерського посилання, щоб отримати
+                    безкоштовний кредит у розмірі <a href="https://m.do.co/c/074832454ff1">10 доларів США</a>
+                    (дійсний лише для нових облікових записів).</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Upfront we will have NGINX, illustrated by the ogre. NGINX will receive all requests to the server.</span>
+            </span>
+            <span class="col native1">
+                <span>Унизу ми маємо NGINX, ілюстрований великим людожером. NGINX отримує всі запити на сервер.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But it won’t try to do anything smart if the request data. All it is going to do
+                    is decide if the requested information is a static asset that it can serve by itself,
+                    or if it’s <em lang=translate>something more complicated</em>.</span>
+            </span>
+            <span class="col native1">
+                <span>Але він не буде намагатися зробити що-небудь розумне, щодо даних запиту. Все, що потрібно зробити,
+                    це вирішити, чи запитувана інформація є статичним активом, який він може обслужити самостійно,
+                    або це <em lang=translate>щось складніше</em>.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If so, it will pass the request to Gunicorn.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо так, то він буде передавати запит на Gunicorn.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The NGINX will also be configured with HTTPS certificates.
+                    Meaning it will only accept requests via HTTPS.</span>
+            </span>
+            <span class="col native1">
+                <span>NGINX також буде налаштовано з сертифікатами HTTPS.
+                    Це означає, що він приймає запити лише через HTTPS. </span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If the client tries to request via HTTP, NGINX will first redirect the user to the HTTPS,
+                    and only then it will decide what to do with the request.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо клієнт намагається надіслати запит через HTTP, NGINX спочатку переспрямовує користувача на HTTPS,
+                    і тільки тоді він вирішить, що робити з запитом.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are also going to install this certbot to automatically renew the Let’s Encrypt certificates.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також збираємось встановити certbot для автоматичного оновлення Let's Encrypt сертифікатів.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Gunicorn is an application server. Depending on the number of processors the server has,
+                    it can spawn multiple workers to process multiple requests in parallel.
+                    It manages the workload and executes the Python and Django code.</span>
+            </span>
+            <span class="col native1">
+                <span>Gunicorn - сервер додатків. Залежно від кількості процесорів, що існують у сервера,
+                    він може викликати кілька процесів для обробки кількох запитів паралельно.
+                    Він керує робочим навантаженням і виконує коди Python і Django.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Django is the one doing the hard work. It may access the database (PostgreSQL) or the file system. </span>
+            </span>
+            <span class="col native1">
+                <span>Джанго це той, хто робить важку роботу. Він може отримати доступ до бази даних (PostgreSQL) або файлової системи.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>But for the most part, the work is done inside the views, rendering templates,
+                    all those things that we’ve been coding for the past weeks.</span>
+            </span>
+            <span class="col native1">
+                <span>Але здебільшого, робота виконується всередині перегляду, рендеринга шаблонів,
+                    всіх тих речей, які ми кодували протягом останніх тижнів.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>After Django process the request, it returns a response to Gunicorn,
+                    who returns the result to NGINX that will finally deliver the response to the client.</span>
+            </span>
+            <span class="col native1">
+                <span>Після того як Джанго обробляє запит, він повертає відповідь Гунікорн,
+                    який повертає результат до NGINX, який нарешті відправляє відповідь клієнту.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We are also going to install PostgreSQL, a production quality database system.
+                    Because of Django’s ORM system, it’s easy to switch databases.</span>
+            </span>
+            <span class="col native1">
+                <span>Ми також збираємося встановити PostgreSQL, систему бази даних якості виробництва.
+                    Завдяки системі ORM Django легко змінити базу даних.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The last step is to install Supervisor. It’s a process control system and
+                    it will keep an eye on Gunicorn and Django to make sure everything runs smoothly. </span>
+            </span>
+            <span class="col native1">
+                <span>Останній крок - встановити Supervisor. Це система управління процесами, і
+                    вона буде стежити за Гунікорн і Джанго, щоб переконатися, що все працює гладко.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If the server restarts, or if Gunicorn crashes, it will automatically restart it.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо сервер перезавантажиться, або якщо Gunicorn призведе до збою, вона автоматично перезапустить його.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Deploying to a VPS (Digital Ocean) - Розгортання</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You may use any other VPS (Virtual Private Server) you like. The configuration should be very
+                    similar, after all, we are going to use Ubuntu 16.04 as our server.</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете використовувати будь-який інший VPS (Virtual Private Server), який вам подобається. Конфігурація
+                    повинна бути дуже подібною, адже ми будемо використовувати Ubuntu 16.04 як наш сервер.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, let’s create a new server (on Digital Ocean they call it “Droplet”). Select Ubuntu 16.04:</span>
+            </span>
+            <span class="col native1">
+                <span>Спочатку створіть новий сервер (на Digital Ocean вони називають його "Droplet"). Виберіть Ubuntu 16.04:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/do1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Pick the size. The smallest droplet is enough:</span>
+            </span>
+            <span class="col native1">
+                <span>Виберіть розмір. Найменшої краплі достатньо:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/do2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then choose a hostname for your droplet (in my case “django-boards”):</span>
+            </span>
+            <span class="col native1">
+                <span>Потім виберіть ім'я хоста для краплі (у моєму випадку "django-boards"):</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/do3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If you have an SSH key, you can add it to your account. Then you will be able to log in the server
+                    using it. Otherwise, they will email you the root password.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо у вас є ключ SSH, ви можете додати його до свого облікового запису. Тоді ви зможете увійти на сервер,
+                    використовуючи його. В іншому випадку вони надішлють вам пароль адміністратора.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now pick the server’s IP address:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер виберіть IP-адресу сервера:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/do4.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Before we log in to the server, let’s point our domain name to this IP address.
+                    This will save some time because DNS settings usually take a few minutes to propagate.</span>
+            </span>
+            <span class="col native1">
+                <span>Перш ніж входити до сервера, давайте наведемо наше доменне ім'я на цю IP-адресу.
+                    Це заощадить деякий час, оскільки настройки DNS зазвичай забирають кілька хвилин для розповсюдження.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/namecheap.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So here we added two A records, one pointing to the naked domain “djangoboards.com”
+                    and the other one for “www.djangoboards.com”. We will use NGINX to configure a canonical URL.</span>
+            </span>
+            <span class="col native1">
+                <span>Отже, ми додали два записи A, один з яких вказував на голий домен "djangoboards.com",
+                    а інший - на "www.djangoboards.com". Ми будемо використовувати NGINX для налаштування канонічної URL-адреси.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s log in to the server using your terminal:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер дозвольте увійти на сервер за допомогою вашого терміналу:</span>
+            </span>
+        </div>
+    </div>
+    <br><pre class="bg-light">
+        <code>ssh root@45.55.144.54
+      root@45.55.144.54's password:</code></pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then you should see the following message:</span>
+            </span>
+            <span class="col native1">
+                <span>Потім ви побачите таке повідомлення:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            You are required to change your password immediately (root enforced)
+            Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-93-generic x86_64)
+
+             * Documentation:  https://help.ubuntu.com
+             * Management:     https://landscape.canonical.com
+             * Support:        https://ubuntu.com/advantage
+
+              Get cloud support with Ubuntu Advantage Cloud Guest:
+                http://www.ubuntu.com/business/services/cloud
+
+            0 packages can be updated.
+            0 updates are security updates.
+
+
+            Last login: Sun Oct 15 18:39:21 2017 from 82.128.188.51
+            Changing password for root.
+            (current) UNIX password:
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Set the new password, and let’s start to configure the server.</span>
+            </span>
+            <span class="col native1">
+                <span>Встановіть новий пароль, і почнемо конфігурувати сервер.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>sudo apt-get update
+      sudo apt-get -y upgrade</code></pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>If you get any prompt during the upgrade, select the option “keep the local version currently installed”.</span>
+            </span>
+            <span class="col native1">
+                <span>Якщо під час оновлення ви отримаєте будь-яке запитання, виберіть параметр "зберегти поточну локальную версію.".</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <H4>Python 3.6  PostgreSQL  NGINX   Supervisor  Virtualenv</H4><br>
+    <pre class="bg-light">
+        <code>
+            sudo add-apt-repository ppa:deadsnakes/ppa
+            sudo apt-get update
+            sudo apt-get install python3.6
+
+            sudo apt-get -y install postgresql postgresql-contrib
+
+            sudo apt-get -y install nginx
+
+            sudo apt-get -y install supervisor
+            sudo systemctl enable supervisor
+            sudo systemctl start supervisor
+
+            wget https://bootstrap.pypa.io/get-pip.py
+            sudo python3.6 get-pip.py
+            sudo pip3.6 install virtualenv</code>
+    </pre>
+    <br>
+    <H3>Application User - Користувач програми</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a new user with the command below:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть нового користувача за допомогою наведеної нижче команди.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            adduser boards</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Usually, I just pick the name of the application. Enter a password and optionally add some extra info to the prompt.</span>
+            </span>
+            <span class="col native1">
+                <span>Зазвичай я просто вибираю назву програми. Введіть пароль і додатково надайте додаткову інформацію до запиту.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now add the user to the sudoers list:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер додайте користувача до списку sudoers:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            gpasswd -a boards sudo</code>
+    </pre>
+    <br>
+    <H3>PostgreSQL Database Setup - Налаштування бази даних PostgreSQL</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First switch to the postgres user:</span>
+            </span>
+            <span class="col native1">
+                <span>По-перше перехід до користувача postgres:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo su - postgres</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a database user:</span>
+            </span>
+            <span class="col native1">
+                <span>Створити користувача бази даних:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            createuser u_boards</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a new database and set the user as the owner:</span>
+            </span>
+            <span class="col native1">
+                <span>Створити нову базу даних і встановити користувача в якості власника:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            createdb django_boards --owner u_boards</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Define a strong password for the user:</span>
+            </span>
+            <span class="col native1">
+                <span>Визначте надійний пароль для користувача:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            psql -c "ALTER USER u_boards WITH PASSWORD 'BcAZoYWsJbvE7RMgBPzxOCexPRVAq'"</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can now exit the postgres user:</span>
+            </span>
+            <span class="col native1">
+                <span>Зараз ми можемо вийти з користувача postgres:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            exit</code>
+    </pre>
+    <br>
+    <H3>Django Project Setup - Налаштування проекта Django</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Switch to the application user:</span>
+            </span>
+            <span class="col native1">
+                <span>Переключитися на користувача програми:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo su - boards</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, we can check where we are:</span>
+            </span>
+            <span class="col native1">
+                <span>По-перше, ми можемо перевірити, де ми знаходимось:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            pwd
+            /home/boards
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s clone the repository with our code:</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте клонувати репозиторій з нашим кодом:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            git clone https://github.com/sibtc/django-beginners-guide.git
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Start a virtual environment, initialize the virtualenv, install the requirements:</span>
+            </span>
+            <span class="col native1">
+                <span>Запустіть віртуальне середовище, ініціалізуйте virtualenv, встановіть вимоги:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            git clone https://github.com/sibtc/django-beginners-guide.git
+
+            virtualenv venv -p python3.6
+
+            source venv/bin/activate
+
+            pip install -r django-beginners-guide/requirements.txt
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We will have to add two extra libraries here, the Gunicorn and the PostgreSQL driver:</span>
+            </span>
+            <span class="col native1">
+                <span>Нам доведеться додати ще дві додаткові бібліотеки, драйвер Gunicorn і PostgreSQL:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            pip install gunicorn
+            pip install psycopg2
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now inside the /home/boards/django-beginners-guide folder,
+                    let’s create a .env file to store the database credentials, the secret key and everything else:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер у папці /home/boards/django-beginners-guide,
+                    створіть файл .env для зберігання облікових даних бази даних, секретного ключа та всього іншого:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>/home/boards/django-beginners-guide/.env</b><br><br>
+    <pre class="bg-light">
+        <code>
+            SECRET_KEY=rqr_cjv4igscyu8&&(0ce(=sy=f2)p=f_wn&@0xsp7m$@!kp=d
+            ALLOWED_HOSTS=.djangoboards.com
+            DATABASE_URL=postgres://u_boards:BcAZoYWsJbvE7RMgBPzxOCexPRVAq@localhost:5432/django_boards
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Here is the syntax of the database URL: </span>
+            </span>
+            <span class="col native1">
+                <span>Ось синтаксис URL-адреси бази даних:</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>postgres://db_user:db_password@db_host:db_port/db_name.</span>
+            </span>
+            <span class="col native1">
+                <span><span class="gray-border">postgres://db_user:db_password@db_host:db_port/db_name.</span></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s migrate the database, collect the static files and create a super user:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер робимо міграцію бази даних, збираємо статичні файли та створюємо суперкористувача:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            cd django-beginners-guide
+
+            python manage.py migrate
+
+            Operations to perform:
+              Apply all migrations: admin, auth, boards, contenttypes, sessions
+            Running migrations:
+              Applying contenttypes.0001_initial... OK
+              Applying auth.0001_initial... OK
+              Applying admin.0001_initial... OK
+              Applying admin.0002_logentry_remove_auto_add... OK
+              Applying contenttypes.0002_remove_content_type_name... OK
+              Applying auth.0002_alter_permission_name_max_length... OK
+              Applying auth.0003_alter_user_email_max_length... OK
+              Applying auth.0004_alter_user_username_opts... OK
+              Applying auth.0005_alter_user_last_login_null... OK
+              Applying auth.0006_require_contenttypes_0002... OK
+              Applying auth.0007_alter_validators_add_error_messages... OK
+              Applying auth.0008_alter_user_username_max_length... OK
+              Applying boards.0001_initial... OK
+              Applying boards.0002_auto_20170917_1618... OK
+              Applying boards.0003_topic_views... OK
+              Applying sessions.0001_initial... OK
+
+            python manage.py collectstatic
+
+            Copying '/home/boards/django-beginners-guide/static/js/jquery-3.2.1.min.js'
+            Copying '/home/boards/django-beginners-guide/static/js/popper.min.js'
+            Copying '/home/boards/django-beginners-guide/static/js/bootstrap.min.js'
+            Copying '/home/boards/django-beginners-guide/static/js/simplemde.min.js'
+            Copying '/home/boards/django-beginners-guide/static/css/app.css'
+            Copying '/home/boards/django-beginners-guide/static/css/bootstrap.min.css'
+            Copying '/home/boards/django-beginners-guide/static/css/accounts.css'
+            Copying '/home/boards/django-beginners-guide/static/css/simplemde.min.css'
+            Copying '/home/boards/django-beginners-guide/static/img/avatar.svg'
+            Copying '/home/boards/django-beginners-guide/static/img/shattered.png'
+            ...
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This command copy all the static assets to an external directory
+                    where NGINX can serve the files for us. More on that later.</span>
+            </span>
+            <span class="col native1">
+                <span>Ця команда копіює всі статичні ресурси в зовнішній каталог,
+                    де NGINX може обслуговувати файли для нас. Більше про це пізніше.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now create a super user for the application:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер створіть суперкористувача для програми:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            python manage.py createsuperuser</code>
+    </pre>
+    <br>
+    <H3>Configuring Gunicorn - Налаштування Gunicorn</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>So, Gunicorn is the one responsible for executing the Django code behind a proxy server.</span>
+            </span>
+            <span class="col native1">
+                <span>Отже, Gunicorn є відповідальним за виконання коду Джанго за проксі-сервером.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a new file named gunicorn_start inside /home/boards:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть новий файл з ім'ям gunicorn_start всередині /home/boards:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+
+            #!/bin/bash
+
+            NAME="django_boards"
+            DIR=/home/boards/django-beginners-guide
+            USER=boards
+            GROUP=boards
+            WORKERS=3
+            BIND=unix:/home/boards/run/gunicorn.sock
+            DJANGO_SETTINGS_MODULE=myproject.settings
+            DJANGO_WSGI_MODULE=myproject.wsgi
+            LOG_LEVEL=error
+
+            cd $DIR
+            source ../venv/bin/activate
+
+            export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+            export PYTHONPATH=$DIR:$PYTHONPATH
+
+            exec ../venv/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+              --name $NAME \
+              --workers $WORKERS \
+              --user=$USER \
+              --group=$GROUP \
+              --bind=$BIND \
+              --log-level=$LOG_LEVEL \
+              --log-file=-
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This script will start the application server. We are providing some information
+                    such as where the Django project is, which application user to be used to run the server, and so on.</span>
+            </span>
+            <span class="col native1">
+                <span>Цей сценарій запускає сервер додатків. Ми надаємо таку інформацію, як, наприклад, де знаходиться
+                    проект Django, який користувач програми повинен використовуватись для запуску сервера тощо.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now make this file executable:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер зробимо цей файл виконуваним:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            chmod u+x gunicorn_start</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create two empty folders, one for the socket file and one to store the logs:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть дві порожні папки, одна для файлу сокетів і одна для зберігання журналів:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            mkdir run logs</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Right now the directory structure inside /home/boards should look like this:</span>
+            </span>
+            <span class="col native1">
+                <span>Наразі структура каталогу всередині <strong>/home/boards</strong> має виглядати так:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            django-beginners-guide/
+            gunicorn_start
+            logs/
+            run/
+            staticfiles/
+            venv/
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>The staticfiles folder was created by the collectstatic command.</span>
+            </span>
+            <span class="col native1">
+                <span>Папка <b>staticfiles</b> була створена командою <b>collectstatic</b>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <H3>Configuring Supervisor - Налаштування Supervisor</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>First, create an empty log file inside the /home/boards/logs/ folder:</span>
+            </span>
+            <span class="col native1">
+                <span>Спершу створіть порожній файл журналу всередині <b>/home/boards/logs/</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            touch logs/gunicorn.log</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now create a new supervisor file:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер створіть новий файл супервізора:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo vim /etc/supervisor/conf.d/boards.conf</code></pre>
+    <pre class="bg-light">
+        <code>
+            [program:boards]
+            command=/home/boards/gunicorn_start
+            user=boards
+            autostart=true
+            autorestart=true
+            redirect_stderr=true
+            stdout_logfile=/home/boards/logs/gunicorn.log
+        </code>
+    </pre>
+    <br>
+
 {% endblock %}
