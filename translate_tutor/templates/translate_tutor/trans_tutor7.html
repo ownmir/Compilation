@@ -1978,5 +1978,547 @@
         </code>
     </pre>
     <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Save the file and run the commands below:</span>
+            </span>
+            <span class="col native1">
+                <span>Збережіть файл і запустіть команди нижче:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo supervisorctl reread
+            sudo supervisorctl update
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now check the status:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер перевірте статус:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo supervisorctl status boards</code>
+    </pre>
+    <pre class="bg-light">
+        <code>
+            boards                           RUNNING   pid 308, uptime 0:00:07</code>
+    </pre>
+    <br>
+    <H3>Configuring NGINX - Налаштування NGINX</H3><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Next step is to set up the NGINX server to serve the static files and to pass the requests to Gunicorn:</span>
+            </span>
+            <span class="col native1">
+                <span>Наступним кроком є налаштування сервера NGINX, щоб обслуговувати статичні файли та передавати запити до Gunicorn:</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Add a new configuration file named boards inside /etc/nginx/sites-available/:</span>
+            </span>
+            <span class="col native1">
+                <span>Додайте новий файл конфігурації з ім'ям <b>boards</b> в <b>/etc/nginx/sites-available/</b>:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            upstream app_server {
+                server unix:/home/boards/run/gunicorn.sock fail_timeout=0;
+            }
 
+            server {
+                listen 80;
+                server_name www.djangoboards.com;  # here can also be the IP address of the server
+
+                keepalive_timeout 5;
+                client_max_body_size 4G;
+
+                access_log /home/boards/logs/nginx-access.log;
+                error_log /home/boards/logs/nginx-error.log;
+
+                location /static/ {
+                    alias /home/boards/staticfiles/;
+                }
+
+                # checks for static file, if not found proxy to app
+                location / {
+                    try_files $uri @proxy_to_app;
+                }
+
+                location @proxy_to_app {
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header Host $http_host;
+                  proxy_redirect off;
+                  proxy_pass http://app_server;
+                }
+            }
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Create a symbolic link to the sites-enabled folder:</span>
+            </span>
+            <span class="col native1">
+                <span>Створіть символічне посилання на папку <b>sites-enabled</b></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo ln -s /etc/nginx/sites-available/boards /etc/nginx/sites-enabled/boards</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Remove the default NGINX website:</span>
+            </span>
+            <span class="col native1">
+                <span>Видалити стандартний веб-сайт NGINX:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo rm /etc/nginx/sites-enabled/default</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Restart the NGINX service:</span>
+            </span>
+            <span class="col native1">
+                <span>Перезапустіть службу NGINX:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo service nginx restart</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>At this point, if the DNS have already propagated, the website should be available on the URL www.djangoboards.com.</span>
+            </span>
+            <span class="col native1">
+                <span>На даний момент, якщо DNS вже поширюється, веб-сайт повинен бути доступний на веб-сторінці www.djangoboards.com.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/django-boards.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Configuring an Email Service - Налаштування служби електронної пошти</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>One of the best options to get started is Mailgun.
+                    It offers a very reliable free plan covering 12,000 emails per month.</span>
+            </span>
+            <span class="col native1">
+                <span>Одним з найкращих варіантів початку роботи є Mailgun.
+                    Він пропонує дуже надійний безкоштовний план, який охоплює 12000 листів на місяць.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Sign up for a free account. Then just follow the steps, it’s very straightforward.</span>
+            </span>
+            <span class="col native1">
+                <span>Зареєструватися для безкоштовного облікового запису. Потім просто виконайте кроки, це дуже просто.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You will have to work together with the service you registered your domain.
+                    In my case, it was Namecheap.</span>
+            </span>
+            <span class="col native1">
+                <span>Вам доведеться працювати разом із службою, у якій ви зареєстрували свій домен. 
+                    У моєму випадку це <a href="https://namecheap.pxf.io/c/477033/386170/5618">Namecheap</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Click on add domain to add a new domain to your account.
+                    Follow the instructions and make sure you use “mg.” subdomain:</span>
+            </span>
+            <span class="col native1">
+                <span>Натисніть "Додати домен", щоб додати до свого облікового запису новий домен.
+                    Дотримуйтесь інструкцій та переконайтеся, що ви використовуєте субдомен "mg.":</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/mg1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now grab the first set of DNS records, it’s two TXT records:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер захопіть перший набір записів DNS, це дві TXT записи:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/mg2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Add it to your domain, using the web interface offered by your registrar:</span>
+            </span>
+            <span class="col native1">
+                <span>Додайте його до свого домену за допомогою веб-інтерфейсу, який пропонує ваш реєстратор:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/namecheap1.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Do the same thing with the MX records:</span>
+            </span>
+            <span class="col native1">
+                <span>Зробити те ж саме з записами MX:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/mg3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Add them to the domain:</span>
+            </span>
+            <span class="col native1">
+                <span>Додайте їх до домену:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/namecheap2.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now this step is not mandatory, but since we are already here, confirm it as well:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер цей крок не є обов'язковим, але оскільки ми вже тут, підтвердьте це також:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/mg4.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/namecheap3.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>After adding all the DNS records, click in the Check DNS Records Now button:</span>
+            </span>
+            <span class="col native1">
+                <span>Після того, як додані всі записи DNS, натисніть кнопку Перевірити запис DNS зараз:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/mg5.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we need to have some patience. Sometimes it takes a while to validate the DNS.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер нам потрібно трохи терпіння. Іноді для перевірки DNS потрібен деякий час.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Meanwhile, we can configure the application to receive the connection parameters.</span>
+            </span>
+            <span class="col native1">
+                <span>Тим часом ми можемо налаштувати програму для отримання параметрів підключення.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <b>myproject/settings.py</b><br><br>
+    <pre class="bg-light">
+        <code>
+            EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+            EMAIL_HOST = config('EMAIL_HOST', default='')
+            EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+            EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+            EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+            EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+
+            DEFAULT_FROM_EMAIL = 'Django Boards &lt;noreply@djangoboards.com&gt;'
+            EMAIL_SUBJECT_PREFIX = '[Django Boards] '</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then, my local machine .env file would look like this:</span>
+            </span>
+            <span class="col native1">
+                <span>Тоді мій локальний файл .env буде виглядати так:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            SECRET_KEY=rqr_cjv4igscyu8&&(0ce(=sy=f2)p=f_wn&@0xsp7m$@!kp=d
+            DEBUG=True
+            ALLOWED_HOSTS=.localhost,127.0.0.1
+            DATABASE_URL=sqlite:///db.sqlite3
+            EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>And my production .env file would look like this:</span>
+            </span>
+            <span class="col native1">
+                <span>І мій робочий .env файл буде виглядати так:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            SECRET_KEY=rqr_cjv4igscyu8&&(0ce(=sy=f2)p=f_wn&@0xsp7m$@!kp=d
+            ALLOWED_HOSTS=.djangoboards.com
+            DATABASE_URL=postgres://u_boards:BcAZoYWsJbvE7RMgBPzxOCexPRVAq@localhost:5432/django_boards
+            EMAIL_HOST=smtp.mailgun.org
+            EMAIL_HOST_USER=postmaster@mg.djangoboards.com
+            EMAIL_HOST_PASSWORD=ED2vmrnGTM1Rdwlhazyhxxcd0F</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>You can find your credentials in the Domain Information section on Mailgun.</span>
+            </span>
+            <span class="col native1">
+                <span>Ви можете знайти свої облікові дані у розділі "Інформація про домен" на Mailgun.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <ul>
+        <li type="circle">EMAIL_HOST: SMTP Hostname</li>
+        <li type="circle">EMAIL_HOST_USER: Default SMTP Login</li>
+        <li type="circle">EMAIL_HOST_PASSWORD: Default Password</li>
+    </ul>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>We can test the new settings in the production server.
+                    Make the changes in the settings.py file on your local machine, commit the changes to the remote repository. </span>
+            </span>
+            <span class="col native1">
+                <span>Ми можемо перевірити нові параметри на робочому сервері.
+                    Внесіть зміни до файлу settings.py на локальному комп'ютері, внесіть зміни до віддаленого сховища.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then, in the server pull the new code and restart the Gunicorn process:</span>
+            </span>
+            <span class="col native1">
+                <span>Потім на сервері перетягніть новий код і перезапустіть процес Gunicorn:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            git pull</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Edit the .env file with the email credentials.</span>
+            </span>
+            <span class="col native1">
+                <span>Відредагуйте файл .env за допомогою облікових даних електронної пошти.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Then restart the Gunicorn process:</span>
+            </span>
+            <span class="col native1">
+                <span>Потім перезапустіть процес Gunicorn:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo supervisorctl restart boards</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now we can try to start the password reset process:</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер ми можемо спробувати почати процес скидання пароля:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/pwd.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>On the Mailgun dashboard you can have some statistics about the email delivery:</span>
+            </span>
+            <span class="col native1">
+                <span>На інформаційній панелі Mailgun ви можете мати статистику щодо доставки електронної пошти:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/mg6.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Configuring HTTPS Certificate - Налаштування сертифіката HTTPS</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now let’s protect our application with a nice HTTPS certificate provided by Let’s Encrypt.</span>
+            </span>
+            <span class="col native1">
+                <span>Тепер давайте захистимо наше додаток із чудовим HTTPS-сертифікатом, наданим
+                    <a href="https://letsencrypt.org/">Let's Encrypt</a>.</span>
+            </span>
+        </div>
+    </div>
+    <br>
 {% endblock %}
