@@ -2521,4 +2521,196 @@
         </div>
     </div>
     <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Setting up HTTPS has never been this easy. And better, we can get it for free nowadays.</span>
+            </span>
+            <span class="col native1">
+                <span>Настройка HTTPS ніколи не була такою простою. І краще, ми можемо отримати його безкоштовно в наші дні.</span>
+            </span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>They provide a solution called certbot which takes care of installing
+                    and renewing the certificates for us. It’s very straightforward:</span>
+            </span>
+            <span class="col native1">
+                <span>Вони надають рішення, яке називається certbot, який піклується про встановлення
+                    та поновлення сертифікатів для нас. Це дуже просто:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo apt-get update
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository ppa:certbot/certbot
+            sudo apt-get update
+            sudo apt-get install python-certbot-nginx</code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Now install the certs:</span>
+            </span>
+            <span class="col native1">
+                <span></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo certbot --nginx</code></pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Just follow the prompts. When asked about:</span>
+            </span>
+            <span class="col native1">
+                <span>Просто дотримуйтесь підказок. На питання про:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+            (Будь ласка, виберіть, чи переспрямовувати HTTP-трафік на HTTPS або видаляти HTTP-доступ.)
+        </code>
+    </pre>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Choose 2 to redirect all HTTP traffic to HTTPS.</span>
+            </span>
+            <span class="col native1">
+                <span>Виберіть 2, щоб перенаправити весь трафік HTTP до HTTPS.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>With that the site is already being served over HTTPS:</span>
+            </span>
+            <span class="col native1">
+                <span>Завдяки цьому сайт вже обслуговується через HTTPS:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"><img src="{% static 'translate_tutor/img/https.png' %}"></div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Setup the auto renew of the certs. Run the command below to edit the crontab file:</span>
+            </span>
+            <span class="col native1">
+                <span>Налаштування автоматичного оновлення сертифікатів. Запустіть команду нижче, щоб змінити файл crontab:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            sudo crontab -e</code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Add the following line to the end of the file:</span>
+            </span>
+            <span class="col native1">
+                <span>Додайте наступний рядок до кінця файлу:</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <pre class="bg-light">
+        <code>
+            0 4 * * * /usr/bin/certbot renew --quiet</code>
+    </pre>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>This command will run every day at 4 am.
+                    All certificates expiring within 30 days will automatically be renewed.</span>
+            </span>
+            <span class="col native1">
+                <span>Ця команда буде працювати щодня в 4 ранку.
+                    Усі сертифікати, що закінчуються протягом 30 днів, автоматично оновлюються.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <hr><br>
+    <H2>Conclusions</H2><br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Thanks a lot for all those who followed this tutorial series, giving comments and feedback!
+                    I really appreciate! This was the last tutorial of the series. I hope you enjoyed it!</span>
+            </span>
+            <span class="col native1">
+                <span>Велике спасибі всім тим, хто слідкував за цією серією підручників, даючи коментарі та відгуки!
+                    Я дійсно ціную! Це був останній підручник серії. Я сподіваюся, вам сподобалося!</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Even though this was the last part of the tutorial series, I plan to write a few
+                    follow-up tutorials exploring other interesting topics as well, such as database optimization
+                    and adding more features on top of what we have at the moment.</span>
+            </span>
+            <span class="col native1">
+                <span>Незважаючи на те, що це була остання частина серії навчальних посібників, я планую написати кілька
+                    навчальних посібників з подальшим вивченням інших цікавих тем, таких як оптимізація
+                    баз даних та додавання більшої кількості функцій у порівнянні з тим, що ми маємо на даний момент.</span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>By the way, if you are interested in contributing to the project, few free to submit pull requests! 
+                    The source code of the project is available on GitHub: https://github.com/sibtc/django-beginners-guide/</span>
+            </span>
+            <span class="col native1">
+                <span>До речі, якщо ви зацікавлені в сприянні проекту, вільно відправляйте запити на зміни! 
+                    Вихідний код проекту доступний на сайті GitHub: <a href="https://github.com/sibtc/django-beginners-guide/">https://github.com/sibtc/django-beginners-guide/</a></span>
+            </span>
+        </div>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>And please let me know what else you would like to see next! :-)</span>
+            </span>
+            <span class="col native1">
+                <span>І, будь ласка, дайте мені знати, що ще ви хотіли б побачити надалі! :-)</span>
+            </span>
+        </div>
+    </div>
+    <br>
 {% endblock %}
