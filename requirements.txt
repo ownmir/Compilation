@@ -1,2 +1,6 @@
+dj-database-url==0.4.2
 Django>=2.0,<2.1
 wagtail>=2.2,<2.3
+django-widget-tweaks==1.4.1
+Markdown==2.6.9
+python-decouple==3.1
