@@ -11,25 +11,26 @@
 {% endblock %}
 
 {% block content %}
-    <h1>A Complete Beginner's Guide to Django - Part 5</h1>
-    <h2>Introduction</h2>
+    <h1>A Complete Beginner's Guide to Django - Part 5</h1><br>
+    <h2>Introduction - Вступ</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
                 <span>In this tutorial, we are going to learn more about protecting views <strong>against</strong> unauthorized users and
                     how to access the authenticated user in the views and forms.</span></span>
-            <span class="col native1"><span>В этом уроке мы узнаем больше о защите представлений <strong>от</strong> неавторизованных
-                пользователей и о том, как получить доступ аутентифицированному пользователю к представлениям и формам.
+            <span class="col native1"><span>У цьому підручнику ми збираємося дізнатися більше про захист видів
+                <strong>від</strong> неавторизованих користувачів та про те, як отримати доступ до автентифікованого
+                користувача у виді та формах.
             </span></span>
         </div>
     </div>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
-                <span>We are <em lang="word"> also</em> going to implement the topic posts listing view and the reply view.</span>
+                <span>We are <em lang="word">also</em> going to implement the topic posts listing view and the reply view.</span>
             </span>
             <span class="col native1">
-                <span>Мы <em lang="translate">также</em> собираемся внедрить представление списка сообщений по темам и представление ответа.</span>
+                <span>Ми <em lang=translate>також</em> збираємося впровадити перегляд списку публікацій по темах та вид відповідей.</span>
             </span>
         </div>
     </div>
@@ -39,12 +40,12 @@
                 <span>Finally, we are going to explore some features of Django ORM and have a <strong>brief</strong> introduction to migrations.</span>
             </span>
             <span class="col native1">
-                <span>Наконец, мы рассмотрим некоторые особенности Django ORM и <strong>кратко</strong> расскажем о миграциях.</span>
+                <span>Нарешті, ми збираємося вивчити деякі особливості Django ORM і <strong>коротко</strong> познайомимося з міграціями.</span>
             </span>
         </div>
     </div>
     <hr>
-    <h2>Protecting Views</h2>
+    <h2>Protecting Views</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -52,8 +53,8 @@
                     <em lang="translate">So far</em> we have the following view to start new posts:</span>
             </span>
             <span class="col native1">
-                <span>Мы должны начать защищать наши представления от неавторизированных пользователей.
-                    <em lang="translate">До сих пор</em> у нас есть следующее представление, для создания нового сообщения:</span>
+                <span>Ми повинні почати захищати наші представлення від несанкціонованих користувачів.
+                    <em lang=translate>До цих пір</em> ми маємо такий вид, для створення нового повідомлення:</span>
             </span>
         </div>
         <div class="row">
@@ -67,8 +68,8 @@
                     Django has a built-in view decorator <strong>to avoid</strong> that issue:</span>
             </span>
             <span class="col native1">
-                <span>На картинке выше пользователь не вошел в систему и даже может видеть страницу и форму.
-                    Чтобы <strong>избежать</strong> этой проблемы, в Django есть встроенный декоратор:</span>
+                <span>На малюнку вище користувач не увійшов до системи, і все одно він може бачити сторінку та форму.
+                    Джанго має вбудований декоратор перегляду, щоб <strong>уникнути</strong> цієї проблеми.</span>
             </span>
         </div>
     </div>
@@ -95,7 +96,7 @@
                 <span>From now on, if the user is not authenticated they will be redirected to the login page:</span>
             </span>
             <span class="col native1">
-                <span>С этого момента, если пользователь не аутентифицирован, он будет перенаправлен на страницу входа:
+                <span>Відтепер, якщо користувача не буде автентифіковано, він буде перенаправлений на сторінку входу:
                 </span>
             </span>
         </div>
@@ -111,14 +112,14 @@
                     in template to make use of the <strong>next</strong> variable and improve the user experience.  </span>
             </span>
             <span class="col native1">
-                <span>Обратите внимание на строку запроса: <strong>next = / boards / 1 / new /</strong>.
-                    Мы можем <em lang="translate">улучшить</em> лог в шаблоне, чтобы использовать следующую переменную
-                    <strong>next</strong> и улучшить работу пользователя.</span>
+                <span>Зверніть увагу на рядок запиту: <strong>next=/boards/1/new/</strong>.
+                    Ми можемо <em lang=translate>вдосконалити</em> лог у шаблоні, щоб використовувати змінну
+                    <strong>next</strong> та покращити роботу користувачів.</span>
             </span>
         </div>
     </div>
     <br>
-    <h2>Configuring Login Next Redirect</h2>
+    <h2>Configuring Login Next Redirect</h2><br>
     <p>
         <b>templates/login.html</b>
         <a href="https://gist.github.com/vitorfs/1ab597fe18e2dc56028f7aa8c3b588b3#file-login-html-L13">
@@ -143,12 +144,12 @@
                     </span>
             </span>
             <span class="col native1">
-                <span>Затем, если мы попытаемся войти в систему, приложение вернет нас туда, где мы были.
-                Таким образом, параметр next является частью встроенной функциональности.</span>
+                <span>Тоді, якщо ми намагатимемось увійти в систему зараз, програма повертає нас туди, де ми були.
+                Таким чином, параметр <i>next</i> є частиною вбудованої функціональності.</span>
             </span>
         </div>
     </div><br>
-    <h2>Login Required Tests</h2>
+    <h2>Login Required Tests</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -156,7 +157,7 @@
                     </span>
             </span>
             <span class="col native1">
-                <span>Теперь добавим тестовый пример, чтобы убедиться, что это представление защищено декоратором
+                <span>Давайте тепер додамо тестовий приклад, щоб переконатись, що це представлення захищено декоратором
                     <i>@login_required.</i></span>
             </span>
         </div>
@@ -167,10 +168,21 @@
                 <span>But first, let’s do some refactoring in the boards/tests/test_views.py file.</span>
             </span>
             <span class="col native1">
-                <span>Но сначала давайте сделаем некоторые рефакторинг в файле boards / tests / test_views.py.</span>
+                <span>Але спочатку давайте зробимо рефакторинг у файлі boards/tests/test_views.py.</span>
             </span>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <span class="col foreign1">
+                <span>Let’s split the test_views.py into three files:</span>
+            </span>
+            <span class="col native1">
+                <span>Давайте розділимо test_views.py на три файли:</span>
+            </span>
+        </div>
+    </div>
+    <br>
     <p>
         <b>test_view_home.py will include the HomeTests class</b>
         <a href="https://gist.github.com/vitorfs/6ac3aad244c856d418f18890efcb4a7e#file-test_view_home-py">
@@ -222,7 +234,7 @@
                 <span>Run the tests to make sure everything is working.</span>
             </span>
             <span class="col native1">
-                <span>Запустите тесты, чтобы убедиться, что все работает.</span>
+                <span>Запустіть тести, щоб переконатися, що все працює.</span>
             </span>
         </div>
     </div>
@@ -233,8 +245,8 @@
                     <i>@login_required:</i></span>
             </span>
             <span class="col native1">
-                <span>Давайте добавим новый тестовый пример в test_view_new_topic.py, чтобы проверить, декорировано ли
-                    представление с помощью @login_required:</span>
+                <span>Давайте додамо новий тестовий приклад в test_view_new_topic.py, щоб перевірити, декороване чи
+                     представлення за допомогою @login_required:</span>
             </span>
         </div>
     </div>
@@ -270,7 +282,7 @@
             </span>
             <span class="col native1">
                 <span>
-                    В тестовом примере выше мы пытаемся сделать запрос к <b>new topic</b> без проверки подлинности.
+                    У тестовому прикладі вище ми намагаємося зробити запит до <b>new topic</b> без перевірки автентичності.
                 </span>
             </span>
         </div>
@@ -281,12 +293,12 @@
                 <span>The expected result is for the request be redirected to the login view.</span>
             </span>
             <span class="col native1">
-                <span>Ожидаемый результат - перенаправление запроса на представление входа в систему.</span>
+                <span>Очікуваний результат - перенаправлення запиту на представлення входу в систему.</span>
             </span>
         </div>
     </div>
     <hr>
-    <h2>Accessing the Authenticated User</h2>
+    <h2>Accessing the Authenticated User - Доступ до автентифікованого користувача</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -352,7 +364,7 @@
             <div class="col"></div>
         </div>
     </div>
-    <hr>
+    <hr><br>
     <h2>Topic Posts View</h2><br>
     <div class="container">
         <div class="row">
@@ -667,7 +679,6 @@
             </span>
         </div>
     </div>
-    <br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -678,7 +689,6 @@
             </span>
         </div>
     </div>
-    <br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -905,9 +915,9 @@
               &lt/tr&gt
             {% templatetag openblock %} endfor {% templatetag closeblock %}
         </code>
-    </pre>
-    <hr>
-    <h2>Reply Post View</h2>
+    </pre><br>
+    <hr><br>
+    <h2>Reply Post View</h2><br>
     <br>
     <div class="container">
         <div class="row">
