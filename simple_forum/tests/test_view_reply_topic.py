@@ -75,12 +75,12 @@ class SuccessfulReplyTopicTests(ReplyTopicTestCase):
     def setUp(self):
         super().setUp()
         self.client.login(username=self.username, password=self.password)
+        self.response = self.client.post(self.url, {'message': 'Knock, knock, Neo!'})
 
     def test_redirection(self):
-        response = self.client.post(self.url, {'message': 'Knock, knock, Neo!'})
         url = reverse('topic_posts', kwargs={'pk': self.category.pk, 'topic_pk': self.topic.pk})
         topic_posts_url = '{url}?page=1#2'.format(url=url)
-        self.assertRedirects(response, topic_posts_url)
+        self.assertRedirects(self.response, topic_posts_url)
 
     def test_reply_created(self):
         '''
@@ -88,6 +88,7 @@ class SuccessfulReplyTopicTests(ReplyTopicTestCase):
         The one created in the `ReplyTopicTestCase` setUp
         and another created by the post data in this class
         '''
+
         self.assertEquals(Post.objects.count(), 2)
 
 
