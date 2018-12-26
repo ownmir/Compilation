@@ -2,10 +2,58 @@
 {% load static %}
 {% block title %}Tutorial 7{% endblock %}
 {% block brand %}
-    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>
-    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>
-    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>
-    <a class="navbar-brand" href="{% url 'category_topics' 3 %}">[ Discussion of translation. P 7 ]</a>
+{#    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>#}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="m05" aria-expanded="false" aria-label="Toggle navigation05">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="m05">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor7' %}" id="userMenu05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Tutorial Part 5
+              </a>
+              <div class="dropdown-menu" aria-labelledby="userMenu05">
+                <a class="dropdown-item" href="{% url 'my_account' %}">My account</a>
+                <a class="dropdown-item" href="#">Change password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+              </div>
+            </li>
+          </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="m06">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor6' %}" id="userMenu06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Part 6
+              </a>
+              <div class="dropdown-menu" aria-labelledby="userMenu06">
+                <a class="dropdown-item" href="{% url 'my_account' %}">My account</a>
+                <a class="dropdown-item" href="#">Change password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+              </div>
+            </li>
+          </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="m07">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor7' %}" id="userMenu07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Part 7
+              </a>
+              <div class="dropdown-menu" aria-labelledby="userMenu07">
+                <a class="dropdown-item" href="{% url 'my_account' %}">My account</a>
+                <a class="dropdown-item" href="#">Change password</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'category_topics' 3 %}">Discussion of translation. P 7</a>
+              </div>
+            </li>
+          </ul>
+    </div>
+{#    <a class="navbar-brand" href="{% url 'category_topics' 3 %}">[ Discussion of translation. P 7 ]</a>#}
 {% endblock brand %}
 {% block breadcrumb %}
     <li class="breadcrumb-item active">Django tutorial</li>
