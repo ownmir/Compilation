@@ -1,0 +1,17 @@
+﻿Version Control
+	Basic Setup
+	Remote Repository
+Project Settings
+Tracking Requirements
+Domain Name
+Deployment Strategy
+Deploying to a VPS (Digital Ocean)
+	Application User
+	PostgreSQL Database Setup
+	Django Project Setup
+	Configuring Gunicorn
+	Configuring Supervisor
+	Configuring NGINX
+Configuring an Email Service
+Configuring HTTPS Certificate
+Conclusions

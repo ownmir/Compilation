@@ -41,8 +41,25 @@
         Part 7
       </a>
       <div class="dropdown-menu" aria-labelledby="userMenu07">
-        <a class="dropdown-item" href="{% url 'my_account' %}">My account</a>
-        <a class="dropdown-item" href="#">Change password</a>
+        <a class="dropdown-item" href="#intro">Introduction - Вступ</a>
+        <a class="dropdown-item" href="#VerControl">Version Control - Контроль версій</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem" href="#BasicSetup">Basic Setup</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#RemoteRepository">Remote Repository</a>
+          <a class="dropdown-item" href="#ProjectSettings">Project Settings</a>
+          <a class="dropdown-item" href="#TrackingRequirements">Tracking Requirements</a>
+          <a class="dropdown-item" href="#DomainName">Domain Name</a>
+          <a class="dropdown-item" href="#DeploymentStrategy">Deployment Strategy</a>
+          <a class="dropdown-item" href="#DeployingVPS">Deploying to a VPS (Digital Ocean)</a>
+          <a class="dropdown-item" href="#ApplicationUser"><pre>     </pre>Application User</a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
+          <a class="dropdown-item" href="#"></a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'category_topics' 3 %}">Discussion of translation. P 7</a>
       </div>
@@ -54,7 +71,7 @@
 {% endblock %}
 
 {% block content %}
-    <h1>A Complete Beginner's Guide to Django - Part 7</h1><br>
+    <h1 id="intro">A Complete Beginner's Guide to Django - Part 7</h1><br>
     <h2 title="введення">Introduction - Вступ</h2>
     <div class="container">
         <div class="row">
@@ -116,7 +133,7 @@
             </span>
         </div>
     </div>
-    <br>
+    <br id="VerControl">
     <hr><br>
     <H2>Version Control - Контроль версій</H2><br>
     <div class="container">
@@ -609,7 +626,8 @@
         </div>
     </div>
     <br>
-    <a href="https://github.com/sibtc/django-beginners-guide">https://github.com/sibtc/django-beginners-guide</a>
+    <a href="https://github.com/sibtc/django-beginners-guide" id="ProjectSettings">
+    https://github.com/sibtc/django-beginners-guide</a>
     <br>
     <hr><br>
     <H2>Project Settings - Параметри проекту</H2><br>
