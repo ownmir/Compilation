@@ -48,16 +48,16 @@
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
              href="#RemoteRepository">Remote Repository - Віддалений репозиторій</a>
           <a class="dropdown-item" href="#ProjectSettings">Project Settings - Параметри проекту</a>
-          <a class="dropdown-item" href="#TrackingRequirements">Tracking Requirements</a>
-          <a class="dropdown-item" href="#DomainName">Domain Name</a>
-          <a class="dropdown-item" href="#DeploymentStrategy">Deployment Strategy</a>
-          <a class="dropdown-item" href="#DeployingVPS">Deploying to a VPS (Digital Ocean)</a>
+          <a class="dropdown-item" href="#TrackingRequirements">Tracking Requirements - Відстеження вимог</a>
+          <a class="dropdown-item" href="#DomainName">Domain Name - Доменне ім'я</a>
+          <a class="dropdown-item" href="#DeploymentStrategy">Deployment Strategy - Стратегія розгортання</a>
+          <a class="dropdown-item" href="#DeployingVPS">Deploying to a VPS (Digital Ocean) - Розгортання</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#ApplicationUser">Application User</a>
+             href="#ApplicationUser">Application User - Користувач програми</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#PostgreSQLDatabaseSetup">PostgreSQL Database Setup</a>
+             href="#PostgreSQLDatabaseSetup">PostgreSQL Database Setup - Налаштування бази даних PostgreSQL</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#Django Project Setup">Django Project Setup</a>
+             href="#DjangoProjectSetup">Django Project Setup - Налаштування проекта Django</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
              href="#ConfiguringGunicorn">Configuring Gunicorn</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
@@ -961,7 +961,7 @@
         </div>
     </div>
     <br>
-    <hr><br>
+    <hr id="TrackingRequirements"><br>
     <H2>Tracking Requirements - Відстеження вимог</H2><br>
     <div class="container">
         <div class="row">
@@ -1039,7 +1039,7 @@
         </code>
     </pre>
     <br>
-    <hr><br>
+    <hr id="DomainName"><br>
     <H2>Domain Name</H2>
     <br>
     <div class="container">
@@ -1092,7 +1092,7 @@
         </div>
     </div>
     <br>
-    <hr><br>
+    <hr id="DeploymentStrategy"><br>
     <H2>Deployment Strategy - Стратегія розгортання</H2><br>
     <div class="container">
         <div class="row">
@@ -1295,7 +1295,7 @@
         </div>
     </div>
     <br>
-    <hr><br>
+    <hr id="DeployingVPS"><br>
     <H2>Deploying to a VPS (Digital Ocean) - Розгортання</H2><br>
     <div class="container">
         <div class="row">
@@ -1510,7 +1510,7 @@
     </div>
     <br>
     <H4>Python 3.6  PostgreSQL  NGINX   Supervisor  Virtualenv</H4><br>
-    <pre class="bg-light">
+    <pre class="bg-light" id="ApplicationUser">
         <code>
             sudo add-apt-repository ppa:deadsnakes/ppa
             sudo apt-get update
@@ -1568,7 +1568,7 @@
         </div>
     </div>
     <br>
-    <pre class="bg-light">
+    <pre class="bg-light" id="PostgreSQLDatabaseSetup">
         <code>
             gpasswd -a boards sudo</code>
     </pre>
@@ -1649,7 +1649,7 @@
         </div>
     </div>
     <br>
-    <pre class="bg-light">
+    <pre class="bg-light" id="DjangoProjectSetup">
         <code>
             exit</code>
     </pre>
