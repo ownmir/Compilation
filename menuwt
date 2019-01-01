@@ -1,4 +1,34 @@
-﻿Version Control
+﻿Introduction
+Protecting Views
+	Configuring Login Next Redirect
+	Login Required Tests
+Accessing the Authenticated User
+Topic Posts View
+Reply Post View
+QuerySets
+Migrations
+Conclusions
+
+Introduction
+Views Strategies
+	Function-Based View
+	Class-Based View
+	Generic Class-Based View
+Update View
+	Testing The Update View
+List View
+	Pagination
+	FBV Pagination
+	GCBV Pagination
+	Reusable Pagination Template
+My Account View
+Adding Markdown
+Humanize
+Gravatar
+Final Adjustments
+Conclusions
+
+Version Control
 	Basic Setup
 	Remote Repository
 Project Settings

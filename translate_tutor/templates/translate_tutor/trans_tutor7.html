@@ -11,7 +11,7 @@
 {% block OtherMenu %}
   <ul class="navbar-nav mr-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor7' %}" id="userMenu05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor' %}" id="userMenu05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Tutorial Part 5
       </a>
       <div class="dropdown-menu" aria-labelledby="userMenu">
@@ -44,9 +44,9 @@
         <a class="dropdown-item" href="#intro">Introduction - Вступ</a>
         <a class="dropdown-item" href="#VerControl">Version Control - Контроль версій</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#BasicSetup">Basic Setup</a>
+             href="#BasicSetup">Basic Setup - Основні налаштування</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#RemoteRepository">Remote Repository - Віддалений репозиторій</a>
+             href="#RemoteRepository">Remote Repository - Віддалене сховище</a>
           <a class="dropdown-item" href="#ProjectSettings">Project Settings - Параметри проекту</a>
           <a class="dropdown-item" href="#TrackingRequirements">Tracking Requirements - Відстеження вимог</a>
           <a class="dropdown-item" href="#DomainName">Domain Name - Доменне ім'я</a>
@@ -59,16 +59,16 @@
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
              href="#DjangoProjectSetup">Django Project Setup - Налаштування проекта Django</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#ConfiguringGunicorn">Configuring Gunicorn</a>
+             href="#ConfiguringGunicorn">Configuring Gunicorn - Налаштування Gunicorn</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#ConfiguringSupervisor">Configuring Supervisor</a>
+             href="#ConfiguringSupervisor">Configuring Supervisor - Налаштування Supervisor</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#ConfiguringNGINX">Configuring NGINX</a>
-          <a class="dropdown-item" href="#ConfiguringEmailService">Configuring an Email Service</a>
-          <a class="dropdown-item" href="#Configuring HTTPS Certificate">Configuring HTTPS Certificate</a>
-          <a class="dropdown-item" href="#Conclusions">Conclusions</a>
+             href="#ConfiguringNGINX">Configuring NGINX - Налаштування NGINX</a>
+          <a class="dropdown-item" href="#ConfiguringEmailService">Configuring an Email Service - Налаштування служби електроної пошти</a>
+          <a class="dropdown-item" href="#ConfiguringHTTPSCertificate">Configuring HTTPS Certificate - Налаштування сертифіката HTTPS</a>
+          <a class="dropdown-item" href="#Conclusions">Conclusions - Висновки</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'category_topics' 3 %}">Discussion of translation. P 7</a>
+        <a class="dropdown-item" href="{% url 'category_topics' 3 %}">Discussion of translation. P 7. - Обговорення перекладу. Частина 7.</a>
       </div>
     </li>
   </ul>
@@ -312,7 +312,7 @@
     </div>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="BasicSetup">
             <span class="col foreign1">
                 <span>If you don’t have Git installed on your local machine, grab the installed from https://git-scm.com/downloads.</span>
             </span>
@@ -323,7 +323,7 @@
         </div>
     </div>
     <br>
-    <H3>Basic Setup</H3><br>
+    <H3>Basic Setup - Основні налаштування</H3><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -489,7 +489,7 @@
     </div>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="RemoteRepository">
             <span class="col foreign1">
                 <span>Always write a comment telling what this commit is about, briefly describing what have you changed.</span>
             </span>
@@ -499,7 +499,7 @@
         </div>
     </div>
     <br><br>
-    <H3 id="RemoteRepository">Remote Repository - Віддалений репозиторій</H3><br>
+    <H3>Remote Repository - Віддалене сховище</H3><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -1040,7 +1040,7 @@
     </pre>
     <br>
     <hr id="DomainName"><br>
-    <H2>Domain Name</H2>
+    <H2>Domain Name - Доменне ім'я</H2>
     <br>
     <div class="container">
         <div class="row">
@@ -1865,7 +1865,7 @@
         </div>
     </div>
     <br>
-    <pre class="bg-light">
+    <pre class="bg-light" id="ConfiguringGunicorn">
         <code>
             python manage.py createsuperuser</code>
     </pre>
@@ -1990,7 +1990,7 @@
         </code>
     </pre>
     <br>
-    <div class="container">
+    <div class="container" id="ConfiguringSupervisor">
         <div class="row">
             <span class="col foreign1">
                 <span>The staticfiles folder was created by the collectstatic command.</span>
@@ -2077,7 +2077,7 @@
         <code>
             sudo supervisorctl status boards</code>
     </pre>
-    <pre class="bg-light">
+    <pre class="bg-light" id="ConfiguringNGINX">
         <code>
             boards                           RUNNING   pid 308, uptime 0:00:07</code>
     </pre>
@@ -2199,7 +2199,7 @@
     </div>
     <br>
     <br>
-    <div class="container">
+    <div class="container" id="ConfiguringEmailService">
         <div class="row">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/django-boards.png' %}"></div>
@@ -2566,7 +2566,7 @@
     </div>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="ConfiguringHTTPSCertificate">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/mg6.png' %}"></div>
             <div class="col"></div>
@@ -2713,7 +2713,7 @@
             0 4 * * * /usr/bin/certbot renew --quiet</code>
     </pre>
     <div class="container">
-        <div class="row">
+        <div class="row" id="Conclusions">
             <span class="col foreign1">
                 <span>This command will run every day at 4 am.
                     All certificates expiring within 30 days will automatically be renewed.</span>
@@ -2726,7 +2726,7 @@
     </div>
     <br>
     <hr><br>
-    <H2>Conclusions</H2><br>
+    <H2>Conclusions - Висновки</H2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">

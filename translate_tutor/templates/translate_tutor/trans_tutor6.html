@@ -2,17 +2,82 @@
 {% load static %}
 {% block title %}Tutorial 6{% endblock %}
 {% block brand %}
-    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>
-    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>
-    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>
-    <a class="navbar-brand" href="{% url 'category_topics' 2 %}">[ Discussion of translation. P 6 ]</a>
+{#    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'category_topics' 2 %}">[ Discussion of translation. P 6 ]</a>#}
 {% endblock brand %}
+{% block OtherMenu %}
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor' %}" id="userMenu05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Tutorial Part 5
+      </a>
+      <div class="dropdown-menu" aria-labelledby="userMenu">
+        <a class="dropdown-item" href="{% url 'translate_tutor' %}#intro">Introduction - Вступ</a>
+        <a class="dropdown-item" href="{% url 'translate_tutor' %}#Conclusions">Conclusions - Висновки</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'category_topics' 1 %}">Discussion of translation. P 5. - Обговорення перекладу. Частина 5.</a>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor6' %}" id="userMenu06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Part 6
+      </a>
+      <div class="dropdown-menu" aria-labelledby="userMenu06">
+        <a class="dropdown-item" href="#intro">Introduction - Вступ</a>
+        <a class="dropdown-item" href="#Conclusions">Conclusions - Висновки</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'category_topics' 2 %}">Discussion of translation. P 6. - Обговорення перекладу. Частина 6.</a>
+      </div>
+    </li>
+  </ul>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor7' %}" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Part 7
+      </a>
+      <div class="dropdown-menu" aria-labelledby="userMenu07">
+        <a class="dropdown-item" href="{% url 'translate_tutor7' %}#intro">Introduction - Вступ</a>
+        <a class="dropdown-item" href="{% url 'translate_tutor7' %}#VerControl">Version Control - Контроль версій</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#BasicSetup">Basic Setup - Основні налаштування</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#RemoteRepository">Remote Repository - Віддалене сховище</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#ProjectSettings">Project Settings - Параметри проекту</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#TrackingRequirements">Tracking Requirements - Відстеження вимог</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#DomainName">Domain Name - Доменне ім'я</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#DeploymentStrategy">Deployment Strategy - Стратегія розгортання</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#DeployingVPS">Deploying to a VPS (Digital Ocean) - Розгортання</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#ApplicationUser">Application User - Користувач програми</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#PostgreSQLDatabaseSetup">PostgreSQL Database Setup - Налаштування бази даних PostgreSQL</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#DjangoProjectSetup">Django Project Setup - Налаштування проекта Django</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#ConfiguringGunicorn">Configuring Gunicorn - Налаштування Gunicorn</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#ConfiguringSupervisor">Configuring Supervisor - Налаштування Supervisor</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor7' %}#ConfiguringNGINX">Configuring NGINX - Налаштування NGINX</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#ConfiguringEmailService">Configuring an Email Service - Налаштування служби електроної пошти</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#ConfiguringHTTPSCertificate">Configuring HTTPS Certificate - Налаштування сертифіката HTTPS</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor7' %}#Conclusions">Conclusions - Висновки</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'category_topics' 3 %}">Discussion of translation. P 7. - Обговорення перекладу. Частина 7.</a>
+      </div>
+    </li>
+  </ul>
+{% endblock OtherMenu %}
 {% block breadcrumb %}
     <li class="breadcrumb-item active">Django tutorial</li>
 {% endblock %}
 
 {% block content %}
-    <h1>A Complete Beginner's Guide to Django - Part 6</h1><br>
+    <h1 id="intro">A Complete Beginner's Guide to Django - Part 6</h1><br>
     <h2 title="введення">Introduction - Вступ</h2>
     <div class="container">
         <div class="row">
@@ -3646,7 +3711,7 @@
     </pre>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="Conclusions">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/long-pages.png' %}"></div>
             <div class="col"></div>
