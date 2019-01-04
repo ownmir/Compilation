@@ -15,6 +15,19 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="userMenu">
         <a class="dropdown-item" href="{% url 'translate_tutor' %}#intro">Introduction - Вступ</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#ProtectingViews">Protecting Views - Захист видів</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor' %}#ConfiguringLoginNextRedirect">
+              Configuring Login Next Redirect - Налаштування реєстрації, наступного перенаправлення</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#LoginRequiredTests"
+             style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem">
+              Login Required Tests - Тести; необхідний вхід</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#AccessingtheAuthenticatedUser">
+              Accessing the Authenticated User - Доступ до автентифікованого користувача</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#TopicPostsView">Topic Posts View - Вид тема-повідомлення</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#ReplyPostView">Reply Post View - Вид відповіді на повідомлення</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#QuerySets">QuerySets - Набори запитів</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor' %}#Migrations">Migrations - Міграції</a>
         <a class="dropdown-item" href="{% url 'translate_tutor' %}#Conclusions">Conclusions - Висновки</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'category_topics' 1 %}">Discussion of translation. P 5. - Обговорення перекладу. Частина 5.</a>
@@ -28,6 +41,30 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="userMenu06">
         <a class="dropdown-item" href="#intro">Introduction - Вступ</a>
+          <a class="dropdown-item" href="#ViewsStrategies">Views Strategies - Стратегії видів</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#Function-BasedView">Function-Based View - Вид на основі функцій</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#Class-BasedView">Class-Based View - Вид на основі класів</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#GenericClass-BasedView">Generic Class-Based View - Загальний вид на основі класів</a>
+          <a class="dropdown-item" href="#UpdateView">Update View - Вид оновлення</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#TestingTheUpdateView">Testing The Update View - Тестування виду оновлення</a>
+          <a class="dropdown-item" href="#ListView">List View - Перегляд списку</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#Pagination">Pagination - Нумерування сторінок</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#FBVPagination">FBV Pagination</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#GCBVPagination">GCBV Pagination</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#ReusablePaginationTemplate">Reusable Pagination Template - Багаторазовий Шаблон Pagination</a>
+          <a class="dropdown-item" href="#MyAccountView">My Account View - Вид мого облікового запису</a>
+          <a class="dropdown-item" href="#AddingMarkdown">Adding Markdown - Додавання Markdown</a>
+          <a class="dropdown-item" href="#Humanize">Humanize</a>
+          <a class="dropdown-item" href="#Gravatar">Gravatar</a>
+          <a class="dropdown-item" href="#FinalAdjustments">Final Adjustments - Остаточні коригування</a>
         <a class="dropdown-item" href="#Conclusions">Conclusions - Висновки</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'category_topics' 2 %}">Discussion of translation. P 6. - Обговорення перекладу. Частина 6.</a>
@@ -160,14 +197,14 @@
             <span class="col foreign1">
                 <span>Alright, folks! Let’s implement some code. We have <em lang=translate title="достатньо, безліч">plenty</em> of work to do today!</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="ViewsStrategies">
                 <span>Ладно, хлопці! Давайте реалізовувати деякий код. Ми сьогодні маємо <em lang=translate>багато</em> роботи!</span>
             </span>
         </div>
     </div>
     <br>
     <hr>
-    <h2>Views Strategies</h2>
+    <h2>Views Strategies - Стратегії видів</h2>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -276,13 +313,13 @@
             <span class="col foreign1">
                 <span>Below we are going to explore some examples of the different implementation strategies.</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="Function-BasedView">
                 <span>Нижче ми розглянемо деякі приклади різних стратегій впровадження.</span>
             </span>
         </div>
     </div>
     <br>
-    <h3>Function-Based View</h3>
+    <h3>Function-Based View - Перегляд на основі функцій</h3>
     <h4>views.py</h4>
     <pre class="bg-light">
         <code>
@@ -298,7 +335,7 @@
         </code>
     </pre>
     <h4>urls.py</h4>
-    <pre class="bg-light">
+    <pre class="bg-light" id="Class-BasedView">
         <code>
             urlpatterns = [
             url(r'^new_post/$', views.new_post, name='new_post'),
@@ -306,7 +343,7 @@
         </code>
     </pre>
     <br>
-    <h3>Class-Based View</h3>
+    <h3>Class-Based View - Вид на основі класів</h3>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -439,13 +476,13 @@
             <span class="col foreign1">
                 <span>But that’s <em lang=translate title="досить">pretty</em> much all you need to know about CBVs. Simple as that.</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="GenericClass-BasedView">
                 <span>Але це <em lang=translate>майже</em> все, що вам потрібно знати про CBVs. Просто як це.</span>
             </span>
         </div>
     </div>
     <br>
-    <h3>Generic Class-Based View</h3>
+    <h3>Generic Class-Based View - Загальний вид на основі класів</h3>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -579,14 +616,14 @@
             <span class="col foreign1">
                 <span>Other examples of GCBVs are DetailView, DeleteView, FormView, UpdateView, ListView.</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="UpdateView">
                 <span>Інші приклади GCBV - DetailView, DeleteView, FormView, UpdateView, ListView.</span>
             </span>
         </div>
     </div>
     <br>
     <hr>
-    <h2>Update View</h2>
+    <h2>Update View - Вид оновлення</h2>
     <br>
     <div class="container">
         <div class="row">
@@ -849,14 +886,14 @@
     <br>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="TestingTheUpdateView">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/edit-1.png' %}"></div>
             <div class="col"></div>
         </div>
     </div>
     <br>
-    <h3>Testing The Update View</h3>
+    <h3>Testing The Update View - Тестування виду оновлення</h3>
     <br>
     <div class="container">
         <div class="row">
@@ -1278,7 +1315,7 @@
             <span class="col foreign1">
                 <span>All good!</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="ListView">
                 <span>Все добре!</span>
             </span>
         </div>
@@ -1287,7 +1324,7 @@
     <br>
     <hr>
     <br>
-    <h2>List View</h2>
+    <h2>List View - Вид списку</h2>
     <br>
     <div class="container">
         <div class="row">
@@ -1433,7 +1470,7 @@
         </a>
     </p>
     <br>
-    <pre class="bg-light">
+    <pre class="bg-light" id="Pagination">
         <code>
             from django.test import TestCase
             from django.urls import resolve
@@ -1737,7 +1774,7 @@
     </div>
     <br>
     <pre class="bg-light">
-        <code>
+        <code id="FBVPagination">
 
             page = paginator.page(1)
 
@@ -1926,7 +1963,7 @@
     <br>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="GCBVPagination">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/paginate.png' %}"></div>
             <div class="col"></div>
@@ -2146,7 +2183,7 @@
     </div>
     <br>
     <pre class="bg-light">
-        <code>
+        <code id="ReusablePaginationTemplate">
             from django.test import TestCase
             from django.urls import resolve
             from ..views import TopicListView
@@ -2488,7 +2525,7 @@
     </p>
     <br>
     <pre class="bg-light">
-        <code>
+        <code id="MyAccountView">
             from django.test import TestCase
             from django.urls import resolve
             from ..views import PostListView
@@ -2504,7 +2541,7 @@
     <br>
     <hr>
     <br>
-    <H2>My Account View</H2>
+    <H2>My Account View - Вид мого облікового запису</H2>
     <br>
     <div class="container">
         <div class="row">
@@ -2613,7 +2650,7 @@
     <br>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="AddingMarkdown">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/account.png' %}"></div>
             <div class="col"></div>
@@ -2943,7 +2980,7 @@
     <br>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="Humanize">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/editor-2.png' %}"></div>
             <div class="col"></div>
@@ -3071,7 +3108,7 @@
     <br>
     <div class="container">
         <div class="row">
-            <span class="col foreign1">
+            <span class="col foreign1" id="Gravatar">
                 <span>You may add it to other places you like.</span>
             </span>
             <span class="col native1">
@@ -3180,7 +3217,7 @@
     <br>
     <br>
     <div class="container">
-        <div class="row">
+        <div class="row" id="FinalAdjustments">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/gravatar.png' %}"></div>
             <div class="col"></div>

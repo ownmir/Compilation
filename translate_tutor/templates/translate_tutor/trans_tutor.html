@@ -7,14 +7,28 @@
 {#    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>#}
 {#    <a class="navbar-brand" href="{% url 'category_topics' 1 %}">[ Discussion of translation. P 5 ]</a>#}
 {% endblock brand %}
+{% include 'simple_forum/includes/tutor_menu.html' %}
 {% block OtherMenu %}
   <ul class="navbar-nav mr-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor7' %}" id="userMenu05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle" href="{% url 'translate_tutor' %}" id="userMenu05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Tutorial Part 5
       </a>
       <div class="dropdown-menu" aria-labelledby="userMenu">
         <a class="dropdown-item" href="#intro">Introduction - Вступ</a>
+          <a class="dropdown-item" href="#ProtectingViews">Protecting Views - Захист видів</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="#ConfiguringLoginNextRedirect">
+              Configuring Login Next Redirect - Налаштування реєстрації, наступного перенаправлення</a>
+          <a class="dropdown-item" href="#LoginRequiredTests"
+             style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem">
+              Login Required Tests - Тести; необхідний вхід</a>
+          <a class="dropdown-item" href="#AccessingtheAuthenticatedUser">
+              Accessing the Authenticated User - Доступ до автентифікованого користувача</a>
+          <a class="dropdown-item" href="#TopicPostsView">Topic Posts View - Вид тема-повідомлення</a>
+          <a class="dropdown-item" href="#ReplyPostView">Reply Post View - Вид відповіді на повідомлення</a>
+          <a class="dropdown-item" href="#QuerySets">QuerySets - Набори запитів</a>
+          <a class="dropdown-item" href="#Migrations">Migrations - Міграції</a>
         <a class="dropdown-item" href="#Conclusions">Conclusions - Висновки</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'category_topics' 1 %}">Discussion of translation. P 5. - Обговорення перекладу. Частина 5.</a>
@@ -28,6 +42,30 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="userMenu">
         <a class="dropdown-item" href="{% url 'translate_tutor6' %}#intro">Introduction - Вступ</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#ViewsStrategies">Views Strategies - Стратегії видів</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#Function-BasedView">Function-Based View - Вид на основі функцій</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#Class-BasedView">Class-Based View - Вид на основі класів</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#GenericClass-BasedView">Generic Class-Based View - Загальний вид на основі класів</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#UpdateView">Update View - Вид оновлення</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#TestingTheUpdateView">Testing The Update View - Тестування виду оновлення</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#ListView">List View - Перегляд списку</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#Pagination">Pagination - Нумерування сторінок</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#FBVPagination">FBV Pagination</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#GCBVPagination">GCBV Pagination</a>
+          <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
+             href="{% url 'translate_tutor6' %}#ReusablePaginationTemplate">Reusable Pagination Template - Багаторазовий Шаблон Pagination</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#MyAccountView">My Account View - Вид мого облікового запису</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#AddingMarkdown">Adding Markdown - Додавання Markdown</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#Humanize">Humanize</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#Gravatar">Gravatar</a>
+          <a class="dropdown-item" href="{% url 'translate_tutor6' %}#FinalAdjustments">Final Adjustments - Остаточні коригування</a>
         <a class="dropdown-item" href="{% url 'translate_tutor6' %}#Conclusions">Conclusions - Висновки</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'category_topics' 2 %}">Discussion of translation. P 6. - Обговорення перекладу. Частина 6.</a>
@@ -62,7 +100,7 @@
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
              href="{% url 'translate_tutor7' %}#ConfiguringSupervisor">Configuring Supervisor - Налаштування Supervisor</a>
           <a class="dropdown-item" style="padding-left: 2.5rem; font-size: 0.9rem; margin-bottom: 0.25rem"
-             href="#ConfiguringNGINX">Configuring NGINX - Налаштування NGINX</a>
+             href="{% url 'translate_tutor7' %}#ConfiguringNGINX">Configuring NGINX - Налаштування NGINX</a>
           <a class="dropdown-item" href="{% url 'translate_tutor7' %}#ConfiguringEmailService">Configuring an Email Service - Налаштування служби електроної пошти</a>
           <a class="dropdown-item" href="{% url 'translate_tutor7' %}#ConfiguringHTTPSCertificate">Configuring HTTPS Certificate - Налаштування сертифіката HTTPS</a>
           <a class="dropdown-item" href="{% url 'translate_tutor7' %}#Conclusions">Conclusions - Висновки</a>
@@ -101,7 +139,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row">
+        <div class="row" id="ProtectingViews">
             <span class="col foreign1">
                 <span>Finally, we are going to explore some features of Django ORM and have a <strong>brief</strong> introduction to migrations.</span>
             </span>
@@ -111,7 +149,7 @@
         </div>
     </div>
     <hr>
-    <h2>Protecting Views</h2><br>
+    <h2>Protecting Views - Захист видів</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -178,14 +216,14 @@
                     in template to make use of the <strong>next</strong> variable and improve the user experience.  </span>
             </span>
             <span class="col native1">
-                <span>Зверніть увагу на рядок запиту: <strong>next=/boards/1/new/</strong>.
+                <span id="ConfiguringLoginNextRedirect">Зверніть увагу на рядок запиту: <strong>next=/boards/1/new/</strong>.
                     Ми можемо <em lang=translate>вдосконалити</em> лог у шаблоні, щоб використовувати змінну
                     <strong>next</strong> та покращити роботу користувачів.</span>
             </span>
         </div>
     </div>
     <br>
-    <h2>Configuring Login Next Redirect</h2><br>
+    <h2>Configuring Login Next Redirect - Налаштування реєстрації, наступного перенаправлення</h2><br>
     <p>
         <b>templates/login.html</b>
         <a href="https://gist.github.com/vitorfs/1ab597fe18e2dc56028f7aa8c3b588b3#file-login-html-L13">
@@ -210,12 +248,12 @@
                     </span>
             </span>
             <span class="col native1">
-                <span>Тоді, якщо ми намагатимемось увійти в систему зараз, програма повертає нас туди, де ми були.
+                <span id="LoginRequiredTests">Тоді, якщо ми намагатимемось увійти в систему зараз, програма повертає нас туди, де ми були.
                 Таким чином, параметр <i>next</i> є частиною вбудованої функціональності.</span>
             </span>
         </div>
     </div><br>
-    <h2>Login Required Tests</h2><br>
+    <h2>Login Required Tests - Тести; необхідний вхід</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -358,7 +396,7 @@
             <span class="col foreign1">
                 <span>The expected result is for the request be redirected to the login view.</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="AccessingtheAuthenticatedUser">
                 <span>Очікуваний результат - перенаправлення запиту на представлення входу в систему.</span>
             </span>
         </div>
@@ -427,11 +465,11 @@
         <div class="row">
             <div class="col"></div>
             <div class="col"><img src="{% static 'translate_tutor/img/topics-2.png' %}"></div>
-            <div class="col"></div>
+            <div class="col" id="TopicPostsView"></div>
         </div>
     </div>
     <hr><br>
-    <h2>Topic Posts View</h2><br>
+    <h2>Topic Posts View - Вид тема-повідомлення</h2><br>
     <div class="container">
         <div class="row">
             <span class="col foreign1">
@@ -970,7 +1008,7 @@
         </a>
     </p>
     <pre class="bg-light">
-        <code>
+        <code id="ReplyPostView">
             {% templatetag openblock %} for topic in board.topics.all {% templatetag closeblock %}
               &lttr&gt
                 &lttd&gt&lta href="{% templatetag openblock %} url 'topic_posts' board.pk topic.pk{% templatetag openvariable %} topic.subject {% templatetag closevariable %}&lt/a&gt&lt/td&gt
@@ -983,7 +1021,7 @@
         </code>
     </pre><br>
     <hr><br>
-    <h2>Reply Post View</h2><br>
+    <h2>Reply Post View - Вид відповіді на повідомлення</h2><br>
     <br>
     <div class="container">
         <div class="row">
@@ -1422,14 +1460,14 @@
             <span class="col foreign1">
                 <span>Finally, we test a valid and an invalid form submission.</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="QuerySets">
                 <span>Нарешті, ми перевіряємо дійсну та недійсну форму подання.</span>
             </span>
         </div>
     </div>
     <br>
     <hr>
-    <H2>QuerySets</H2>
+    <H2>QuerySets - Набори запитів</H2>
     <br>
     <div class="container">
         <div class="row">
@@ -2211,7 +2249,7 @@
             <span class="col foreign1">
                 <span>But for that, we will need to create a new field.</span>
             </span>
-            <span class="col native1">
+            <span class="col native1" id="Migrations">
                 <span>Але для цього нам потрібно буде створити нове поле.</span>
             </span>
         </div>
@@ -2220,7 +2258,7 @@
     <br>
     <hr>
     <br>
-    <H2>Migrations</H2>
+    <H2>Migrations - Міграції</H2>
     <br>
     <div class="container">
         <div class="row">

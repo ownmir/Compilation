@@ -5,10 +5,13 @@
 {% endblock %}
 {% block brand %}
     {{ block.super }}
-    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>
-    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>
-    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>
+{#    <a class="navbar-brand" href="{% url 'translate_tutor' %}">[ Tutorial Part 5 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'translate_tutor6' %}">[ Part 6 ]</a>#}
+{#    <a class="navbar-brand" href="{% url 'translate_tutor7' %}">[ Part 7 ]</a>#}
 {% endblock brand %}
+{% block OtherMenu %}
+    {% include 'simple_forum/includes/tutor_menu.html' %}
+{% endblock %}
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{% url 'simply_first' %}">Categories</a> </li>
     <li class="breadcrumb-item active">{{ category.name }}</li>
