@@ -13,7 +13,7 @@
 
 {% block content %}
     <div class="mb-4">
-    <a href="#" class="btn btn-primary" role="button">Reply</a>
+    <a href="{% url 'reply_topic' topic.category.pk topic.pk %}" class="btn btn-primary" role="button">Reply</a>
   </div>
 
   {% for post in posts %}
