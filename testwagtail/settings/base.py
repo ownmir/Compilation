@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'simple_forum',
-    'translate_tutor'
+    'translate_tutor',
+    'captcha'
 ]
 
 MIDDLEWARE = [
@@ -180,3 +181,9 @@ BASE_URL = 'http://example.com'
 LOGOUT_REDIRECT_URL = 'simply_first'
 LOGIN_REDIRECT_URL = 'simply_first'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+CAPTCHA_IMAGE_SIZE = (160, 50)
+CAPTCHA_FONT_SIZE = (28)
+CAPTCHA_BACKGROUND_COLOR = '#cccccc'
+CAPTCHA_FOREGROUND_COLOR = '#001100'
+CAPTCHA_LENGTH = 6

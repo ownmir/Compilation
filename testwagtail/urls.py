@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import path
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -8,6 +9,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from simple_forum import urls as forum_urls
 from accounts import urls as accounts_urls
 from translate_tutor import urls as translate_tutor_urls
+from captcha import urls as captcha_urls
 
 from search import views as search_views
 from blog import views as blog_views
@@ -20,6 +22,8 @@ urlpatterns = [
 
     url(r'^forum/', include(forum_urls)),
     url(r'^accounts/', include(accounts_urls)),
+    # path('captcha/', include('captcha.urls')),
+    path('captcha/', include(captcha_urls)),
 
     url(r'^search/$', search_views.search, name='search'),
     url(r'^index/indent/$', blog_views.indent, name='indent'),
