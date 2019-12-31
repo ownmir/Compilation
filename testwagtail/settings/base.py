@@ -187,3 +187,6 @@ CAPTCHA_FONT_SIZE = (28)
 CAPTCHA_BACKGROUND_COLOR = '#cccccc'
 CAPTCHA_FOREGROUND_COLOR = '#001100'
 CAPTCHA_LENGTH = 6
+# import sys
+# if 'test' in sys.argv:
+#     CAPTCHA_TEST_MODE = True

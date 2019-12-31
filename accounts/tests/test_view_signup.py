@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.urls import resolve
 from django.test import TestCase
 from ..views import signup
+from captcha.models import CaptchaStore
 
 
 # Create your tests here.
@@ -31,8 +32,8 @@ class SignUpTests(TestCase):
         """
         The view must contain five input:
         """
-        self.assertContains(self.response, '<input', 5)
-        self.assertContains(self.response, 'type="text"', 1)
+        self.assertContains(self.response, '<input', 7)
+        self.assertContains(self.response, 'type="text"', 2)
         self.assertContains(self.response, 'type="email"', 1)
         self.assertContains(self.response, 'type="password"', 2)
 
@@ -40,11 +41,21 @@ class SignUpTests(TestCase):
 class SuccessfulSignupTests(TestCase):
     def setUp(self):
         url = reverse('signup')
+        captcha_count = CaptchaStore.objects.count()
+        self.failUnlessEqual(captcha_count, 0)
+
+        captcha = CaptchaStore.objects.get(hashkey=CaptchaStore.generate_key())
+        captcha_count = CaptchaStore.objects.count()
+        self.failUnlessEqual(captcha_count, 1)
         data = {
             'username': 'neo',
             'email': 'neo@zion.net',
             'password1': 'mtrxai6ver',
-            'password2': 'mtrxai6ver'
+            'password2': 'mtrxai6ver',
+            # 'captcha_0': 'dummy-value',
+            'captcha_0': captcha.hashkey,
+            # 'captcha_1': 'PASSED'
+            'captcha_1': captcha.response
         }
         self.response = self.client.post(url, data)
         self.simple_forum_url = reverse('simply_first')
