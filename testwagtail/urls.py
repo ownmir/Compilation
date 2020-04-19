@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
 
-    url(r'^forum/', include(forum_urls)),
+    # url(r'^forum/', include(forum_urls)),
     url(r'^accounts/', include(accounts_urls)),
     # path('captcha/', include('captcha.urls')),
     path('captcha/', include(captcha_urls)),
