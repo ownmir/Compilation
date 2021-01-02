@@ -8,6 +8,8 @@ from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import UpdateView, ListView
 from django.utils import timezone
+from django_otp.decorators import otp_required
+from two_factor.views.mixins import OTPRequiredMixin
 
 
 # Create your views here.
@@ -41,6 +43,7 @@ def category_topics(request, pk):
 
 
 @login_required
+@otp_required
 def new_topic(request, pk):
     category = get_object_or_404(Category, pk=pk)
     # user = User.objects.first()  # DONE: get the currently logged in user
@@ -100,6 +103,7 @@ class PostListView(ListView):
 
 
 @login_required
+@otp_required
 def reply_topic(request, pk, topic_pk):
     topic = get_object_or_404(Topic, category__pk=pk, pk=topic_pk)
     if request.method == 'POST':
@@ -128,7 +132,8 @@ def reply_topic(request, pk, topic_pk):
 
 
 @method_decorator(login_required, name='dispatch')
-class PostUpdateView(UpdateView):
+# @method_decorator(otp_required, name='dispatch')
+class PostUpdateView(OTPRequiredMixin, UpdateView):
     model = Post
     fields = ('message', )
     template_name = 'simple_forum/edit_post.html'

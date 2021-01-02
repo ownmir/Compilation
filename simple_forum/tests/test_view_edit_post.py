@@ -30,7 +30,7 @@ class LoginRequiredPostUpdateViewTests(PostUpdateViewTestCase):
         '''
         Test if only logged in users can edit the posts
         '''
-        login_url = reverse('login')
+        login_url = reverse('two_factor:login')
         response = self.client.get(self.url)
         self.assertRedirects(response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))
 

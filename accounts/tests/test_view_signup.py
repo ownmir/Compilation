@@ -11,14 +11,14 @@ from captcha.models import CaptchaStore
 # Create your tests here.
 class SignUpTests(TestCase):
     def setUp(self):
-        url = reverse('signup')
+        url = reverse('faccounts:signup')
         self.response = self.client.get(url)
 
     def test_signup_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
     def test_signup_url_resolves_signup_view(self):
-        view = resolve('/accounts/signup/')
+        view = resolve('/faccounts/signup/')
         self.assertEquals(view.func, signup)
 
     def test_csrf(self):
@@ -40,7 +40,7 @@ class SignUpTests(TestCase):
 
 class SuccessfulSignupTests(TestCase):
     def setUp(self):
-        url = reverse('signup')
+        url = reverse('faccounts:signup')
         captcha_count = CaptchaStore.objects.count()
         self.failUnlessEqual(captcha_count, 0)
 
@@ -80,7 +80,7 @@ class SuccessfulSignupTests(TestCase):
 
 class InvalidSignupTests(TestCase):
     def setUp(self):
-        url = reverse('signup')
+        url = reverse('faccounts:signup')
         data = {}
         self.response = self.client.post(url, data)
 

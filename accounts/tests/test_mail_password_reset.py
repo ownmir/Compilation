@@ -8,7 +8,9 @@ class PasswordResetMailTests(TestCase):
     def setUp(self):
         email = 'neo@zion.net'
         User.objects.create_user(username='neo', email=email, password='mtrxai6ver')
-        url = reverse('password_reset')
+
+        url = reverse('faccounts:password_reset')
+        print("url", url)
         self.response = self.client.post(url, {'email': email})
         self.email = mail.outbox[0]
 
@@ -19,7 +21,7 @@ class PasswordResetMailTests(TestCase):
         context = self.response.context
         token = context.get('token')
         uid = context.get('uid')
-        password_reset_token_url = reverse('password_reset_confirm', kwargs={
+        password_reset_token_url = reverse('faccounts:password_reset_confirm', kwargs={
             'uidb64': uid,
             'token': token
         })

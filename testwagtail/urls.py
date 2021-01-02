@@ -14,6 +14,8 @@ from captcha import urls as captcha_urls
 from search import views as search_views
 from blog import views as blog_views
 
+from two_factor.urls import urlpatterns as tf_urls
+
 urlpatterns = [
     url(r'^django-admin/', admin.site.urls),
 
@@ -21,9 +23,11 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^forum/', include(forum_urls)),
-    url(r'^accounts/', include(accounts_urls)),
+    url(r'^faccounts/', include((accounts_urls, 'accounts'), namespace='faccounts')),
+    url(r'^accounts/', include(tf_urls)),
     # path('captcha/', include('captcha.urls')),
     path('captcha/', include(captcha_urls)),
+
 
     url(r'^search/$', search_views.search, name='search'),
     url(r'^index/indent/$', blog_views.indent, name='indent'),

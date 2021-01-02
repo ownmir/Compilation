@@ -17,7 +17,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect('simply_first')
+            return redirect('two_factor:profile')
     else:
         form = SignUpForm()
     return render(request, 'accounts/signup.html', {'form': form})
@@ -32,3 +32,7 @@ class UserUpdateView(UpdateView):
 
     def get_object(self):
         return self.request.user
+
+
+def password_reset_done(request):
+    return render(request, 'accounts/password_reset_done.html')

@@ -57,7 +57,12 @@ INSTALLED_APPS = [
     'accounts',
     'simple_forum',
     'translate_tutor',
-    'captcha'
+    'captcha',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
+    'qrcode'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +70,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -179,7 +185,9 @@ WAGTAIL_SITE_NAME = "testwagtail"
 # e.g. in notification emails. Don't includes '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
 LOGOUT_REDIRECT_URL = 'simply_first'
-LOGIN_REDIRECT_URL = 'simply_first'
+LOGIN_URL = 'two_factor:login'
+TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
+LOGIN_REDIRECT_URL = 'two_factor:profile'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
 CAPTCHA_IMAGE_SIZE = (160, 50)

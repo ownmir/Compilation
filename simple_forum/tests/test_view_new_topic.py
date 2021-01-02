@@ -73,5 +73,5 @@ class LoginRequiredNewTopicTests(TestCase):
         self.response = self.client.get(self.url)
 
     def test_redirection(self):
-        login_url = reverse('login')
+        login_url = reverse('two_factor:login')
         self.assertRedirects(self.response, '{login_url}?next={url}'.format(login_url=login_url, url=self.url))
