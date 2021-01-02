@@ -4,6 +4,7 @@ __pycache__/
 .env
 venv/
 t.txt
+FirstVie.HTML
 tokens.txt
 
 # SQLite database files
