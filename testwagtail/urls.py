@@ -19,7 +19,7 @@ from two_factor.urls import urlpatterns as tf_urls
 urlpatterns = [
     url(r'^django-admin/', admin.site.urls),
 
-    url(r'^admin/', include(wagtailadmin_urls)),
+    # url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^forum/', include(forum_urls)),
