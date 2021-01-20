@@ -10,7 +10,7 @@ class PasswordChangeTests(TestCase):
         username = 'neo'
         password = 'mtrxai6ver'
         user = User.objects.create_user(username=username, email='neo@zion.net', password=password)
-        url = reverse('faccounts:password_change')
+        url = reverse('standard-accounts:password_change')
         self.client.login(username=username, password=password)
         self.response = self.client.get(url)
 
@@ -18,7 +18,7 @@ class PasswordChangeTests(TestCase):
         self.assertEquals(self.response.status_code, 200)
 
     def test_url_resolves_correct_view(self):
-        view = resolve('/faccounts/settings/password/')
+        view = resolve('/standard-accounts/password_change/')
         self.assertEquals(view.func.view_class, auth_views.PasswordChangeView)
 
     def test_csrf(self):
@@ -38,9 +38,12 @@ class PasswordChangeTests(TestCase):
 
 class LoginRequiredPasswordChangeTests(TestCase):
     def test_redirection(self):
-        url = reverse('faccounts:password_change')
+        url = reverse('standard-accounts:password_change')
+        print("url", url)
         login_url = reverse('two_factor:login')
+        print("login_url", login_url)
         response = self.client.get(url)
+        print("response", response)
         self.assertRedirects(response, f'{login_url}?next={url}')
 
 
@@ -51,26 +54,29 @@ class PasswordChangeTestCase(TestCase):
     '''
     def setUp(self, data={}):
         self.user = User.objects.create_user(username='neo', email='neo@zion.net', password='old_password')
-        self.url = reverse('faccounts:password_change')
+        self.url = reverse('standard-accounts:password_change')
         self.client.login(username='neo', password='old_password')
-        self.response = self.client.post(self.url, data)
 
 
 class SuccessfulPasswordChangeTests(PasswordChangeTestCase):
     def setUp(self):
-        super().setUp({
+        self.data = {
             'old_password': 'old_password',
             'new_password1': 'new_password',
             'new_password2': 'new_password',
-        })
+        }
+        super().setUp(self.data)
+        self.response = self.client.post(self.url, self.data)
 
     def test_redirection(self):
-        '''
+        """
         A valid form submission should redirect the user
-        '''
-        change_url = reverse('faccounts:password_change')
-        next_url = reverse('faccounts:password_change_done')
-        self.assertRedirects(self.response, f'{change_url}?next={next_url}')
+        test accounts.tests.test_view_password_change.SuccessfulPasswordChangeTests.test_redirection
+        """
+        print("self.response", self.response, "self.data", self.data)
+
+        # self.assertRedirects(self.response, f'{change_url}?next={next_url}')
+        self.assertRedirects(self.response, '/standard-accounts/password_change/done/')
 
     def test_password_changed(self):
         '''
@@ -91,6 +97,15 @@ class SuccessfulPasswordChangeTests(PasswordChangeTestCase):
 
 
 class InvalidPasswordChangeTests(PasswordChangeTestCase):
+    def setUp(self, data={}):
+        self.data = {
+            'old_password': '',
+            'new_password1': 'new_password',
+            'new_password2': 'new_password',
+        }
+        super().setUp(self.data)
+        self.response = self.client.post(self.url, self.data)
+
     def test_status_code(self):
         '''
         An invalid form submission should return to the same page

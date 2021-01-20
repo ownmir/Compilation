@@ -34,5 +34,9 @@ class UserUpdateView(UpdateView):
         return self.request.user
 
 
-def password_reset_done(request):
-    return render(request, 'accounts/password_reset_done.html')
+# def password_reset_complete(request):
+#     return render(request, 'accounts/password_reset_done.html')
+
+
+def password_change_done(request):
+    return render(request, 'accounts/password_change_done.html')

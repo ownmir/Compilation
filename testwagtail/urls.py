@@ -23,7 +23,8 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),
 
     url(r'^forum/', include(forum_urls)),
-    url(r'^faccounts/', include((accounts_urls, 'accounts'), namespace='faccounts')),
+    url(r'^standard-accounts/', include((accounts_urls, 'accounts'), namespace='standard-accounts')),
+    # url(r'^standard-accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/', include(tf_urls)),
     # path('captcha/', include('captcha.urls')),
     path('captcha/', include(captcha_urls)),
