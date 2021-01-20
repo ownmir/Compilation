@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -193,6 +194,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_USE_TLS = True
+SITE_ID = 1
 CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
 CAPTCHA_IMAGE_SIZE = (160, 50)
 CAPTCHA_FONT_SIZE = (28)
