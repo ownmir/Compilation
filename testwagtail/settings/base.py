@@ -187,7 +187,7 @@ LOGOUT_REDIRECT_URL = 'simply_first'
 LOGIN_URL = 'two_factor:login'
 TWO_FACTOR_QR_FACTORY = 'qrcode.image.pil.PilImage'
 LOGIN_REDIRECT_URL = 'two_factor:profile'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = 587
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
